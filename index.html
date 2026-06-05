@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Respuestas Rápidas · GitHub</title>
+  <style>
+    :root{
+      --bg:#f4f8ff;
+      --panel:#ffffff;
+      --panel-soft:#eef5ff;
+      --text:#14213d;
+      --muted:#64748b;
+      --line:#dbe7f7;
+      --primary:#1479ff;
+      --primary-dark:#075fd1;
+      --green:#13a86b;
+      --red:#e63946;
+      --amber:#f59e0b;
+      --shadow:0 18px 45px rgba(20, 33, 61, .10);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(20,121,255,.13), transparent 28%),
+        linear-gradient(135deg, #f8fbff 0%, #edf5ff 50%, #f7fbff 100%);
+      color:var(--text);
+      font-family:Poppins, Inter, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    button, input, textarea, select{font:inherit}
+    button{border:0; cursor:pointer}
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:290px minmax(0, 1fr);
+    }
+
+    .sidebar{
+      position:sticky;
+      top:0;
+      height:100vh;
+      padding:22px 18px;
+      background:rgba(255,255,255,.82);
+      border-right:1px solid rgba(219,231,247,.92);
+      backdrop-filter:blur(14px);
+      z-index:20;
+      box-shadow:8px 0 35px rgba(20,33,61,.05);
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:10px 10px 22px;
+    }
+
+    .brand-badge{
+      width:48px;
+      height:48px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      color:white;
+      font-weight:900;
+      background:linear-gradient(135deg, var(--primary), #6cb6ff);
+      box-shadow:0 12px 28px rgba(20,121,255,.28);
+      letter-spacing:.5px;
+    }
+
+    .brand h1{font-size:1.05rem; margin:0; line-height:1.15}
+    .brand p{font-size:.78rem; margin:4px 0 0; color:var(--muted)}
+
+    .nav{display:grid; gap:10px; margin-top:6px}
+    .nav button{
+      width:100%;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:14px 14px;
+      border-radius:17px;
+      color:var(--text);
+      background:transparent;
+      font-weight:700;
+      text-align:left;
+      transition:.18s ease;
+    }
+
+    .nav button:hover{background:var(--panel-soft); transform:translateX(2px)}
+    .nav button.active{background:linear-gradient(135deg, #e7f1ff, #ffffff); color:var(--primary-dark); box-shadow:0 10px 22px rgba(20,121,255,.08)}
+    .nav span.icon{font-size:1.2rem; width:24px; text-align:center}
+
+    .side-note{
+      position:absolute;
+      left:18px;
+      right:18px;
+      bottom:18px;
+      padding:14px;
+      border-radius:18px;
+      background:#f7fbff;
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:.78rem;
+      line-height:1.35;
+    }
+
+    .main{
+      min-width:0;
+      padding:24px clamp(16px, 3vw, 40px) 40px;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:10;
+      display:grid;
+      grid-template-columns:auto minmax(0, 1fr) auto;
+      gap:14px;
+      align-items:center;
+      padding:12px 0 18px;
+      background:linear-gradient(180deg, rgba(244,248,255,.95), rgba(244,248,255,.72), transparent);
+      backdrop-filter:blur(8px);
+    }
+
+    .hamburger{
+      display:none;
+      width:46px;
+      height:46px;
+      border-radius:15px;
+      background:white;
+      box-shadow:var(--shadow);
+      color:var(--primary);
+      font-size:1.45rem;
+      font-weight:900;
+    }
+
+    .search-wrap{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:58px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:0 16px;
+      background:rgba(255,255,255,.95);
+      box-shadow:0 14px 32px rgba(20,33,61,.08);
+    }
+
+    .search-wrap .glass{font-size:1.25rem; color:var(--primary)}
+    .search-wrap input{
+      width:100%;
+      min-width:0;
+      border:0;
+      outline:0;
+      background:transparent;
+      color:var(--text);
+      font-size:1rem;
+      font-weight:650;
+    }
+    .search-wrap input::placeholder{color:#94a3b8; font-weight:550}
+
+    .counter-pill{
+      white-space:nowrap;
+      padding:13px 15px;
+      border-radius:18px;
+      background:white;
+      border:1px solid var(--line);
+      color:var(--muted);
+      box-shadow:0 12px 26px rgba(20,33,61,.06);
+      font-weight:800;
+      font-size:.84rem;
+    }
+
+    .view{display:none; animation:fade .18s ease}
+    .view.active{display:block}
+    @keyframes fade{from{opacity:.35; transform:translateY(5px)} to{opacity:1; transform:none}}
+
+    .hero{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) minmax(290px, .56fr);
+      gap:18px;
+      margin-top:6px;
+    }
+
+    .card, .selected-box, .form-card, .empty, .modal-card{
+      background:rgba(255,255,255,.94);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+
+    .section-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin:14px 0 14px;
+    }
+
+    .section-head h2{font-size:1.1rem; margin:0 0 4px}
+    .section-head p{margin:0; color:var(--muted); font-size:.88rem; line-height:1.4}
+
+    .filters{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .chip{
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:white;
+      color:var(--muted);
+      font-weight:800;
+      font-size:.82rem;
+      transition:.15s ease;
+    }
+    .chip.active, .chip:hover{background:#e7f1ff; color:var(--primary-dark); border-color:#bad7ff}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:14px;
+    }
+
+    .response-card{
+      padding:16px;
+      transition:.18s ease;
+      overflow:hidden;
+    }
+
+    .response-card:hover{transform:translateY(-2px); box-shadow:0 20px 44px rgba(20,33,61,.12)}
+
+    .response-card h3{
+      margin:0 0 10px;
+      line-height:1.2;
+      font-size:1rem;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .shortcut{
+      display:inline-flex;
+      align-items:center;
+      max-width:100%;
+      padding:7px 10px;
+      border-radius:999px;
+      background:#f0f7ff;
+      color:var(--primary-dark);
+      font-weight:900;
+      font-size:.78rem;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+
+    .cat{
+      color:#8a94a6;
+      font-size:.76rem;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      margin-bottom:10px;
+    }
+
+    .preview{
+      color:#334155;
+      font-size:.9rem;
+      line-height:1.45;
+      display:-webkit-box;
+      -webkit-line-clamp:4;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height:78px;
+      white-space:pre-line;
+    }
+
+    .card-actions{
+      display:flex;
+      gap:9px;
+      flex-wrap:wrap;
+      margin-top:15px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:12px 15px;
+      border-radius:15px;
+      font-weight:900;
+      transition:.16s ease;
+      text-decoration:none;
+      user-select:none;
+      min-height:44px;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:linear-gradient(135deg, var(--primary), #58a8ff); color:white; box-shadow:0 13px 25px rgba(20,121,255,.22)}
+    .btn.green{background:linear-gradient(135deg, var(--green), #35d499); color:white; box-shadow:0 13px 25px rgba(19,168,107,.19)}
+    .btn.ghost{background:#f1f7ff; color:var(--primary-dark); border:1px solid #cfe3ff}
+    .btn.red{background:#fff0f2; color:var(--red); border:1px solid #ffd2d7}
+    .btn.amber{background:#fff7e7; color:#a66300; border:1px solid #ffe3a7}
+    .btn.full{width:100%}
+    .btn.small{padding:9px 12px; border-radius:13px; min-height:38px; font-size:.82rem}
+
+    .selected-box{
+      position:sticky;
+      top:104px;
+      padding:18px;
+      overflow:hidden;
+    }
+
+    .selected-box h2{margin:0 0 8px; font-size:1.05rem}
+    .selected-box .hint{color:var(--muted); font-size:.88rem; margin:0 0 15px; line-height:1.4}
+
+    .message-preview{
+      border:1px solid #dbeafe;
+      background:#f8fbff;
+      border-radius:18px;
+      padding:15px;
+      color:#1f2937;
+      line-height:1.5;
+      max-height:330px;
+      overflow:auto;
+      white-space:pre-wrap;
+      word-break:break-word;
+      font-size:.94rem;
+    }
+
+
+    .image-mini-strip,
+    .selected-images,
+    .form-images-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .image-mini,
+    .selected-image,
+    .form-image{
+      position:relative;
+      width:64px;
+      height:64px;
+      border-radius:14px;
+      overflow:hidden;
+      background:#eef5ff;
+      border:1px solid #dbeafe;
+      box-shadow:0 8px 18px rgba(20,33,61,.08);
+    }
+
+    .selected-image{width:82px; height:82px}
+    .form-image{width:92px; height:92px}
+
+    .image-mini img,
+    .selected-image img,
+    .form-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .image-count-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:10px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:#f0f7ff;
+      color:var(--primary-dark);
+      border:1px solid #d8eaff;
+      font-size:.78rem;
+      font-weight:900;
+    }
+
+    .remove-image-btn{
+      position:absolute;
+      top:5px;
+      right:5px;
+      width:24px;
+      height:24px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      background:rgba(230,57,70,.92);
+      color:white;
+      font-weight:900;
+      font-size:.86rem;
+      box-shadow:0 6px 12px rgba(230,57,70,.25);
+    }
+
+    .image-upload-box{
+      border:1px dashed #bad7ff;
+      border-radius:18px;
+      background:#f8fbff;
+      padding:13px;
+    }
+
+    .image-upload-box input{background:white}
+
+    .selected-actions{display:grid; gap:10px; margin-top:14px}
+    .selected-admin-actions{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px}
+    .selected-admin-actions .btn:disabled, .selected-actions .btn:disabled{opacity:.48; cursor:not-allowed; transform:none}
+
+    .tags-panel{
+      display:none;
+      margin-top:10px;
+      padding:11px;
+      border-radius:15px;
+      background:#f8fbff;
+      border:1px dashed #bad7ff;
+      color:var(--muted);
+      font-size:.82rem;
+      line-height:1.35;
+    }
+    .tags-panel.show{display:block}
+    .tags-list{display:flex; flex-wrap:wrap; gap:7px; margin-top:8px}
+    .tag-pill{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 9px;
+      border-radius:999px;
+      background:#eef6ff;
+      color:var(--primary-dark);
+      border:1px solid #d8eaff;
+      font-weight:850;
+      font-size:.78rem;
+    }
+
+    .quick-tip{
+      margin-top:14px;
+      padding:12px;
+      border-radius:16px;
+      background:#fffdf5;
+      border:1px solid #fde7aa;
+      color:#7a4c00;
+      font-size:.82rem;
+      line-height:1.35;
+    }
+
+    .empty{
+      padding:26px;
+      text-align:center;
+      color:var(--muted);
+      display:none;
+    }
+    .empty.show{display:block}
+    .empty strong{display:block; color:var(--text); margin-bottom:8px}
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:13px;
+    }
+
+    .form-card{padding:18px; margin-bottom:16px}
+    .form-card h2{font-size:1.05rem; margin:0 0 8px}
+    .form-card p{margin:0 0 14px; color:var(--muted); font-size:.9rem; line-height:1.4}
+
+    label{
+      display:block;
+      font-size:.82rem;
+      font-weight:900;
+      color:#334155;
+      margin:0 0 7px;
+    }
+
+    input, textarea, select{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:15px;
+      background:#fbfdff;
+      color:var(--text);
+      outline:0;
+      padding:13px 14px;
+      transition:.15s ease;
+    }
+    textarea{resize:vertical; min-height:150px; line-height:1.45}
+    input:focus, textarea:focus, select:focus{border-color:#94c5ff; box-shadow:0 0 0 4px rgba(20,121,255,.11); background:white}
+
+    .field{margin-bottom:13px}
+    .field.span-2{grid-column:1/-1}
+
+    .lock-panel{
+      max-width:680px;
+      margin:auto;
+      padding:22px;
+      border-radius:24px;
+      background:white;
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+
+    .trust-row{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      margin:12px 0 15px;
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.35;
+    }
+    .trust-row input{width:auto; margin-top:2px; accent-color:var(--primary)}
+
+    .admin-list{display:grid; gap:10px}
+    .admin-row{
+      padding:13px;
+      border:1px solid var(--line);
+      border-radius:17px;
+      background:#fbfdff;
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) auto;
+      gap:12px;
+      align-items:center;
+    }
+    .admin-row strong{display:block; margin-bottom:4px}
+    .admin-row small{color:var(--muted); font-weight:750}
+    .admin-row .actions{display:flex; gap:7px; flex-wrap:wrap; justify-content:flex-end}
+
+    .notice{
+      padding:12px 14px;
+      border-radius:16px;
+      background:#f0f7ff;
+      border:1px solid #cfe3ff;
+      color:#24568f;
+      line-height:1.4;
+      font-size:.88rem;
+      margin-bottom:14px;
+    }
+    .notice.warning{background:#fff7e7; border-color:#ffe3a7; color:#8a5900}
+
+    .settings-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:16px;
+    }
+
+    .span-full{grid-column:1/-1}
+    .sync-panel{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:14px;
+      align-items:start;
+    }
+    .sync-status{
+      display:grid;
+      gap:9px;
+      padding:13px;
+      border-radius:17px;
+      background:#f8fbff;
+      border:1px solid var(--line);
+      color:#334155;
+      font-size:.88rem;
+      line-height:1.35;
+    }
+    .status-line{display:flex; gap:8px; align-items:flex-start}
+    .status-dot{width:11px; height:11px; border-radius:99px; background:#94a3b8; flex:0 0 auto; margin-top:4px}
+    .status-dot.ok{background:var(--green)}
+    .status-dot.warn{background:var(--amber)}
+    .status-dot.bad{background:var(--red)}
+    .mini-text{font-size:.78rem; color:var(--muted); line-height:1.35}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.82rem}
+    .inline-check{display:flex; gap:9px; align-items:flex-start; color:var(--muted); font-weight:750; font-size:.86rem; line-height:1.35}
+    .inline-check input{width:auto; margin-top:2px; accent-color:var(--primary)}
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translateX(-50%) translateY(20px);
+      opacity:0;
+      pointer-events:none;
+      max-width:min(92vw, 520px);
+      padding:13px 16px;
+      border-radius:16px;
+      background:#14213d;
+      color:white;
+      box-shadow:0 18px 38px rgba(20,33,61,.28);
+      z-index:100;
+      font-weight:800;
+      transition:.2s ease;
+      text-align:center;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+    .overlay{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.42);
+      z-index:18;
+    }
+    .overlay.show{display:block}
+
+    @media(max-width:980px){
+      .app{grid-template-columns:1fr}
+      .sidebar{
+        position:fixed;
+        inset:0 auto 0 0;
+        width:min(86vw, 310px);
+        transform:translateX(-105%);
+        transition:.22s ease;
+      }
+      .sidebar.show{transform:none}
+      .hamburger{display:block}
+      .hero{grid-template-columns:1fr}
+      .selected-box{position:relative; top:0}
+      .grid{grid-template-columns:1fr}
+      .topbar{grid-template-columns:auto 1fr; gap:10px}
+      .counter-pill{grid-column:1/-1; justify-self:start}
+    }
+
+    @media(max-width:640px){
+      .main{padding:14px 12px 30px}
+      .topbar{padding-top:7px}
+      .search-wrap{min-height:54px; border-radius:19px; padding:0 12px}
+      .search-wrap input{font-size:.92rem}
+      .form-grid, .settings-grid, .sync-panel{grid-template-columns:1fr}
+      .field.span-2{grid-column:auto}
+      .admin-row{grid-template-columns:1fr}
+      .admin-row .actions{justify-content:flex-start}
+      .btn{width:100%}
+      .card-actions .btn{width:auto; flex:1 1 150px}
+      .selected-admin-actions{grid-template-columns:1fr}
+      .side-note{position:static; margin-top:20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-badge">QR</div>
+        <div>
+          <h1>Respuestas Rápidas</h1>
+          <p>Atajos, copiar y compartir</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="active" data-view="responsesView"><span class="icon">💬</span> Respuestas</button>
+        <button data-view="adminView"><span class="icon">➕</span> Agregar / Editar</button>
+        <button data-view="settingsView"><span class="icon">🛡️</span> Nube / Seguridad / Backup</button>
+      </nav>
+
+      <div class="side-note">
+        <strong>Seguro para HTML estático:</strong><br>
+        el token no va escrito en el archivo. GitHub se configura desde el dispositivo y puede sincronizar con CatalogosHN.
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <button class="hamburger" id="menuBtn" title="Abrir menú">☰</button>
+        <div class="search-wrap">
+          <span class="glass">🔎</span>
+          <input id="searchInput" type="search" placeholder="Escribe /productolista, productolista, producto, precio, cliente..." autocomplete="off" />
+        </div>
+        <div class="counter-pill" id="counterPill">0 respuestas</div>
+      </div>
+
+      <section id="responsesView" class="view active">
+        <div class="hero">
+          <div>
+            <div class="section-head">
+              <div>
+                <h2>Buscar respuesta guardada</h2>
+                <p>Escribe el atajo como WhatsApp, con o sin “/”. También puedes buscar por título, etiqueta o texto.</p>
+              </div>
+            </div>
+
+            <div class="filters" id="categoryFilters"></div>
+            <div class="grid" id="responsesGrid"></div>
+            <div class="empty" id="emptyBox">
+              <strong>No encontré ninguna respuesta.</strong>
+              Prueba otra palabra, revisa el atajo o agrega una nueva desde el menú.
+            </div>
+          </div>
+
+          <aside class="selected-box">
+            <h2 id="selectedTitle">Respuesta seleccionada</h2>
+            <p class="hint" id="selectedHint">Selecciona una respuesta para copiarla o compartirla por WhatsApp, Messenger u otra app instalada.</p>
+            <div class="message-preview" id="selectedMessage">Aquí aparecerá el mensaje completo.</div>
+            <div class="selected-images" id="selectedImages"></div>
+            <div class="tags-panel" id="selectedTagsPanel"></div>
+            <div class="selected-actions">
+              <button class="btn ghost" id="selectedTagsBtn" disabled>🏷️ Ver etiquetas</button>
+              <button class="btn primary" id="copyBtn">📋 Copiar mensaje</button>
+              <button class="btn green" id="shareBtn">📲 Enviar / compartir</button>
+            </div>
+            <div class="selected-admin-actions">
+              <button class="btn ghost" id="editSelectedBtn" disabled>✏️ Editar</button>
+              <button class="btn red" id="deleteSelectedBtn" disabled>🗑️ Eliminar</button>
+            </div>
+            <div class="quick-tip">
+              Consejo: en celulares Android, el botón compartir abre el menú de apps instaladas cuando el navegador lo permite.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="adminView" class="view">
+        <div id="lockedAdmin" class="lock-panel">
+          <h2>Área protegida con token</h2>
+          <p style="color:var(--muted);line-height:1.45">Para agregar, editar o borrar respuestas debes desbloquear esta sección. Si es la primera vez, crea tu token privado.</p>
+          <div class="notice warning" id="firstTokenNotice" style="display:none">
+            Primer uso detectado: escribe un token nuevo. No se guarda el texto del token, solo una huella segura en este dispositivo.
+          </div>
+          <div class="field">
+            <label for="tokenInput">Token privado</label>
+            <input id="tokenInput" type="password" placeholder="Escribe tu token" autocomplete="current-password" />
+          </div>
+          <label class="trust-row">
+            <input id="trustDevice" type="checkbox" />
+            <span>Marcar este como dispositivo de confianza para no pedir token cada vez. Úsalo solo en tu celular o PC personal.</span>
+          </label>
+          <button class="btn primary full" id="unlockBtn">🔓 Desbloquear / Crear token</button>
+        </div>
+
+        <div id="adminContent" style="display:none">
+          <div class="form-card">
+            <h2 id="formTitle">Agregar respuesta rápida</h2>
+            <p>Usa un atajo corto. Ejemplo: <strong>productolista</strong>. El buscador aceptará <strong>/productolista</strong> o <strong>productolista</strong>.</p>
+            <form id="responseForm">
+              <input type="hidden" id="editId" />
+              <div class="form-grid">
+                <div class="field">
+                  <label for="titleInput">Título visible</label>
+                  <input id="titleInput" required placeholder="Ej: Lista de productos disponibles" />
+                </div>
+                <div class="field">
+                  <label for="shortcutInput">Atajo / palabra clave</label>
+                  <input id="shortcutInput" required placeholder="Ej: productolista" />
+                </div>
+                <div class="field">
+                  <label for="categoryInput">Categoría</label>
+                  <input id="categoryInput" placeholder="Ej: Productos, Envíos, Garantía" />
+                </div>
+                <div class="field">
+                  <label for="tagsInput">Etiquetas separadas por coma</label>
+                  <input id="tagsInput" placeholder="Ej: catálogo, cliente, venta" />
+                </div>
+                <div class="field span-2">
+                  <label for="messageInput">Mensaje completo opcional</label>
+                  <textarea id="messageInput" placeholder="Escribe aquí la respuesta rápida que quieres copiar o compartir. Si solo quieres enviar fotos, puedes dejar este campo vacío."></textarea>
+                </div>
+                <div class="field span-2">
+                  <label for="imageInput">Fotos adjuntas</label>
+                  <div class="image-upload-box">
+                    <input id="imageInput" type="file" accept="image/*" multiple />
+                    <div class="mini-text" style="margin-top:8px">Puedes seleccionar varias fotos. La herramienta no pone límite; el límite real depende del navegador, memoria del dispositivo, app destino y tamaño permitido por GitHub si sincronizas en nube.</div>
+                    <div class="form-images-grid" id="formImagesGrid"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-actions">
+                <button class="btn primary" type="submit">💾 Guardar respuesta</button>
+                <button class="btn red" type="button" id="deleteEditingBtn" style="display:none">🗑️ Eliminar esta respuesta</button>
+                <button class="btn ghost" type="button" id="clearFormBtn">🧹 Limpiar</button>
+                <button class="btn amber" type="button" id="lockBtn">🔒 Bloquear admin</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="form-card">
+            <div class="section-head">
+              <div>
+                <h2>Respuestas guardadas</h2>
+                <p>Edita o elimina las respuestas existentes. Puedes cambiar título, atajo, categoría, etiquetas y mensaje completo.</p>
+              </div>
+            </div>
+            <div class="admin-list" id="adminList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="settingsView" class="view">
+        <div class="settings-grid">
+          <div class="form-card span-full">
+            <h2>Sincronización con GitHub / CatalogosHN</h2>
+            <p>Esta parte es la que actualiza las respuestas en la nube. Primero presiona <strong>Cargar nube</strong>; después puedes guardar localmente y usar <strong>Subir cambios</strong>.</p>
+
+            <div class="sync-panel">
+              <div>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="ghOwnerInput">Owner / cuenta GitHub</label>
+                    <input id="ghOwnerInput" placeholder="CatalogosHN" />
+                  </div>
+                  <div class="field">
+                    <label for="ghRepoInput">Repositorio</label>
+                    <input id="ghRepoInput" placeholder="xrspfast" />
+                  </div>
+                  <div class="field">
+                    <label for="ghBranchInput">Branch</label>
+                    <input id="ghBranchInput" placeholder="main" />
+                  </div>
+                  <div class="field">
+                    <label for="ghPathInput">Ruta JSON en el repo</label>
+                    <input id="ghPathInput" placeholder="data/respuestas_rapidas.json" />
+                  </div>
+                  <div class="field span-2">
+                    <label for="ghTokenInput">GitHub token privado</label>
+                    <input id="ghTokenInput" type="password" placeholder="Pega tu token fine-grained con permiso Contents Read/Write" autocomplete="off" />
+                    <div class="mini-text" id="ghTokenHint">El token no se escribe dentro del HTML. Solo queda en esta sesión o en este dispositivo si marcas confianza.</div>
+                  </div>
+                </div>
+
+                <label class="inline-check" style="margin-bottom:10px">
+                  <input id="ghTrustToken" type="checkbox" />
+                  <span>Guardar GitHub token solo en este dispositivo de confianza.</span>
+                </label>
+                <label class="inline-check" style="margin-bottom:12px">
+                  <input id="ghAutoSync" type="checkbox" />
+                  <span>Auto-subir después de guardar respuestas, solo después de haber cargado nube.</span>
+                </label>
+
+                <div class="card-actions">
+                  <button class="btn ghost" type="button" id="saveGhConfigBtn">💾 Guardar config</button>
+                  <button class="btn primary" type="button" id="loadCloudBtn">☁️ Cargar nube</button>
+                  <button class="btn green" type="button" id="uploadCloudBtn">⬆️ Subir cambios</button>
+                  <button class="btn red" type="button" id="forgetGhTokenBtn">🚫 Borrar token GitHub</button>
+                </div>
+              </div>
+
+              <div class="sync-status">
+                <div class="status-line"><span class="status-dot warn" id="cloudDot"></span><div><strong id="cloudStatusTitle">Nube no cargada</strong><br><span id="cloudStatusText">Configura el repo y presiona Cargar nube antes de editar en varios dispositivos.</span></div></div>
+                <div><strong>Destino:</strong><br><span class="mono" id="cloudTargetText">CatalogosHN/xrspfast · data/respuestas_rapidas.json</span></div>
+                <div><strong>Última acción:</strong><br><span id="cloudLastAction">Sin actividad todavía.</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <h2>Exportar copia</h2>
+            <p>Descarga tus respuestas en un archivo JSON para guardarlas o pasarlas a otro dispositivo.</p>
+            <button class="btn primary full" id="exportBtn">⬇️ Exportar respuestas</button>
+          </div>
+
+          <div class="form-card">
+            <h2>Importar copia</h2>
+            <p>Sube un JSON exportado desde esta misma herramienta. Esto no cambia tu token.</p>
+            <input type="file" id="importFile" accept="application/json,.json" />
+            <button class="btn green full" id="importBtn" style="margin-top:12px">⬆️ Importar respuestas</button>
+          </div>
+
+          <div class="form-card">
+            <h2>Cambiar token</h2>
+            <p>Necesitas tener admin desbloqueado. El nuevo token solo se guarda como huella segura.</p>
+            <div class="field">
+              <label for="newTokenInput">Nuevo token</label>
+              <input id="newTokenInput" type="password" placeholder="Escribe nuevo token" />
+            </div>
+            <button class="btn amber full" id="changeTokenBtn">🔐 Cambiar token</button>
+          </div>
+
+          <div class="form-card">
+            <h2>Dispositivo de confianza</h2>
+            <p>Quita el permiso automático de este dispositivo. Luego pedirá token nuevamente.</p>
+            <button class="btn red full" id="forgetTrustBtn">🚫 Olvidar confianza</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'respuestas_rapidas_data_v1';
+    const TOKEN_HASH_KEY = 'respuestas_rapidas_token_hash_v1';
+    const TRUST_KEY = 'respuestas_rapidas_trusted_device_v1';
+    const UNLOCK_SESSION = 'respuestas_rapidas_unlocked_session_v1';
+    const GITHUB_CONFIG_KEY = 'respuestas_rapidas_github_config_v1';
+    const GITHUB_TOKEN_KEY = 'respuestas_rapidas_github_token_v1';
+    const GITHUB_SESSION_TOKEN_KEY = 'respuestas_rapidas_github_session_token_v1';
+
+    const defaultGithubConfig = {
+      owner: 'CatalogosHN',
+      repo: 'xrspfast',
+      branch: 'main',
+      path: 'data/respuestas_rapidas.json',
+      autoSync: false
+    };
+
+    const defaultResponses = [
+      {
+        id: crypto.randomUUID(),
+        title: 'Lista de productos',
+        shortcut: 'productolista',
+        category: 'Productos',
+        tags: ['catalogo', 'lista', 'venta'],
+        message: 'Hola 👋\n\nTe comparto la lista de productos disponibles.\n\nPuedes revisar opciones, precios y disponibilidad. Si te interesa alguno, me mandas captura o el nombre del producto y te confirmo detalles. ✅'
+      },
+      {
+        id: crypto.randomUUID(),
+        title: 'Información de envío',
+        shortcut: 'envio',
+        category: 'Envíos',
+        tags: ['delivery', 'entrega', 'moto'],
+        message: 'Claro ✅\n\nRealizamos envío por delivery según la zona. El costo puede variar dependiendo de la ubicación exacta.\n\nEnvíame tu colonia o ubicación de referencia para confirmarte el costo.'
+      },
+      {
+        id: crypto.randomUUID(),
+        title: 'Producto disponible',
+        shortcut: 'disponible',
+        category: 'Ventas',
+        tags: ['stock', 'cliente', 'producto'],
+        message: 'Sí, está disponible ✅\n\nPuedes reservarlo coordinando el envío o entrega. Para confirmar, necesito tu nombre, dirección y número de contacto.'
+      }
+    ];
+
+    let responses = loadResponses();
+    let selectedResponse = null;
+    let currentCategory = 'Todos';
+    let isAdminUnlocked = sessionStorage.getItem(UNLOCK_SESSION) === 'true' || localStorage.getItem(TRUST_KEY) === 'true';
+    let githubConfig = loadGithubConfig();
+    let cloudLoaded = false;
+    let cloudSha = null;
+    let pendingUploadTimer = null;
+    let formImages = [];
+
+    const $ = (id) => document.getElementById(id);
+    const sidebar = $('sidebar');
+    const overlay = $('overlay');
+    const searchInput = $('searchInput');
+    const responsesGrid = $('responsesGrid');
+    const emptyBox = $('emptyBox');
+    const counterPill = $('counterPill');
+    const selectedTitle = $('selectedTitle');
+    const selectedHint = $('selectedHint');
+    const selectedMessage = $('selectedMessage');
+    const selectedImages = $('selectedImages');
+    const selectedTagsPanel = $('selectedTagsPanel');
+    const selectedTagsBtn = $('selectedTagsBtn');
+    const categoryFilters = $('categoryFilters');
+
+    init();
+
+    function init(){
+      loadGithubConfigToForm();
+      renderAll();
+      bindEvents();
+      applyAdminState();
+      renderCloudStatus();
+      renderFormImages();
+      $('firstTokenNotice').style.display = hasToken() ? 'none' : 'block';
+    }
+
+    function bindEvents(){
+      $('menuBtn').addEventListener('click', openMenu);
+      overlay.addEventListener('click', closeMenu);
+
+      document.querySelectorAll('.nav button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          switchView(btn.dataset.view);
+          closeMenu();
+        });
+      });
+
+      searchInput.addEventListener('input', renderResponses);
+      $('copyBtn').addEventListener('click', copySelected);
+      $('shareBtn').addEventListener('click', shareSelected);
+      $('selectedTagsBtn').addEventListener('click', toggleSelectedTags);
+      $('editSelectedBtn').addEventListener('click', editSelectedResponse);
+      $('deleteSelectedBtn').addEventListener('click', deleteSelectedResponse);
+      $('unlockBtn').addEventListener('click', handleUnlock);
+      $('responseForm').addEventListener('submit', saveResponse);
+      $('imageInput').addEventListener('change', handleImageInput);
+      $('deleteEditingBtn').addEventListener('click', deleteEditingResponse);
+      $('clearFormBtn').addEventListener('click', clearForm);
+      $('lockBtn').addEventListener('click', lockAdmin);
+      $('exportBtn').addEventListener('click', exportResponses);
+      $('importBtn').addEventListener('click', importResponses);
+      $('changeTokenBtn').addEventListener('click', changeToken);
+      $('forgetTrustBtn').addEventListener('click', forgetTrustedDevice);
+      $('saveGhConfigBtn').addEventListener('click', saveGithubConfigFromForm);
+      $('loadCloudBtn').addEventListener('click', loadCloudResponses);
+      $('uploadCloudBtn').addEventListener('click', () => uploadCloudResponses(false));
+      $('forgetGhTokenBtn').addEventListener('click', forgetGithubToken);
+    }
+
+    function openMenu(){
+      sidebar.classList.add('show');
+      overlay.classList.add('show');
+    }
+
+    function closeMenu(){
+      sidebar.classList.remove('show');
+      overlay.classList.remove('show');
+    }
+
+    function switchView(viewId){
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.view === viewId));
+      $(viewId).classList.add('active');
+      if(viewId === 'adminView') applyAdminState();
+    }
+
+    function loadResponses(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultResponses));
+        return [...defaultResponses];
+      }
+      try{
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      }catch{
+        return [];
+      }
+    }
+
+    function saveToStorage(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
+      scheduleAutoCloudUpload();
+    }
+
+    function normalizeShortcut(value){
+      return (value || '')
+        .trim()
+        .replace(/^[/#\\]+/, '')
+        .replace(/\s+/g, '')
+        .toLowerCase();
+    }
+
+    function normalizeSearch(value){
+      return (value || '')
+        .trim()
+        .replace(/^[/#\\]+/, '')
+        .toLowerCase();
+    }
+
+    function getCategories(){
+      const set = new Set(['Todos']);
+      responses.forEach(r => set.add(r.category || 'General'));
+      return [...set];
+    }
+
+    function renderAll(){
+      renderCategories();
+      renderResponses();
+      renderAdminList();
+    }
+
+    function renderCategories(){
+      categoryFilters.innerHTML = '';
+      getCategories().forEach(cat => {
+        const chip = document.createElement('button');
+        chip.className = 'chip' + (cat === currentCategory ? ' active' : '');
+        chip.textContent = cat;
+        chip.addEventListener('click', () => {
+          currentCategory = cat;
+          renderCategories();
+          renderResponses();
+        });
+        categoryFilters.appendChild(chip);
+      });
+    }
+
+    function filterResponses(){
+      const qRaw = searchInput.value || '';
+      const q = normalizeSearch(qRaw);
+      return responses.filter(r => {
+        const catMatch = currentCategory === 'Todos' || (r.category || 'General') === currentCategory;
+        if(!catMatch) return false;
+        if(!q) return true;
+        const shortcut = normalizeShortcut(r.shortcut);
+        const tags = Array.isArray(r.tags) ? r.tags.join(' ') : '';
+        const haystack = [r.title, r.shortcut, r.category, tags, r.message].join(' ').toLowerCase();
+        return shortcut === q || shortcut.includes(q) || haystack.includes(q);
+      }).sort((a, b) => {
+        const q = normalizeSearch(searchInput.value || '');
+        const aExact = normalizeShortcut(a.shortcut) === q ? 0 : 1;
+        const bExact = normalizeShortcut(b.shortcut) === q ? 0 : 1;
+        return aExact - bExact || (a.title || '').localeCompare(b.title || '');
+      });
+    }
+
+    function renderResponses(){
+      const list = filterResponses();
+      responsesGrid.innerHTML = '';
+      counterPill.textContent = `${list.length} de ${responses.length} respuestas`;
+      emptyBox.classList.toggle('show', list.length === 0);
+
+      list.forEach(r => {
+        const card = document.createElement('article');
+        card.className = 'card response-card';
+        card.innerHTML = `
+          <h3><span>${escapeHtml(r.title || 'Sin título')}</span></h3>
+          <div class="cat">${escapeHtml(r.category || 'General')}</div>
+          <div class="shortcut">/${escapeHtml(normalizeShortcut(r.shortcut))}</div>
+          <div class="preview">${escapeHtml(r.message || (getImages(r).length ? 'Esta respuesta no tiene texto, solo fotos adjuntas.' : ''))}</div>
+          ${renderCardImagesHtml(r)}
+          <div class="card-actions">
+            <button class="btn primary small" data-action="select">📲 Enviar</button>
+            <button class="btn ghost small" data-action="copy">📋 Copiar</button>
+            <button class="btn ghost small" data-action="tags">🏷️ Ver etiquetas</button>
+            <button class="btn ghost small" data-action="edit">✏️ Editar</button>
+            <button class="btn red small" data-action="delete">🗑️</button>
+          </div>
+          <div class="tags-panel" data-tags-panel>${renderTagsHtml(r)}</div>
+        `;
+        card.querySelector('[data-action="select"]').addEventListener('click', () => shareResponseDirect(r));
+        card.querySelector('[data-action="copy"]').addEventListener('click', () => copyText(r.message || ''));
+        card.querySelector('[data-action="tags"]').addEventListener('click', () => toggleCardTags(card, r));
+        card.querySelector('[data-action="edit"]').addEventListener('click', () => editResponseFromCard(r));
+        card.querySelector('[data-action="delete"]').addEventListener('click', () => deleteResponseFromCard(r));
+        card.addEventListener('dblclick', () => selectResponse(r));
+        responsesGrid.appendChild(card);
+      });
+    }
+
+    function selectResponse(r, notify = true){
+      selectedResponse = r;
+      selectedTitle.textContent = r.title || 'Respuesta seleccionada';
+      selectedHint.innerHTML = `Atajo: <strong>/${escapeHtml(normalizeShortcut(r.shortcut))}</strong> · Categoría: <strong>${escapeHtml(r.category || 'General')}</strong>`;
+      selectedMessage.textContent = r.message || (getImages(r).length ? 'Esta respuesta no tiene texto. Solo contiene fotos adjuntas.' : '');
+      renderSelectedImages(r);
+      selectedTagsPanel.innerHTML = renderTagsHtml(r);
+      selectedTagsPanel.classList.remove('show');
+      selectedTagsBtn.textContent = '🏷️ Ver etiquetas';
+      selectedTagsBtn.disabled = false;
+      $('editSelectedBtn').disabled = false;
+      $('deleteSelectedBtn').disabled = false;
+      if(notify) toast('Respuesta seleccionada');
+    }
+
+    function getTags(r){
+      return Array.isArray(r.tags) ? r.tags.map(t => String(t).trim()).filter(Boolean) : [];
+    }
+
+    function renderTagsHtml(r){
+      const tags = getTags(r);
+      if(!tags.length) return '<strong>Etiquetas:</strong> Esta respuesta no tiene etiquetas guardadas.';
+      return `<strong>Etiquetas:</strong><div class="tags-list">${tags.map(t => `<span class="tag-pill">${escapeHtml(t)}</span>`).join('')}</div>`;
+    }
+
+    function toggleSelectedTags(){
+      if(!selectedResponse) return toast('Selecciona una respuesta primero');
+      selectedTagsPanel.classList.toggle('show');
+      selectedTagsBtn.textContent = selectedTagsPanel.classList.contains('show') ? '🙈 Ocultar etiquetas' : '🏷️ Ver etiquetas';
+    }
+
+    function toggleCardTags(card, r){
+      const panel = card.querySelector('[data-tags-panel]');
+      const btn = card.querySelector('[data-action="tags"]');
+      panel.innerHTML = renderTagsHtml(r);
+      panel.classList.toggle('show');
+      btn.textContent = panel.classList.contains('show') ? '🙈 Ocultar etiquetas' : '🏷️ Ver etiquetas';
+    }
+
+    async function copySelected(){
+      if(!selectedResponse) return toast('Selecciona una respuesta primero');
+      await copyText(selectedResponse.message || '');
+    }
+
+    async function copyText(text){
+      const cleanText = String(text || '');
+      if(!cleanText.trim()) return toast('Esta respuesta no tiene texto para copiar');
+      try{
+        await navigator.clipboard.writeText(cleanText);
+        toast('Mensaje copiado al portapapeles ✅');
+      }catch{
+        const area = document.createElement('textarea');
+        area.value = cleanText;
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand('copy');
+        area.remove();
+        toast('Mensaje copiado ✅');
+      }
+    }
+
+    async function copyTextSilently(text){
+      const cleanText = String(text || '');
+      if(!cleanText.trim()) return false;
+      try{
+        await navigator.clipboard.writeText(cleanText);
+        return true;
+      }catch{
+        try{
+          const area = document.createElement('textarea');
+          area.value = cleanText;
+          document.body.appendChild(area);
+          area.select();
+          document.execCommand('copy');
+          area.remove();
+          return true;
+        }catch{return false;}
+      }
+    }
+
+    async function shareSelected(){
+      if(!selectedResponse) return toast('Selecciona una respuesta primero');
+      await shareResponse(selectedResponse);
+    }
+
+    async function shareResponseDirect(r){
+      selectResponse(r, false);
+      await shareResponse(r);
+    }
+
+    async function shareResponse(r){
+      const text = String(r.message || '').trim();
+      const images = getImages(r);
+      if(!text && !images.length) return toast('Esta respuesta no tiene texto ni fotos para enviar');
+
+      const copied = text ? await copyTextSilently(text) : false;
+      const files = images.map(dataUrlToFile).filter(Boolean);
+
+      if(navigator.share){
+        try{
+          const shareData = { title: r.title || 'Respuesta rápida' };
+          if(text) shareData.text = text;
+
+          if(files.length){
+            if(navigator.canShare && navigator.canShare({ files })){
+              shareData.files = files;
+              await navigator.share(shareData);
+              toast(text ? 'Texto copiado y fotos listas para enviar ✅' : 'Fotos listas para enviar ✅');
+              return;
+            }
+            if(text){
+              await navigator.share(shareData);
+              toast('Texto compartido. Este navegador/app no permitió adjuntar las fotos.');
+              return;
+            }
+            toast('Este navegador o app no permite compartir fotos como adjuntos desde HTML.');
+            return;
+          }
+
+          await navigator.share(shareData);
+          toast(copied ? 'Texto copiado y listo para compartir ✅' : 'Listo para compartir ✅');
+        }catch(err){
+          if(err && err.name !== 'AbortError') toast(text ? 'No se pudo abrir compartir. El texto ya fue copiado.' : 'No se pudo abrir compartir.');
+        }
+      }else{
+        if(text){
+          const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
+          window.open(wa, '_blank');
+          toast(files.length ? 'Tu navegador no soporta adjuntar fotos desde compartir; el texto fue copiado.' : 'Tu navegador no soporta menú compartir; abrí WhatsApp y copié el mensaje.');
+        }else{
+          toast('Este navegador no soporta compartir fotos como adjuntos desde HTML.');
+        }
+      }
+    }
+
+    function getImages(r){
+      return Array.isArray(r.images) ? r.images.filter(img => img && img.dataUrl) : [];
+    }
+
+    function imageName(img, index = 0){
+      return String(img.name || `foto-${index + 1}.jpg`).replace(/[\\/:*?"<>|]+/g, '-');
+    }
+
+    function renderCardImagesHtml(r){
+      const images = getImages(r);
+      if(!images.length) return '';
+      const thumbs = images.slice(0, 4).map((img, index) => `
+        <div class="image-mini" title="${escapeHtml(imageName(img, index))}">
+          <img src="${escapeHtml(img.dataUrl)}" alt="Foto adjunta ${index + 1}" loading="lazy">
+        </div>
+      `).join('');
+      const extra = images.length > 4 ? `<span class="image-count-pill">+${images.length - 4} más</span>` : '';
+      return `<div class="image-count-pill">🖼️ ${images.length} foto${images.length === 1 ? '' : 's'}</div><div class="image-mini-strip">${thumbs}${extra}</div>`;
+    }
+
+    function renderSelectedImages(r){
+      const images = getImages(r);
+      selectedImages.innerHTML = '';
+      if(!images.length) return;
+      images.forEach((img, index) => {
+        const box = document.createElement('div');
+        box.className = 'selected-image';
+        box.title = imageName(img, index);
+        box.innerHTML = `<img src="${escapeHtml(img.dataUrl)}" alt="Foto adjunta ${index + 1}" loading="lazy">`;
+        selectedImages.appendChild(box);
+      });
+    }
+
+    function renderFormImages(){
+      const grid = $('formImagesGrid');
+      grid.innerHTML = '';
+      if(!formImages.length){
+        const note = document.createElement('div');
+        note.className = 'mini-text';
+        note.textContent = 'Sin fotos adjuntas todavía.';
+        grid.appendChild(note);
+        return;
+      }
+      formImages.forEach((img, index) => {
+        const box = document.createElement('div');
+        box.className = 'form-image';
+        box.title = imageName(img, index);
+        box.innerHTML = `
+          <img src="${escapeHtml(img.dataUrl)}" alt="Foto ${index + 1}" loading="lazy">
+          <button class="remove-image-btn" type="button" title="Quitar foto">×</button>
+        `;
+        box.querySelector('button').addEventListener('click', () => {
+          formImages.splice(index, 1);
+          renderFormImages();
+        });
+        grid.appendChild(box);
+      });
+    }
+
+    function fileToImageObject(file){
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve({
+          id: crypto.randomUUID(),
+          name: file.name || 'foto.jpg',
+          type: file.type || 'image/jpeg',
+          size: file.size || 0,
+          dataUrl: reader.result
+        });
+        reader.onerror = () => reject(new Error('No se pudo leer una imagen'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handleImageInput(event){
+      const files = [...(event.target.files || [])].filter(file => file.type.startsWith('image/'));
+      if(!files.length) return;
+      try{
+        const imgs = await Promise.all(files.map(fileToImageObject));
+        formImages.push(...imgs);
+        renderFormImages();
+        toast(`${imgs.length} foto${imgs.length === 1 ? '' : 's'} agregada${imgs.length === 1 ? '' : 's'} ✅`);
+      }catch(err){
+        toast(err.message || 'No se pudieron cargar las fotos');
+      }finally{
+        event.target.value = '';
+      }
+    }
+
+    function dataUrlToFile(img, index = 0){
+      try{
+        const dataUrl = img.dataUrl || '';
+        const parts = dataUrl.split(',');
+        if(parts.length < 2) return null;
+        const header = parts[0];
+        const mimeMatch = header.match(/data:([^;]+);base64/i);
+        const mime = img.type || (mimeMatch ? mimeMatch[1] : 'image/jpeg');
+        const binary = atob(parts[1]);
+        const bytes = new Uint8Array(binary.length);
+        for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        return new File([bytes], imageName(img, index), { type: mime });
+      }catch{
+        return null;
+      }
+    }
+
+    function loadGithubConfig(){
+      try{
+        return {...defaultGithubConfig, ...(JSON.parse(localStorage.getItem(GITHUB_CONFIG_KEY) || '{}'))};
+      }catch{
+        return {...defaultGithubConfig};
+      }
+    }
+
+    function cleanGithubConfig(raw){
+      return {
+        owner: String(raw.owner || defaultGithubConfig.owner).trim() || defaultGithubConfig.owner,
+        repo: String(raw.repo || defaultGithubConfig.repo).trim() || defaultGithubConfig.repo,
+        branch: String(raw.branch || defaultGithubConfig.branch).trim() || defaultGithubConfig.branch,
+        path: String(raw.path || defaultGithubConfig.path).trim().replace(/^\/+/, '') || defaultGithubConfig.path,
+        autoSync: !!raw.autoSync
+      };
+    }
+
+    function loadGithubConfigToForm(){
+      githubConfig = cleanGithubConfig(githubConfig);
+      $('ghOwnerInput').value = githubConfig.owner;
+      $('ghRepoInput').value = githubConfig.repo;
+      $('ghBranchInput').value = githubConfig.branch;
+      $('ghPathInput').value = githubConfig.path;
+      $('ghAutoSync').checked = !!githubConfig.autoSync;
+      const savedToken = localStorage.getItem(GITHUB_TOKEN_KEY);
+      if(savedToken){
+        $('ghTokenInput').placeholder = 'Token guardado en este dispositivo';
+        $('ghTokenHint').textContent = 'Hay un GitHub token guardado solamente en este navegador/dispositivo.';
+        $('ghTrustToken').checked = true;
+      }
+    }
+
+    function readGithubConfigFromForm(){
+      return cleanGithubConfig({
+        owner: $('ghOwnerInput').value,
+        repo: $('ghRepoInput').value,
+        branch: $('ghBranchInput').value,
+        path: $('ghPathInput').value,
+        autoSync: $('ghAutoSync').checked
+      });
+    }
+
+    function saveGithubConfigFromForm(){
+      githubConfig = readGithubConfigFromForm();
+      localStorage.setItem(GITHUB_CONFIG_KEY, JSON.stringify(githubConfig));
+      saveGithubTokenFromForm();
+      renderCloudStatus('Configuración guardada. Ahora puedes cargar nube o subir cambios.');
+      toast('Configuración GitHub guardada ✅');
+    }
+
+    function getGithubToken(){
+      return $('ghTokenInput').value.trim()
+        || sessionStorage.getItem(GITHUB_SESSION_TOKEN_KEY)
+        || localStorage.getItem(GITHUB_TOKEN_KEY)
+        || '';
+    }
+
+    function saveGithubTokenFromForm(){
+      const token = $('ghTokenInput').value.trim();
+      if(!token) return;
+      if($('ghTrustToken').checked){
+        localStorage.setItem(GITHUB_TOKEN_KEY, token);
+        sessionStorage.removeItem(GITHUB_SESSION_TOKEN_KEY);
+        $('ghTokenInput').value = '';
+        $('ghTokenInput').placeholder = 'Token guardado en este dispositivo';
+        $('ghTokenHint').textContent = 'Hay un GitHub token guardado solamente en este navegador/dispositivo.';
+      }else{
+        sessionStorage.setItem(GITHUB_SESSION_TOKEN_KEY, token);
+        $('ghTokenInput').value = '';
+        $('ghTokenInput').placeholder = 'Token guardado solo durante esta pestaña';
+        $('ghTokenHint').textContent = 'El GitHub token se usará solo mientras esta pestaña esté abierta.';
+      }
+    }
+
+    function githubApiUrl(config = githubConfig){
+      return `https://api.github.com/repos/${encodeURIComponent(config.owner)}/${encodeURIComponent(config.repo)}/contents/${config.path.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(config.branch)}`;
+    }
+
+    function githubContentUrl(config = githubConfig){
+      return `https://api.github.com/repos/${encodeURIComponent(config.owner)}/${encodeURIComponent(config.repo)}/contents/${config.path.split('/').map(encodeURIComponent).join('/')}`;
+    }
+
+    function githubHeaders(token){
+      return {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': `Bearer ${token}`,
+        'X-GitHub-Api-Version': '2022-11-28'
+      };
+    }
+
+    function encodeBase64Utf8(text){
+      const bytes = new TextEncoder().encode(text);
+      let binary = '';
+      bytes.forEach(b => binary += String.fromCharCode(b));
+      return btoa(binary);
+    }
+
+    function decodeBase64Utf8(base64){
+      const binary = atob(String(base64 || '').replace(/\s/g, ''));
+      const bytes = Uint8Array.from(binary, ch => ch.charCodeAt(0));
+      return new TextDecoder().decode(bytes);
+    }
+
+    function buildCloudPayload(){
+      return {
+        app: 'Respuestas Rápidas',
+        version: 3,
+        updatedAt: new Date().toISOString(),
+        owner: githubConfig.owner,
+        repo: githubConfig.repo,
+        path: githubConfig.path,
+        responses
+      };
+    }
+
+    function cleanImportedResponses(imported){
+      return imported.map(r => ({
+        id: r.id || crypto.randomUUID(),
+        title: String(r.title || 'Sin título').trim(),
+        shortcut: normalizeShortcut(r.shortcut || r.title || crypto.randomUUID().slice(0,6)),
+        category: String(r.category || 'General').trim(),
+        tags: Array.isArray(r.tags) ? r.tags.map(t => String(t).trim()).filter(Boolean) : String(r.tags || '').split(',').map(t => t.trim()).filter(Boolean),
+        message: String(r.message || '').trim(),
+        images: Array.isArray(r.images) ? r.images.filter(img => img && img.dataUrl).map((img, index) => ({
+          id: img.id || crypto.randomUUID(),
+          name: img.name || `foto-${index + 1}.jpg`,
+          type: img.type || 'image/jpeg',
+          size: Number(img.size || 0),
+          dataUrl: img.dataUrl
+        })) : []
+      })).filter(r => r.shortcut && (r.message || (Array.isArray(r.images) && r.images.length)));
+    }
+
+    async function fetchCloudFile(allowMissing = false){
+      githubConfig = readGithubConfigFromForm();
+      localStorage.setItem(GITHUB_CONFIG_KEY, JSON.stringify(githubConfig));
+      saveGithubTokenFromForm();
+      const token = getGithubToken();
+      if(!token) throw new Error('Pega tu GitHub token primero');
+
+      const res = await fetch(githubApiUrl(githubConfig), {headers: githubHeaders(token)});
+      if(res.status === 404 && allowMissing) return null;
+      const data = await res.json().catch(() => ({}));
+      if(!res.ok){
+        const msg = data.message || `Error GitHub ${res.status}`;
+        throw new Error(msg);
+      }
+      return data;
+    }
+
+    async function loadCloudResponses(){
+      try{
+        setCloudWorking('Cargando respuestas desde GitHub...');
+        const file = await fetchCloudFile(false);
+        cloudSha = file.sha || null;
+        const jsonText = decodeBase64Utf8(file.content || '');
+        const data = JSON.parse(jsonText);
+        const imported = Array.isArray(data) ? data : data.responses;
+        if(!Array.isArray(imported)) throw new Error('El JSON de nube no tiene una lista válida de respuestas');
+
+        responses = cleanImportedResponses(imported);
+        saveToStorageNoAuto();
+        cloudLoaded = true;
+        resetSelectedResponse();
+        renderAll();
+        renderCloudStatus(`Nube cargada correctamente. Archivo SHA: ${(cloudSha || '').slice(0,7) || 'nuevo'}.`);
+        toast('Respuestas cargadas desde GitHub ✅');
+      }catch(err){
+        cloudLoaded = false;
+        renderCloudStatus(`No se pudo cargar nube: ${err.message}`, 'bad');
+        toast(`Error: ${err.message}`);
+      }
+    }
+
+    function saveToStorageNoAuto(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
+    }
+
+    async function uploadCloudResponses(isAuto = false){
+      try{
+        githubConfig = readGithubConfigFromForm();
+        localStorage.setItem(GITHUB_CONFIG_KEY, JSON.stringify(githubConfig));
+        saveGithubTokenFromForm();
+        const token = getGithubToken();
+        if(!token) throw new Error('Pega tu GitHub token primero');
+        if(!cloudLoaded && isAuto) return;
+        if(!cloudLoaded && !confirm('Todavía no has cargado nube en esta pestaña. Para evitar pisar datos de otro dispositivo, lo ideal es Cargar nube primero. ¿Deseas subir de todos modos?')) return;
+
+        setCloudWorking(isAuto ? 'Auto-subiendo cambios a GitHub...' : 'Subiendo cambios a GitHub...');
+        let latest = null;
+        try{ latest = await fetchCloudFile(true); }catch(err){ throw err; }
+        cloudSha = latest?.sha || cloudSha || null;
+
+        const body = {
+          message: `Actualizar respuestas rápidas ${new Date().toLocaleString('es-HN')}`,
+          content: encodeBase64Utf8(JSON.stringify(buildCloudPayload(), null, 2)),
+          branch: githubConfig.branch
+        };
+        if(cloudSha) body.sha = cloudSha;
+
+        const res = await fetch(githubContentUrl(githubConfig), {
+          method: 'PUT',
+          headers: {...githubHeaders(token), 'Content-Type':'application/json'},
+          body: JSON.stringify(body)
+        });
+        const data = await res.json().catch(() => ({}));
+        if(!res.ok){
+          const msg = data.message || `Error GitHub ${res.status}`;
+          throw new Error(msg);
+        }
+        cloudSha = data.content?.sha || cloudSha;
+        cloudLoaded = true;
+        renderCloudStatus(isAuto ? 'Cambios auto-subidos a GitHub ✅' : 'Cambios subidos a GitHub correctamente ✅', 'ok');
+        if(!isAuto) toast('Cambios subidos a GitHub ✅');
+      }catch(err){
+        renderCloudStatus(`No se pudo subir: ${err.message}`, 'bad');
+        if(!isAuto) toast(`Error: ${err.message}`);
+      }
+    }
+
+    function scheduleAutoCloudUpload(){
+      githubConfig = readGithubConfigFromForm();
+      if(!githubConfig.autoSync || !cloudLoaded) return;
+      clearTimeout(pendingUploadTimer);
+      pendingUploadTimer = setTimeout(() => uploadCloudResponses(true), 900);
+    }
+
+    function forgetGithubToken(){
+      localStorage.removeItem(GITHUB_TOKEN_KEY);
+      sessionStorage.removeItem(GITHUB_SESSION_TOKEN_KEY);
+      $('ghTokenInput').value = '';
+      $('ghTrustToken').checked = false;
+      $('ghTokenInput').placeholder = 'Pega tu token fine-grained con permiso Contents Read/Write';
+      $('ghTokenHint').textContent = 'El token no se escribe dentro del HTML. Solo queda en esta sesión o en este dispositivo si marcas confianza.';
+      renderCloudStatus('Token GitHub borrado de este dispositivo.', 'warn');
+      toast('Token GitHub borrado');
+    }
+
+    function setCloudWorking(text){
+      $('cloudDot').className = 'status-dot warn';
+      $('cloudStatusTitle').textContent = 'Procesando...';
+      $('cloudStatusText').textContent = text;
+      $('cloudLastAction').textContent = text;
+      $('cloudTargetText').textContent = `${githubConfig.owner}/${githubConfig.repo} · ${githubConfig.path}`;
+    }
+
+    function renderCloudStatus(lastAction = null, state = null){
+      const cfg = readGithubConfigFromForm ? readGithubConfigFromForm() : githubConfig;
+      githubConfig = cfg;
+      const dot = $('cloudDot');
+      if(!dot) return;
+      const hasTokenNow = !!(localStorage.getItem(GITHUB_TOKEN_KEY) || sessionStorage.getItem(GITHUB_SESSION_TOKEN_KEY) || $('ghTokenInput').value.trim());
+      let cls = state === 'bad' ? 'bad' : (cloudLoaded ? 'ok' : 'warn');
+      dot.className = `status-dot ${cls}`;
+      $('cloudStatusTitle').textContent = cloudLoaded ? 'Nube cargada' : 'Nube no cargada';
+      $('cloudStatusText').textContent = hasTokenNow
+        ? 'Token disponible en este dispositivo o pestaña.'
+        : 'Falta pegar GitHub token para cargar o subir cambios.';
+      $('cloudTargetText').textContent = `${cfg.owner}/${cfg.repo} · ${cfg.path}`;
+      if(lastAction) $('cloudLastAction').textContent = lastAction;
+    }
+
+    function hasToken(){
+      return !!localStorage.getItem(TOKEN_HASH_KEY);
+    }
+
+    async function sha256(text){
+      const data = new TextEncoder().encode(text);
+      const hash = await crypto.subtle.digest('SHA-256', data);
+      return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function handleUnlock(){
+      const token = $('tokenInput').value.trim();
+      const trust = $('trustDevice').checked;
+      if(token.length < 4) return toast('Usa un token de mínimo 4 caracteres');
+
+      const inputHash = await sha256(token);
+      const storedHash = localStorage.getItem(TOKEN_HASH_KEY);
+
+      if(!storedHash){
+        localStorage.setItem(TOKEN_HASH_KEY, inputHash);
+        unlockAdmin(trust);
+        $('firstTokenNotice').style.display = 'none';
+        toast('Token creado y admin desbloqueado ✅');
+        return;
+      }
+
+      if(inputHash === storedHash){
+        unlockAdmin(trust);
+        toast('Admin desbloqueado ✅');
+      }else{
+        toast('Token incorrecto');
+      }
+    }
+
+    function unlockAdmin(trust){
+      isAdminUnlocked = true;
+      sessionStorage.setItem(UNLOCK_SESSION, 'true');
+      if(trust) localStorage.setItem(TRUST_KEY, 'true');
+      $('tokenInput').value = '';
+      applyAdminState();
+    }
+
+    function lockAdmin(){
+      isAdminUnlocked = false;
+      sessionStorage.removeItem(UNLOCK_SESSION);
+      localStorage.removeItem(TRUST_KEY);
+      applyAdminState();
+      toast('Admin bloqueado');
+    }
+
+    function applyAdminState(){
+      isAdminUnlocked = sessionStorage.getItem(UNLOCK_SESSION) === 'true' || localStorage.getItem(TRUST_KEY) === 'true';
+      $('lockedAdmin').style.display = isAdminUnlocked ? 'none' : 'block';
+      $('adminContent').style.display = isAdminUnlocked ? 'block' : 'none';
+    }
+
+    function saveResponse(event){
+      event.preventDefault();
+      if(!isAdminUnlocked) return toast('Primero desbloquea con token');
+
+      const id = $('editId').value || crypto.randomUUID();
+      const item = {
+        id,
+        title: $('titleInput').value.trim(),
+        shortcut: normalizeShortcut($('shortcutInput').value),
+        category: $('categoryInput').value.trim() || 'General',
+        tags: $('tagsInput').value.split(',').map(t => t.trim()).filter(Boolean),
+        message: $('messageInput').value.trim(),
+        images: formImages.map((img, index) => ({
+          id: img.id || crypto.randomUUID(),
+          name: img.name || `foto-${index + 1}.jpg`,
+          type: img.type || 'image/jpeg',
+          size: Number(img.size || 0),
+          dataUrl: img.dataUrl
+        })).filter(img => img.dataUrl)
+      };
+
+      if(!item.title || !item.shortcut || (!item.message && !item.images.length)){
+        return toast('Completa título, atajo y agrega mensaje o al menos una foto');
+      }
+
+      const duplicated = responses.find(r => normalizeShortcut(r.shortcut) === item.shortcut && r.id !== id);
+      if(duplicated) return toast('Ese atajo ya existe. Usa otro.');
+
+      const index = responses.findIndex(r => r.id === id);
+      if(index >= 0) responses[index] = item;
+      else responses.unshift(item);
+
+      saveToStorage();
+      if(selectedResponse && selectedResponse.id === id){
+        selectResponse(item, false);
+      }
+      clearForm();
+      renderAll();
+      toast(index >= 0 ? 'Respuesta actualizada ✅' : 'Respuesta guardada ✅');
+    }
+
+    function renderAdminList(){
+      const adminList = $('adminList');
+      if(!adminList) return;
+      adminList.innerHTML = '';
+
+      if(!responses.length){
+        adminList.innerHTML = '<div class="notice">No hay respuestas guardadas todavía.</div>';
+        return;
+      }
+
+      responses.forEach(r => {
+        const row = document.createElement('div');
+        row.className = 'admin-row';
+        row.innerHTML = `
+          <div>
+            <strong>${escapeHtml(r.title || 'Sin título')}</strong>
+            <small>/${escapeHtml(normalizeShortcut(r.shortcut))} · ${escapeHtml(r.category || 'General')} · 🖼️ ${getImages(r).length}</small>
+          </div>
+          <div class="actions">
+            <button class="btn ghost small" data-action="edit">✏️ Editar</button>
+            <button class="btn red small" data-action="delete">🗑️ Borrar</button>
+          </div>
+        `;
+        row.querySelector('[data-action="edit"]').addEventListener('click', () => editResponse(r));
+        row.querySelector('[data-action="delete"]').addEventListener('click', () => deleteResponse(r.id));
+        adminList.appendChild(row);
+      });
+    }
+
+    function ensureAdminForAction(actionText){
+      if(isAdminUnlocked) return true;
+      switchView('adminView');
+      toast(`Desbloquea con token para ${actionText}`);
+      return false;
+    }
+
+    function editSelectedResponse(){
+      if(!selectedResponse) return toast('Selecciona una respuesta primero');
+      if(!ensureAdminForAction('editar esta respuesta')) return;
+      switchView('adminView');
+      editResponse(selectedResponse);
+    }
+
+    function deleteSelectedResponse(){
+      if(!selectedResponse) return toast('Selecciona una respuesta primero');
+      if(!ensureAdminForAction('eliminar esta respuesta')) return;
+      deleteResponse(selectedResponse.id);
+    }
+
+    function editResponseFromCard(r){
+      selectResponse(r);
+      if(!ensureAdminForAction('editar esta respuesta')) return;
+      switchView('adminView');
+      editResponse(r);
+    }
+
+    function deleteResponseFromCard(r){
+      selectResponse(r);
+      if(!ensureAdminForAction('eliminar esta respuesta')) return;
+      deleteResponse(r.id);
+    }
+
+    function resetSelectedResponse(){
+      selectedResponse = null;
+      selectedTitle.textContent = 'Respuesta seleccionada';
+      selectedHint.textContent = 'Selecciona una respuesta para copiarla o compartirla por WhatsApp, Messenger u otra app instalada.';
+      selectedMessage.textContent = 'Aquí aparecerá el mensaje completo.';
+      if(selectedImages) selectedImages.innerHTML = '';
+      if(selectedTagsPanel){
+        selectedTagsPanel.innerHTML = '';
+        selectedTagsPanel.classList.remove('show');
+      }
+      if(selectedTagsBtn){
+        selectedTagsBtn.disabled = true;
+        selectedTagsBtn.textContent = '🏷️ Ver etiquetas';
+      }
+      if($('editSelectedBtn')) $('editSelectedBtn').disabled = true;
+      if($('deleteSelectedBtn')) $('deleteSelectedBtn').disabled = true;
+    }
+
+    function editResponse(r){
+      if(!isAdminUnlocked) return toast('Primero desbloquea con token');
+      $('editId').value = r.id;
+      $('titleInput').value = r.title || '';
+      $('shortcutInput').value = normalizeShortcut(r.shortcut || '');
+      $('categoryInput').value = r.category || '';
+      $('tagsInput').value = Array.isArray(r.tags) ? r.tags.join(', ') : '';
+      $('messageInput').value = r.message || '';
+      formImages = getImages(r).map(img => ({...img}));
+      renderFormImages();
+      $('formTitle').textContent = 'Editar respuesta rápida';
+      $('deleteEditingBtn').style.display = 'inline-flex';
+      $('deleteEditingBtn').textContent = `🗑️ Eliminar: ${r.title || 'esta respuesta'}`;
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function deleteResponse(id){
+      if(!isAdminUnlocked) return toast('Primero desbloquea con token');
+      const item = responses.find(r => r.id === id);
+      if(!item) return toast('No encontré esa respuesta');
+      const ok = confirm(`¿Borrar la respuesta "${item.title || 'sin título'}"?
+
+Esta acción se guarda localmente y luego puedes subir cambios a GitHub.`);
+      if(!ok) return;
+      responses = responses.filter(r => r.id !== id);
+      saveToStorage();
+      if(selectedResponse && selectedResponse.id === id){
+        resetSelectedResponse();
+      }
+      if($('editId').value === id){
+        clearForm();
+      }
+      renderAll();
+      toast('Respuesta eliminada 🗑️');
+    }
+
+    function deleteEditingResponse(){
+      const id = $('editId').value;
+      if(!id) return toast('No estás editando ninguna respuesta');
+      deleteResponse(id);
+    }
+
+    function clearForm(){
+      $('editId').value = '';
+      $('titleInput').value = '';
+      $('shortcutInput').value = '';
+      $('categoryInput').value = '';
+      $('tagsInput').value = '';
+      $('messageInput').value = '';
+      $('imageInput').value = '';
+      formImages = [];
+      renderFormImages();
+      $('formTitle').textContent = 'Agregar respuesta rápida';
+      $('deleteEditingBtn').style.display = 'none';
+      $('deleteEditingBtn').textContent = '🗑️ Eliminar esta respuesta';
+    }
+
+    function exportResponses(){
+      const payload = {
+        app: 'Respuestas Rápidas',
+        version: 2,
+        exportedAt: new Date().toISOString(),
+        responses
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `respuestas-rapidas-${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast('Backup exportado ✅');
+    }
+
+    function importResponses(){
+      const file = $('importFile').files[0];
+      if(!file) return toast('Selecciona un archivo JSON primero');
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        try{
+          const data = JSON.parse(reader.result);
+          const imported = Array.isArray(data) ? data : data.responses;
+          if(!Array.isArray(imported)) throw new Error('Formato inválido');
+
+          const clean = cleanImportedResponses(imported);
+
+          const mode = confirm('Presiona Aceptar para combinar con las actuales. Presiona Cancelar para reemplazar todo.');
+          responses = mode ? mergeResponses(responses, clean) : clean;
+          saveToStorage();
+          renderAll();
+          toast('Respuestas importadas ✅');
+        }catch{
+          toast('No se pudo importar. Revisa que sea un JSON válido.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function mergeResponses(oldList, newList){
+      const map = new Map();
+      oldList.forEach(r => map.set(normalizeShortcut(r.shortcut), r));
+      newList.forEach(r => map.set(normalizeShortcut(r.shortcut), r));
+      return [...map.values()];
+    }
+
+    async function changeToken(){
+      if(!isAdminUnlocked) return toast('Desbloquea admin primero');
+      const token = $('newTokenInput').value.trim();
+      if(token.length < 4) return toast('Usa un token de mínimo 4 caracteres');
+      localStorage.setItem(TOKEN_HASH_KEY, await sha256(token));
+      $('newTokenInput').value = '';
+      toast('Token cambiado ✅');
+    }
+
+    function forgetTrustedDevice(){
+      localStorage.removeItem(TRUST_KEY);
+      sessionStorage.removeItem(UNLOCK_SESSION);
+      isAdminUnlocked = false;
+      applyAdminState();
+      toast('Este dispositivo ya no es de confianza');
+    }
+
+    function toast(message){
+      const box = $('toast');
+      box.textContent = message;
+      box.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => box.classList.remove('show'), 2400);
+    }
+
+    function escapeHtml(value){
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
