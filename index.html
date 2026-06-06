@@ -606,6 +606,276 @@
     }
     .overlay.show{display:block}
 
+
+    .photo-editor-layout{
+      display:grid;
+      grid-template-columns:minmax(320px,.92fr) minmax(0,1.08fr);
+      gap:18px;
+      margin-top:8px;
+    }
+    .editor-drop{
+      border:2px dashed #cfe3ff;
+      border-radius:18px;
+      padding:16px;
+      background:#f8fbff;
+      text-align:center;
+      color:#46607f;
+      margin-bottom:12px;
+    }
+    .editor-drop.drag{border-color:#58a8ff;background:#eef6ff}
+    .editor-gallery{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+      gap:12px;
+    }
+    .editor-item{
+      border:1px solid var(--line);
+      background:#fbfdff;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 10px 20px rgba(20,33,61,.05);
+    }
+    .editor-thumb{
+      aspect-ratio:1/1;
+      background:#eef5ff;
+      overflow:hidden;
+      position:relative;
+    }
+    .editor-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .editor-badges{
+      position:absolute;left:8px;top:8px;display:flex;flex-wrap:wrap;gap:6px;
+    }
+    .editor-badge{
+      background:rgba(15,23,42,.82);color:white;border-radius:999px;padding:4px 8px;font-size:.72rem;font-weight:800;
+    }
+    .editor-body{padding:10px 11px 12px}
+    .editor-name{font-size:.83rem;font-weight:800;line-height:1.25;word-break:break-word;margin-bottom:5px}
+    .editor-meta{font-size:.74rem;color:var(--muted);margin-bottom:10px}
+    .editor-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .editor-actions .btn{padding:9px 10px;min-height:40px;font-size:.8rem}
+    .editor-toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+    .editor-toolbar-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+    .editor-summary{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .editor-chip{padding:9px 11px;border-radius:999px;background:#f1f7ff;border:1px solid #cfe3ff;color:#275489;font-size:.8rem;font-weight:800}
+    .editor-status{padding:11px 13px;border-radius:15px;background:#f8fbff;border:1px solid #dbeafe;color:#35527b;font-size:.86rem;line-height:1.35;margin-top:12px;white-space:pre-wrap}
+    .editor-preview-note{font-size:.8rem;color:var(--muted);margin-top:8px;line-height:1.4}
+    .editor-hidden{display:none!important}
+    .editor-response-tools{display:grid;gap:12px;margin-top:14px}
+    .editor-inline{display:flex;gap:10px;flex-wrap:wrap}
+    .editor-inline .btn{flex:1 1 180px}
+    .editor-helper{font-size:.78rem;color:var(--muted);line-height:1.35;margin-top:5px}
+    .editor-empty{padding:22px;border-radius:18px;border:1px dashed #cfe3ff;background:#f8fbff;color:#64748b;text-align:center}
+
+    .editor-file-input{
+      position:absolute;
+      width:1px;
+      height:1px;
+      opacity:.01;
+      pointer-events:none;
+    }
+    label.btn{
+      cursor:pointer;
+      border:0;
+    }
+    .editor-paste-box{
+      min-height:64px;
+      border:2px dashed #bad7ff;
+      border-radius:18px;
+      background:#ffffff;
+      color:#46607f;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:12px;
+      outline:0;
+      font-size:.88rem;
+      line-height:1.35;
+      margin-top:10px;
+    }
+    .editor-paste-box:focus{
+      border-color:#58a8ff;
+      box-shadow:0 0 0 4px rgba(20,121,255,.11);
+    }
+
+
+
+    /* FIX FINAL: selector de archivos visible y galería compacta */
+    .editor-file-input{
+      position:static !important;
+      width:100% !important;
+      height:auto !important;
+      opacity:1 !important;
+      pointer-events:auto !important;
+      margin-top:8px;
+      background:#ffffff;
+      border:1px solid var(--line);
+      border-radius:15px;
+      padding:12px;
+    }
+    .editor-file-label{
+      display:block;
+      margin-top:10px;
+      font-size:.82rem;
+      font-weight:900;
+      color:#334155;
+    }
+    .editor-gallery{
+      grid-template-columns:repeat(auto-fill,minmax(118px,140px)) !important;
+      justify-content:start;
+      align-items:start;
+      gap:10px !important;
+    }
+    .editor-item{
+      border-radius:14px !important;
+      max-width:140px;
+    }
+    .editor-thumb{
+      height:112px !important;
+      aspect-ratio:auto !important;
+      cursor:zoom-in;
+    }
+    .editor-body{
+      padding:7px 8px 8px !important;
+    }
+    .editor-name{
+      font-size:.70rem !important;
+      line-height:1.15 !important;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      min-height:1.65em;
+    }
+    .editor-meta{
+      font-size:.66rem !important;
+      margin-bottom:6px !important;
+    }
+    .editor-actions{
+      grid-template-columns:1fr !important;
+      gap:5px !important;
+    }
+    .editor-actions .btn{
+      padding:7px 8px !important;
+      min-height:32px !important;
+      font-size:.70rem !important;
+      border-radius:10px !important;
+      width:100%;
+    }
+    .editor-badge{
+      font-size:.62rem !important;
+      padding:3px 6px !important;
+    }
+    .editor-paste-box{
+      overflow:hidden;
+      user-select:text;
+    }
+    .editor-paste-box img,
+    .editor-paste-box video,
+    .editor-paste-box canvas,
+    .editor-paste-box *{
+      max-width:100% !important;
+      max-height:70px !important;
+    }
+    .editor-range-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      align-items:center;
+    }
+    .editor-range-row input[type="range"]{
+      width:100%;
+      accent-color:var(--primary);
+    }
+    .editor-range-value{
+      min-width:52px;
+      text-align:center;
+      padding:8px 10px;
+      border-radius:12px;
+      background:#f1f7ff;
+      border:1px solid #cfe3ff;
+      font-weight:900;
+      color:var(--primary-dark);
+      font-size:.82rem;
+    }
+    .photo-modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:200;
+      background:rgba(15,23,42,.62);
+      padding:18px;
+      overflow:auto;
+    }
+    .photo-modal.show{
+      display:grid;
+      place-items:center;
+    }
+    .photo-modal-card{
+      width:min(96vw, 980px);
+      max-height:94vh;
+      overflow:auto;
+      background:white;
+      border-radius:24px;
+      border:1px solid var(--line);
+      box-shadow:0 28px 80px rgba(15,23,42,.34);
+      padding:16px;
+    }
+    .photo-modal-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .photo-modal-head h2{
+      margin:0;
+      font-size:1.05rem;
+    }
+    .photo-modal-head p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:.82rem;
+    }
+    .photo-modal-preview{
+      background:#f1f7ff;
+      border:1px solid #dbeafe;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      min-height:260px;
+      overflow:hidden;
+    }
+    .photo-modal-preview img{
+      display:block;
+      max-width:100%;
+      max-height:62vh;
+      object-fit:contain;
+    }
+    .photo-modal-actions{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+    .photo-modal-tools{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      margin-top:12px;
+      align-items:end;
+    }
+    @media(max-width:640px){
+      .editor-gallery{
+        grid-template-columns:repeat(auto-fill,minmax(96px,1fr)) !important;
+      }
+      .editor-item{max-width:none}
+      .editor-thumb{height:96px !important}
+      .photo-modal-actions,
+      .photo-modal-tools{
+        grid-template-columns:1fr;
+      }
+    }
+
     @media(max-width:980px){
       .app{grid-template-columns:1fr}
       .sidebar{
@@ -629,7 +899,7 @@
       .topbar{padding-top:7px}
       .search-wrap{min-height:54px; border-radius:19px; padding:0 12px}
       .search-wrap input{font-size:.92rem}
-      .form-grid, .settings-grid, .sync-panel{grid-template-columns:1fr}
+      .form-grid, .settings-grid, .sync-panel, .photo-editor-layout, .editor-toolbar, .editor-toolbar-3{grid-template-columns:1fr}
       .field.span-2{grid-column:auto}
       .admin-row{grid-template-columns:1fr}
       .admin-row .actions{justify-content:flex-start}
@@ -638,6 +908,47 @@
       .selected-admin-actions{grid-template-columns:1fr}
       .side-note{position:static; margin-top:20px}
     }
+  
+    /* FIX3: miniaturas siempre pequeñas en editor */
+    #photoEditorGallery .editor-item{max-width:132px!important}
+    #photoEditorGallery .editor-thumb{height:104px!important}
+    #photoEditorGallery img{max-width:100%!important;max-height:100%!important}
+    #editorPasteBox img{display:none!important}
+
+  
+    .editor-color-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:13px;
+    }
+    .editor-color-field{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:10px;
+      align-items:center;
+      padding:10px;
+      border:1px solid var(--line);
+      background:#fbfdff;
+      border-radius:15px;
+    }
+    .editor-color-field input[type="color"]{
+      width:54px;
+      height:42px;
+      padding:3px;
+      border-radius:12px;
+      cursor:pointer;
+      background:white;
+    }
+    .editor-color-field span{
+      font-size:.82rem;
+      font-weight:900;
+      color:#334155;
+      line-height:1.25;
+    }
+    @media(max-width:640px){
+      .editor-color-grid{grid-template-columns:1fr}
+    }
+
   </style>
 </head>
 <body>
@@ -656,6 +967,7 @@
       <nav class="nav">
         <button class="active" data-view="responsesView"><span class="icon">💬</span> Respuestas</button>
         <button data-view="adminView"><span class="icon">➕</span> Agregar / Editar</button>
+        <button data-view="photoEditorView"><span class="icon">🖼️</span> Editar fotos</button>
         <button data-view="settingsView"><span class="icon">🛡️</span> Nube / Seguridad / Backup</button>
       </nav>
 
@@ -790,6 +1102,181 @@
         </div>
       </section>
 
+
+      <section id="photoEditorView" class="view">
+        <div class="photo-editor-layout">
+          <div class="form-card">
+            <h2>Editar fotos</h2>
+            <p>Sube fotos nuevas o toma fotos de una respuesta guardada, agrega un precio tipo <strong>“L. 200”</strong>, elige la posición y luego descárgalas o agrégalas directo a una respuesta rápida.</p>
+
+            <div class="field">
+              <label for="editorPriceText">Texto de precio</label>
+              <input id="editorPriceText" placeholder="Ej: L. 200" value="L. 200" />
+            </div>
+
+            <div class="form-grid">
+              <div class="field">
+                <label for="editorPricePosition">Posición del precio</label>
+                <select id="editorPricePosition">
+                  <option value="top-left">Superior izquierda</option>
+                  <option value="top-center">Superior enmedio</option>
+                  <option value="top-right">Superior derecha</option>
+                  <option value="middle-left">En medio izquierda</option>
+                  <option value="middle-center">En medio en medio</option>
+                  <option value="middle-right">En medio derecha</option>
+                  <option value="bottom-left">Inferior izquierda</option>
+                  <option value="bottom-center" selected>Inferior enmedio</option>
+                  <option value="bottom-right">Inferior derecha</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="editorPriceScale">Tamaño del precio</label>
+                <select id="editorPriceScale">
+                  <option value="0.85">Pequeño</option>
+                  <option value="1" selected>Normal</option>
+                  <option value="1.15">Mediano grande</option>
+                  <option value="1.3">Grande</option>
+                </select>
+              </div>
+              <div class="field span-2">
+                <label for="editorPriceOpacity">Transparencia del precio</label>
+                <div class="editor-range-row">
+                  <input id="editorPriceOpacity" type="range" min="0.25" max="1" step="0.05" value="0.95" />
+                  <span class="editor-range-value" id="editorPriceOpacityValue">95%</span>
+                </div>
+              </div>
+              <div class="field span-2">
+                <label>Colores del precio</label>
+                <div class="editor-color-grid">
+                  <label class="editor-color-field" for="editorPriceBgColor">
+                    <input id="editorPriceBgColor" type="color" value="#37c188" />
+                    <span>Fondo de la etiqueta</span>
+                  </label>
+                  <label class="editor-color-field" for="editorPriceTextColor">
+                    <input id="editorPriceTextColor" type="color" value="#000000" />
+                    <span>Color del texto</span>
+                  </label>
+                </div>
+              </div>
+              <div class="field span-2">
+                <label class="inline-check" style="margin:0">
+                  <input id="editorNoBgCheckbox" type="checkbox" checked />
+                  <span><strong>Sin fondo / sin cuadro</strong> por defecto. Desmarca esta opción si quieres que salga con fondo de color.</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="editor-drop" id="editorDropZone">
+              <strong>⬇️ Arrastra imágenes aquí</strong><br>
+              <span class="editor-helper">También puedes usar galería, cámara o cargar las fotos de una respuesta guardada.</span>
+            </div>
+
+            <div class="editor-toolbar">
+              <button class="btn ghost" type="button" id="editorClearBtn">🧹 Limpiar editor</button>
+              <button class="btn ghost" type="button" id="editorPasteBtn">📋 Leer portapapeles</button>
+            </div>
+
+            <label class="editor-file-label" for="editorGalleryInput">🖼️ Galería / seleccionar fotos</label>
+            <button class="btn primary full" type="button" id="editorOpenGalleryBtn">🖼️ Abrir galería / elegir muchas fotos</button>
+            <input id="editorGalleryInput" class="editor-file-input" type="file" accept="image/*" multiple />
+            <div class="editor-helper">Puedes seleccionar muchas fotos de una sola vez o volver a elegir archivos varias veces; se irán sumando al editor.</div>
+
+            <label class="editor-file-label" for="editorCameraInput">📷 Cámara / tomar foto</label>
+            <button class="btn amber full" type="button" id="editorOpenCameraBtn">📷 Abrir cámara / elegir foto</button>
+            <input id="editorCameraInput" class="editor-file-input" type="file" accept="image/*" capture="environment" />
+            <div class="editor-helper">En PC puede abrir selector de archivos. En celular normalmente abre cámara o te deja escoger cámara/galería.</div>
+
+            <div class="editor-paste-box" id="editorPasteBox" tabindex="0" contenteditable="true">
+              📋 Haz clic aquí y pega con Ctrl+V. En móvil: tocar aquí, mantener presionado y Pegar.
+            </div>
+
+            <div class="editor-toolbar">
+              <button class="btn green" type="button" id="editorApplyPriceBtn">🏷️ Aplicar precio a todas</button>
+              <button class="btn ghost" type="button" id="editorResetEditsBtn">↩️ Quitar edición</button>
+            </div>
+
+            <div class="editor-summary">
+              <span class="editor-chip">Fotos en editor: <b id="editorCount">0</b></span>
+              <span class="editor-chip">Editadas: <b id="editorProcessedCount">0</b></span>
+            </div>
+
+            <div class="editor-status" id="editorStatus">Todavía no has agregado fotos al editor.</div>
+
+            <div class="editor-response-tools">
+              <div class="form-card" style="margin:0">
+                <h2 style="margin-bottom:8px">Cargar fotos de una respuesta guardada</h2>
+                <div class="field">
+                  <label for="editorLoadResponseSelect">Respuesta existente</label>
+                  <select id="editorLoadResponseSelect"></select>
+                </div>
+                <div class="editor-inline">
+                  <button class="btn ghost" type="button" id="editorLoadResponseBtn">📥 Cargar fotos de esa respuesta</button>
+                </div>
+                <div class="editor-helper">Esto reemplaza las fotos actuales del editor por las fotos de esa respuesta.</div>
+              </div>
+
+              <div class="form-card" style="margin:0">
+                <h2 style="margin-bottom:8px">Agregar fotos editadas a una respuesta existente</h2>
+                <div class="field">
+                  <label for="editorAppendResponseSelect">Respuesta destino</label>
+                  <select id="editorAppendResponseSelect"></select>
+                </div>
+                <div class="editor-inline">
+                  <button class="btn primary" type="button" id="editorAppendToExistingBtn">➕ Agregar fotos editadas</button>
+                </div>
+                <div class="editor-helper">Las fotos editadas se agregan a la respuesta elegida. No borra las fotos anteriores.</div>
+              </div>
+
+              <div class="form-card" style="margin:0">
+                <h2 style="margin-bottom:8px">Crear nueva respuesta con estas fotos</h2>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="editorNewTitle">Título visible</label>
+                    <input id="editorNewTitle" placeholder="Ej: Promo cámara con precio" />
+                  </div>
+                  <div class="field">
+                    <label for="editorNewShortcut">Atajo / palabra clave</label>
+                    <input id="editorNewShortcut" placeholder="Ej: camarapromo" />
+                  </div>
+                  <div class="field">
+                    <label for="editorNewCategory">Categoría</label>
+                    <input id="editorNewCategory" placeholder="Ej: Productos" />
+                  </div>
+                  <div class="field">
+                    <label for="editorNewTags">Etiquetas separadas por coma</label>
+                    <input id="editorNewTags" placeholder="Ej: promo, precio, cámara" />
+                  </div>
+                  <div class="field span-2">
+                    <label for="editorNewMessage">Mensaje opcional</label>
+                    <textarea id="editorNewMessage" placeholder="Si quieres, escribe aquí el texto que acompañará las fotos."></textarea>
+                  </div>
+                </div>
+                <div class="editor-inline">
+                  <button class="btn green" type="button" id="editorCreateResponseBtn">💾 Crear respuesta nueva con estas fotos</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-card">
+            <div class="section-head">
+              <div>
+                <h2>Fotos del editor</h2>
+                <p>Puedes descargar una por una, todas juntas en ZIP o disparar una descarga individual 1 por 1.</p>
+              </div>
+            </div>
+            <div class="editor-toolbar-3">
+              <button class="btn ghost" type="button" id="editorDownloadIndividualBtn">⬇️ Descargar todas individual</button>
+              <button class="btn primary" type="button" id="editorDownloadZipBtn">🗜️ Descargar todas en ZIP</button>
+              <button class="btn ghost" type="button" id="editorDownloadCurrentBtn">📁 Descargar visibles</button>
+            </div>
+            <div class="editor-preview-note">Si una foto ya fue editada, se descargará la versión editada. Si no, se descargará la original cargada en el editor.</div>
+            <div style="margin-top:14px" id="photoEditorGallery" class="editor-gallery"></div>
+            <div class="editor-empty" id="photoEditorEmpty">No hay fotos en el editor todavía.</div>
+          </div>
+        </div>
+      </section>
+
       <section id="settingsView" class="view">
         <div class="settings-grid">
           <div class="form-card span-full">
@@ -880,8 +1367,41 @@
     </main>
   </div>
 
+
+  <div class="photo-modal" id="photoModal">
+    <div class="photo-modal-card">
+      <div class="photo-modal-head">
+        <div>
+          <h2 id="photoModalTitle">Vista grande</h2>
+          <p id="photoModalMeta">Toca cerrar para volver a miniaturas.</p>
+        </div>
+        <button class="btn red small" type="button" id="photoModalCloseBtn">✕ Cerrar</button>
+      </div>
+      <div class="photo-modal-preview">
+        <img id="photoModalImg" alt="Vista grande de foto editada" />
+      </div>
+      <div class="photo-modal-actions">
+        <button class="btn primary" type="button" id="photoModalApplyBtn">🏷️ Aplicar precio a esta foto</button>
+        <button class="btn ghost" type="button" id="photoModalDownloadBtn">⬇️ Descargar esta foto</button>
+      </div>
+      <div class="photo-modal-tools">
+        <div class="field" style="margin:0">
+          <label for="photoModalResponseSelect">Agregar esta foto a respuesta existente</label>
+          <select id="photoModalResponseSelect"></select>
+        </div>
+        <button class="btn green" type="button" id="photoModalAppendBtn">➕ Agregar esta foto</button>
+      </div>
+      <div class="photo-modal-actions">
+        <button class="btn amber" type="button" id="photoModalUseNewBtn">🆕 Usar solo esta foto para nueva respuesta</button>
+        <button class="btn ghost" type="button" id="photoModalBackBtn">↩️ Volver a miniaturas</button>
+      </div>
+    </div>
+  </div>
+
+
   <div class="toast" id="toast"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
   <script>
     const STORAGE_KEY = 'respuestas_rapidas_data_v1';
     const TOKEN_HASH_KEY = 'respuestas_rapidas_token_hash_v1';
@@ -935,6 +1455,8 @@
     let cloudSha = null;
     let pendingUploadTimer = null;
     let formImages = [];
+    let photoEditorImages = [];
+    let activePhotoModalId = null;
 
     const $ = (id) => document.getElementById(id);
     const sidebar = $('sidebar');
@@ -960,6 +1482,8 @@
       applyAdminState();
       renderCloudStatus();
       renderFormImages();
+      renderPhotoEditorGallery();
+      populateResponseSelects();
       $('firstTokenNotice').style.display = hasToken() ? 'none' : 'block';
     }
 
@@ -994,6 +1518,37 @@
       $('loadCloudBtn').addEventListener('click', loadCloudResponses);
       $('uploadCloudBtn').addEventListener('click', () => uploadCloudResponses(false));
       $('forgetGhTokenBtn').addEventListener('click', forgetGithubToken);
+
+      // FIX: eventos de la sección Editar fotos
+      $('editorOpenGalleryBtn').addEventListener('click', () => openFileInput('editorGalleryInput'));
+      $('editorOpenCameraBtn').addEventListener('click', () => openFileInput('editorCameraInput'));
+      $('editorGalleryInput').addEventListener('change', handlePhotoEditorInput);
+      $('editorCameraInput').addEventListener('change', handlePhotoEditorInput);
+      $('editorPasteBtn').addEventListener('click', readPhotoEditorClipboard);
+      $('editorPriceOpacity').addEventListener('input', updateEditorOpacityLabel);
+      $('editorNoBgCheckbox').addEventListener('change', updateEditorNoBgState);
+      $('editorApplyPriceBtn').addEventListener('click', applyPriceToEditorImages);
+      $('editorResetEditsBtn').addEventListener('click', resetPhotoEditorEdits);
+      $('editorClearBtn').addEventListener('click', clearPhotoEditor);
+      $('editorDownloadZipBtn').addEventListener('click', downloadPhotoEditorZip);
+      $('editorDownloadIndividualBtn').addEventListener('click', downloadPhotoEditorAllIndividual);
+      $('editorDownloadCurrentBtn').addEventListener('click', downloadPhotoEditorCurrent);
+      $('editorLoadResponseBtn').addEventListener('click', loadPhotosFromSelectedResponse);
+      $('editorAppendToExistingBtn').addEventListener('click', appendEditedPhotosToExistingResponse);
+      $('editorCreateResponseBtn').addEventListener('click', createNewResponseFromEditor);
+
+      $('photoModalCloseBtn').addEventListener('click', closePhotoEditorModal);
+      $('photoModalBackBtn').addEventListener('click', closePhotoEditorModal);
+      $('photoModalDownloadBtn').addEventListener('click', () => activePhotoModalId && downloadPhotoEditorSingle(activePhotoModalId));
+      $('photoModalApplyBtn').addEventListener('click', () => activePhotoModalId && applyPriceToSingleEditorImage(activePhotoModalId));
+      $('photoModalAppendBtn').addEventListener('click', () => activePhotoModalId && appendOneEditorImageToExistingResponse(activePhotoModalId, 'photoModalResponseSelect'));
+      $('photoModalUseNewBtn').addEventListener('click', useModalImageForNewResponse);
+      $('photoModal').addEventListener('click', (e) => { if(e.target.id === 'photoModal') closePhotoEditorModal(); });
+
+      setupPhotoEditorDropZone();
+      setupPhotoEditorPaste();
+      updateEditorOpacityLabel();
+      updateEditorNoBgState();
     }
 
     function openMenu(){
@@ -1057,6 +1612,8 @@
       renderCategories();
       renderResponses();
       renderAdminList();
+      populateResponseSelects();
+      renderPhotoEditorGallery();
     }
 
     function renderCategories(){
@@ -1366,6 +1923,647 @@
       }catch{
         return null;
       }
+    }
+
+
+
+    function editorCurrentDataUrl(item){
+      return item.resultDataUrl || item.sourceDataUrl || '';
+    }
+
+    function editorCurrentName(item, index = 0){
+      const name = item.processedName || item.name || `foto-${index + 1}.jpg`;
+      return String(name).replace(/[\/:*?"<>|]+/g, '-');
+    }
+
+    function setPhotoEditorStatus(message){
+      const box = $('editorStatus');
+      if(box) box.textContent = message;
+    }
+
+    function updatePhotoEditorCounts(){
+      $('editorCount').textContent = String(photoEditorImages.length);
+      $('editorProcessedCount').textContent = String(photoEditorImages.filter(img => !!img.resultDataUrl).length);
+      $('photoEditorEmpty').style.display = photoEditorImages.length ? 'none' : 'block';
+    }
+
+    function renderPhotoEditorGallery(){
+      const gallery = $('photoEditorGallery');
+      if(!gallery) return;
+      gallery.innerHTML = '';
+      updatePhotoEditorCounts();
+      photoEditorImages.forEach((item, index) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'editor-item';
+        const currentUrl = editorCurrentDataUrl(item);
+        const sizeText = currentUrl ? `${Math.round((item.size || 0)/1024)} KB` : '';
+        wrap.innerHTML = `
+          <div class="editor-thumb" data-act="open" title="Tocar para ver en grande">
+            <img src="${escapeHtml(currentUrl)}" alt="Foto ${index + 1}" loading="lazy">
+            <div class="editor-badges">
+              <span class="editor-badge">${item.resultDataUrl ? 'Editada' : 'Original'}</span>
+              <span class="editor-badge">#${index + 1}</span>
+            </div>
+          </div>
+          <div class="editor-body">
+            <div class="editor-name">${escapeHtml(editorCurrentName(item, index))}</div>
+            <div class="editor-meta">${sizeText}</div>
+            <div class="editor-actions">
+              <button class="btn ghost" type="button" data-act="open">👁️ Ver</button>
+              <button class="btn ghost" type="button" data-act="download">⬇️ Descargar</button>
+              <button class="btn red" type="button" data-act="remove">🗑️ Quitar</button>
+            </div>
+          </div>
+        `;
+        wrap.querySelectorAll('[data-act="open"]').forEach(el => el.addEventListener('click', () => openPhotoEditorModal(item.id)));
+        wrap.querySelector('[data-act="download"]').addEventListener('click', () => downloadPhotoEditorSingle(item.id));
+        wrap.querySelector('[data-act="remove"]').addEventListener('click', () => removePhotoEditorItem(item.id));
+        gallery.appendChild(wrap);
+      });
+    }
+
+    function openFileInput(id){
+      const input = $(id);
+      if(!input) return;
+      try{
+        if(typeof input.showPicker === 'function') input.showPicker();
+        else input.click();
+      }catch{
+        input.click();
+      }
+    }
+
+    async function addFilesToPhotoEditor(filesLike, source = 'archivo'){
+      const files = [...(filesLike || [])].filter(file =>
+        (file.type && file.type.startsWith('image/')) || /\.(png|jpe?g|webp|bmp|gif|heic|heif)$/i.test(file.name || '')
+      );
+      if(!files.length){
+        setPhotoEditorStatus('No se detectaron fotos válidas para agregar.');
+        return false;
+      }
+
+      try{
+        const imgs = await Promise.all(files.map(fileToImageObject));
+        photoEditorImages.push(...imgs.map((img, index) => ({
+          id: crypto.randomUUID(),
+          name: imageName(img, index),
+          type: img.type || 'image/jpeg',
+          size: img.size || 0,
+          sourceDataUrl: img.dataUrl,
+          resultDataUrl: null,
+          processedName: null
+        })));
+        renderPhotoEditorGallery();
+        setPhotoEditorStatus(`${imgs.length} foto${imgs.length === 1 ? '' : 's'} agregada${imgs.length === 1 ? '' : 's'} desde ${source}.`);
+        toast(`${imgs.length} foto${imgs.length === 1 ? '' : 's'} agregada${imgs.length === 1 ? '' : 's'} ✅`);
+        return true;
+      }catch(err){
+        toast(err.message || 'No se pudieron cargar las fotos del editor');
+        return false;
+      }
+    }
+
+    async function handlePhotoEditorInput(event){
+      await addFilesToPhotoEditor(event.target.files || [], 'galería/cámara');
+      event.target.value = '';
+    }
+
+    function setupPhotoEditorDropZone(){
+      const zone = $('editorDropZone');
+      if(!zone) return;
+      ['dragenter','dragover'].forEach(type => zone.addEventListener(type, (e) => {
+        e.preventDefault();
+        zone.classList.add('drag');
+      }));
+      ['dragleave','drop'].forEach(type => zone.addEventListener(type, (e) => {
+        e.preventDefault();
+        if(type === 'drop' || !zone.contains(e.relatedTarget)) zone.classList.remove('drag');
+      }));
+      zone.addEventListener('drop', async (e) => {
+        const files = e.dataTransfer?.files || [];
+        await addFilesToPhotoEditor(files, 'arrastrar y soltar');
+      });
+    }
+
+    function extractImageFilesFromClipboard(e){
+      const items = [...(e.clipboardData?.items || [])];
+      const files = [];
+      for(const item of items){
+        if(item.kind === 'file' && item.type && item.type.startsWith('image/')){
+          const file = item.getAsFile();
+          if(file) files.push(file);
+        }
+      }
+      return files;
+    }
+
+    async function handlePhotoEditorPasteEvent(e){
+      const view = $('photoEditorView');
+      if(!view || !view.classList.contains('active')) return;
+
+      const files = extractImageFilesFromClipboard(e);
+      if(files.length){
+        e.preventDefault();
+        e.stopPropagation();
+        const ok = await addFilesToPhotoEditor(files, 'portapapeles');
+        const box = $('editorPasteBox');
+        if(box){
+          box.innerHTML = '📋 Foto pegada correctamente. Puedes seguir pegando con Ctrl+V aquí.';
+          setTimeout(() => {
+            if(box) box.innerHTML = '📋 Haz clic aquí y pega con Ctrl+V. En móvil: tocar aquí, mantener presionado y Pegar.';
+          }, 1600);
+        }
+        return ok;
+      }
+    }
+
+    function setupPhotoEditorPaste(){
+      const box = $('editorPasteBox');
+      if(box){
+        box.addEventListener('click', () => box.focus());
+        box.addEventListener('paste', handlePhotoEditorPasteEvent, true);
+        box.addEventListener('drop', async (e) => {
+          e.preventDefault();
+          await addFilesToPhotoEditor(e.dataTransfer?.files || [], 'soltar en cuadro de pegar');
+        });
+        box.addEventListener('input', () => {
+          const hasLargeContent = box.querySelector('img, video, canvas, picture, svg');
+          if(hasLargeContent || box.innerText.length > 120){
+            box.innerHTML = '📋 Usa Ctrl+V aquí; la foto se agregará abajo como miniatura pequeña.';
+          }
+        });
+      }
+
+      document.addEventListener('paste', handlePhotoEditorPasteEvent, true);
+    }
+
+    async function readPhotoEditorClipboard(){
+      if(!navigator.clipboard || !navigator.clipboard.read){
+        toast('Tu navegador no permite leer fotos del portapapeles con botón. Prueba Ctrl+V en el cuadro de pegar.');
+        const box = $('editorPasteBox');
+        if(box) box.focus();
+        return;
+      }
+
+      try{
+        const items = await navigator.clipboard.read();
+        const files = [];
+        for(const item of items){
+          for(const type of item.types){
+            if(type.startsWith('image/')){
+              const blob = await item.getType(type);
+              const ext = type.includes('png') ? 'png' : type.includes('webp') ? 'webp' : 'jpg';
+              files.push(new File([blob], `portapapeles-${Date.now()}-${files.length + 1}.${ext}`, {type}));
+            }
+          }
+        }
+        if(!files.length){
+          toast('No encontré fotos en el portapapeles.');
+          return;
+        }
+        await addFilesToPhotoEditor(files, 'portapapeles');
+      }catch(err){
+        toast('No se pudo leer el portapapeles. Haz clic en el cuadro y prueba Ctrl+V.');
+        const box = $('editorPasteBox');
+        if(box) box.focus();
+      }
+    }
+
+    function clearPhotoEditor(){
+      photoEditorImages = [];
+      renderPhotoEditorGallery();
+      setPhotoEditorStatus('Editor limpiado.');
+    }
+
+    function removePhotoEditorItem(id){
+      photoEditorImages = photoEditorImages.filter(item => item.id !== id);
+      renderPhotoEditorGallery();
+      setPhotoEditorStatus('Foto eliminada del editor.');
+    }
+
+    function resetPhotoEditorEdits(){
+      if(!photoEditorImages.length) return toast('No hay fotos en el editor');
+      photoEditorImages = photoEditorImages.map(item => ({...item, resultDataUrl:null, processedName:null}));
+      renderPhotoEditorGallery();
+      setPhotoEditorStatus('Se quitaron las ediciones aplicadas.');
+      toast('Edición reiniciada ✅');
+    }
+
+    function clamp(value, min, max){
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function drawRoundedRect(ctx, x, y, w, h, r){
+      const radius = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.arcTo(x + w, y, x + w, y + h, radius);
+      ctx.arcTo(x + w, y + h, x, y + h, radius);
+      ctx.arcTo(x, y + h, x, y, radius);
+      ctx.arcTo(x, y, x + w, y, radius);
+      ctx.closePath();
+    }
+
+    function updateEditorNoBgState(){
+      const checkbox = $('editorNoBgCheckbox');
+      const bgInput = $('editorPriceBgColor');
+      if(!checkbox || !bgInput) return;
+      bgInput.disabled = checkbox.checked;
+      bgInput.style.opacity = checkbox.checked ? '.45' : '1';
+      bgInput.title = checkbox.checked ? 'Desmarca Sin fondo / sin cuadro para usar fondo de color' : 'Color del fondo de la etiqueta';
+    }
+
+    function updateEditorOpacityLabel(){
+      const input = $('editorPriceOpacity');
+      const out = $('editorPriceOpacityValue');
+      if(input && out) out.textContent = `${Math.round(Number(input.value || 0.95) * 100)}%`;
+    }
+
+    function getEditorPriceSettings(){
+      return {
+        text: String($('editorPriceText').value || '').trim(),
+        position: $('editorPricePosition').value || 'bottom-center',
+        scale: Number($('editorPriceScale').value || '1') || 1,
+        opacity: Number($('editorPriceOpacity')?.value || '0.95') || 0.95,
+        bgColor: $('editorPriceBgColor')?.value || '#37c188',
+        textColor: $('editorPriceTextColor')?.value || '#000000',
+        noBg: !!$('editorNoBgCheckbox')?.checked
+      };
+    }
+
+    function getPlacementCoordinates(position, boxW, boxH, canvasW, canvasH, margin){
+      let x = margin;
+      let y = margin;
+      if(position.includes('center')) x = Math.round((canvasW - boxW) / 2);
+      if(position.includes('right')) x = canvasW - boxW - margin;
+      if(position.includes('middle')) y = Math.round((canvasH - boxH) / 2);
+      if(position.includes('bottom')) y = canvasH - boxH - margin;
+      return {x, y};
+    }
+
+    function hexToRgb(hex){
+      const clean = String(hex || '').replace('#','').trim();
+      if(!/^[0-9a-fA-F]{6}$/.test(clean)) return null;
+      return {
+        r: parseInt(clean.slice(0,2), 16),
+        g: parseInt(clean.slice(2,4), 16),
+        b: parseInt(clean.slice(4,6), 16)
+      };
+    }
+
+    function colorWithAlpha(hex, alpha = 1, fallback = '#37c188'){
+      const rgb = hexToRgb(hex) || hexToRgb(fallback) || {r:55,g:193,b:136};
+      return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${clamp(alpha, 0, 1)})`;
+    }
+
+    function drawPriceOverlay(ctx, w, h, text, position, scale = 1, opacity = 0.95, bgColor = "#37c188", textColor = "#000000", noBg = false){
+      if(!text) return;
+      const margin = Math.max(12, Math.round(Math.min(w, h) * 0.03));
+      let fontSize = clamp(Math.round(Math.min(w, h) * 0.14 * scale), 24, 180);
+      const maxWidth = Math.max(140, w * 0.72);
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'left';
+      ctx.lineJoin = 'round';
+      while(fontSize > 18){
+        ctx.font = `900 ${fontSize}px Poppins, Arial, sans-serif`;
+        if(ctx.measureText(text).width <= maxWidth) break;
+        fontSize -= 2;
+      }
+      ctx.font = `900 ${fontSize}px Poppins, Arial, sans-serif`;
+      const textWidth = Math.ceil(ctx.measureText(text).width);
+      const padX = Math.round(fontSize * 0.34);
+      const padY = Math.round(fontSize * 0.22);
+      const boxW = noBg ? textWidth : textWidth + padX * 2;
+      const boxH = noBg ? Math.round(fontSize * 1.18) : Math.round(fontSize * 1.18) + padY * 2;
+      const {x, y} = getPlacementCoordinates(position, boxW, boxH, w, h, margin);
+      ctx.save();
+      const alpha = clamp(opacity, 0.25, 1);
+      const tx = noBg ? x : x + padX;
+      const ty = noBg ? y + boxH / 2 : y + boxH / 2;
+
+      if(!noBg){
+        drawRoundedRect(ctx, x, y, boxW, boxH, Math.round(fontSize * 0.18));
+        ctx.fillStyle = colorWithAlpha(bgColor, alpha, '#37c188');
+        ctx.fill();
+      }
+
+      ctx.shadowColor = noBg ? 'rgba(255,255,255,.35)' : 'rgba(20,33,61,.18)';
+      ctx.shadowBlur = noBg ? Math.max(3, Math.round(fontSize * 0.05)) : Math.max(8, Math.round(fontSize * 0.14));
+      ctx.shadowOffsetY = noBg ? 1 : Math.max(2, Math.round(fontSize * 0.05));
+      ctx.lineWidth = noBg ? 0 : Math.max(2, Math.round(fontSize * 0.08));
+      ctx.fillStyle = colorWithAlpha(textColor, Math.min(1, alpha + 0.05), '#000000');
+
+      if(!noBg){
+        ctx.strokeStyle = 'rgba(37, 78, 86, 0.48)';
+        ctx.strokeText(text, tx, ty);
+      }
+      ctx.fillText(text, tx, ty);
+      ctx.restore();
+    }
+
+    function loadImageElement(src){
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('No se pudo cargar la imagen'));
+        img.src = src;
+      });
+    }
+
+    function canvasToBlob(canvas, mime = 'image/jpeg', quality = 0.92){
+      return new Promise((resolve, reject) => {
+        canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('No se pudo generar la imagen')), mime, quality);
+      });
+    }
+
+    async function processEditorItem(item, settings){
+      const img = await loadImageElement(item.sourceDataUrl);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth || img.width;
+      canvas.height = img.naturalHeight || img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      drawPriceOverlay(ctx, canvas.width, canvas.height, settings.text, settings.position, settings.scale, settings.opacity, settings.bgColor, settings.textColor, settings.noBg);
+      let mime = item.type && item.type.startsWith('image/') ? item.type : 'image/jpeg';
+      if(mime === 'image/heic' || mime === 'image/heif' || mime === 'image/gif' || mime === 'image/bmp') mime = 'image/jpeg';
+      let blob;
+      try{
+        blob = await canvasToBlob(canvas, mime, 0.95);
+      }catch{
+        mime = 'image/jpeg';
+        blob = await canvasToBlob(canvas, mime, 0.95);
+      }
+      const reader = new FileReader();
+      const dataUrl = await new Promise((resolve, reject) => {
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('No se pudo leer imagen procesada'));
+        reader.readAsDataURL(blob);
+      });
+      const parts = String(item.name || 'foto').split('.');
+      const ext = parts.length > 1 ? parts.pop() : (mime.includes('png') ? 'png' : 'jpg');
+      const base = parts.join('.') || 'foto';
+      return {
+        ...item,
+        resultDataUrl: dataUrl,
+        processedName: `${base}_precio.${ext}`,
+        size: blob.size || item.size || 0
+      };
+    }
+
+    async function applyPriceToEditorImages(){
+      if(!photoEditorImages.length) return toast('Primero agrega fotos al editor');
+      const settings = getEditorPriceSettings();
+      if(!settings.text){
+        return toast('Escribe el texto del precio para aplicar a las fotos');
+      }
+      setPhotoEditorStatus('Procesando fotos del editor...');
+      const next = [];
+      for(let i = 0; i < photoEditorImages.length; i++){
+        try{
+          next.push(await processEditorItem(photoEditorImages[i], settings));
+          setPhotoEditorStatus(`Procesando ${i + 1} de ${photoEditorImages.length}...`);
+        }catch(err){
+          next.push({...photoEditorImages[i]});
+        }
+      }
+      photoEditorImages = next;
+      renderPhotoEditorGallery();
+      setPhotoEditorStatus(`Precio aplicado a ${photoEditorImages.length} foto${photoEditorImages.length === 1 ? '' : 's'}.`);
+      toast('Precio aplicado ✅');
+    }
+
+    function dataUrlToBlobFile(dataUrl, fileName = 'imagen.jpg', mimeHint = 'image/jpeg'){
+      try{
+        const parts = String(dataUrl || '').split(',');
+        if(parts.length < 2) return null;
+        const header = parts[0];
+        const mimeMatch = header.match(/data:([^;]+);base64/i);
+        const mime = mimeMatch ? mimeMatch[1] : mimeHint;
+        const binary = atob(parts[1]);
+        const bytes = new Uint8Array(binary.length);
+        for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        return new File([bytes], fileName, {type:mime});
+      }catch{
+        return null;
+      }
+    }
+
+    function triggerBlobDownload(blob, fileName){
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1200);
+    }
+
+
+    function openPhotoEditorModal(id){
+      const item = photoEditorImages.find(img => img.id === id);
+      if(!item) return;
+      activePhotoModalId = id;
+      $('photoModalImg').src = editorCurrentDataUrl(item);
+      $('photoModalTitle').textContent = item.resultDataUrl ? 'Vista grande · Foto editada' : 'Vista grande · Foto original';
+      $('photoModalMeta').textContent = editorCurrentName(item) + (item.resultDataUrl ? ' · Ya tiene precio aplicado' : ' · Sin edición aplicada');
+      populateResponseSelects();
+      $('photoModal').classList.add('show');
+    }
+
+    function closePhotoEditorModal(){
+      $('photoModal').classList.remove('show');
+    }
+
+    async function applyPriceToSingleEditorImage(id){
+      const index = photoEditorImages.findIndex(img => img.id === id);
+      if(index < 0) return;
+      const settings = getEditorPriceSettings();
+      if(!settings.text) return toast('Escribe el precio primero');
+      try{
+        setPhotoEditorStatus('Aplicando precio a esta foto...');
+        photoEditorImages[index] = await processEditorItem(photoEditorImages[index], settings);
+        renderPhotoEditorGallery();
+        openPhotoEditorModal(photoEditorImages[index].id);
+        setPhotoEditorStatus('Precio aplicado a esta foto.');
+        toast('Precio aplicado a esta foto ✅');
+      }catch(err){
+        toast('No se pudo aplicar el precio a esta foto');
+      }
+    }
+
+    function editorImageToResponseImage(item, index = 0){
+      return {
+        id: crypto.randomUUID(),
+        name: editorCurrentName(item, index),
+        type: item.type || 'image/jpeg',
+        size: item.size || 0,
+        dataUrl: editorCurrentDataUrl(item)
+      };
+    }
+
+    function appendOneEditorImageToExistingResponse(imageId, selectId = 'editorAppendResponseSelect'){
+      if(!ensureUnlockedForEditor('agregar esta foto a una respuesta')) return;
+      const item = photoEditorImages.find(img => img.id === imageId);
+      if(!item) return toast('No encontré esa foto');
+      const responseId = $(selectId)?.value;
+      const index = responses.findIndex(r => r.id === responseId);
+      if(index < 0) return toast('Selecciona una respuesta destino válida');
+      const current = getImages(responses[index]);
+      responses[index].images = [...current, editorImageToResponseImage(item)];
+      saveToStorage();
+      renderAll();
+      if(selectedResponse && selectedResponse.id === responseId) selectResponse(responses[index], false);
+      setPhotoEditorStatus(`Se agregó 1 foto a la respuesta "${responses[index].title}".`);
+      toast('Foto agregada a la respuesta ✅');
+    }
+
+    function useModalImageForNewResponse(){
+      const item = photoEditorImages.find(img => img.id === activePhotoModalId);
+      if(!item) return;
+      photoEditorImages = [{...item, id: crypto.randomUUID()}];
+      renderPhotoEditorGallery();
+      closePhotoEditorModal();
+      $('editorNewTitle').focus();
+      $('editorNewTitle').scrollIntoView({behavior:'smooth', block:'center'});
+      setPhotoEditorStatus('Dejé solo esta foto en el editor. Ahora escribe título/atajo y crea la nueva respuesta.');
+      toast('Lista para crear nueva respuesta ✅');
+    }
+
+
+    function downloadPhotoEditorSingle(id){
+      const item = photoEditorImages.find(img => img.id === id);
+      if(!item) return;
+      const file = dataUrlToBlobFile(editorCurrentDataUrl(item), editorCurrentName(item), item.type || 'image/jpeg');
+      if(!file) return toast('No se pudo preparar esa foto');
+      triggerBlobDownload(file, editorCurrentName(item));
+    }
+
+    function getPhotoEditorFiles(){
+      return photoEditorImages.map((item, index) => dataUrlToBlobFile(editorCurrentDataUrl(item), editorCurrentName(item, index), item.type || 'image/jpeg')).filter(Boolean);
+    }
+
+    async function downloadPhotoEditorZip(){
+      const files = getPhotoEditorFiles();
+      if(!files.length) return toast('No hay fotos para descargar');
+      if(typeof JSZip === 'undefined'){
+        toast('JSZip no cargó; haré la descarga individual');
+        return downloadPhotoEditorAllIndividual();
+      }
+      const zip = new JSZip();
+      files.forEach(file => zip.file(file.name, file));
+      const blob = await zip.generateAsync({type:'blob', compression:'DEFLATE', compressionOptions:{level:6}});
+      const stamp = new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
+      triggerBlobDownload(blob, `fotos_editadas_${stamp}.zip`);
+      setPhotoEditorStatus(`ZIP generado con ${files.length} foto${files.length === 1 ? '' : 's'}.`);
+    }
+
+    function downloadPhotoEditorCurrent(){
+      const files = getPhotoEditorFiles();
+      if(!files.length) return toast('No hay fotos para descargar');
+      if(files.length === 1){
+        triggerBlobDownload(files[0], files[0].name);
+        return;
+      }
+      downloadPhotoEditorAllIndividual();
+    }
+
+    function downloadPhotoEditorAllIndividual(){
+      const files = getPhotoEditorFiles();
+      if(!files.length) return toast('No hay fotos para descargar');
+      files.forEach((file, index) => {
+        setTimeout(() => triggerBlobDownload(file, file.name), index * 350);
+      });
+      setPhotoEditorStatus(`Se lanzó la descarga individual 1 por 1 para ${files.length} foto${files.length === 1 ? '' : 's'}.`);
+      toast('Descarga individual iniciada ✅');
+    }
+
+    function populateResponseSelects(){
+      ['editorLoadResponseSelect','editorAppendResponseSelect','photoModalResponseSelect'].forEach(id => {
+        const select = $(id);
+        if(!select) return;
+        const previous = select.value;
+        select.innerHTML = '';
+        responses.forEach(r => {
+          const option = document.createElement('option');
+          option.value = r.id;
+          option.textContent = `${r.title || 'Sin título'} · /${normalizeShortcut(r.shortcut)}`;
+          select.appendChild(option);
+        });
+        if(previous && [...select.options].some(opt => opt.value === previous)) select.value = previous;
+      });
+    }
+
+    function loadPhotosFromSelectedResponse(){
+      const id = $('editorLoadResponseSelect').value;
+      const r = responses.find(item => item.id === id);
+      if(!r) return toast('Selecciona una respuesta válida');
+      const imgs = getImages(r);
+      if(!imgs.length) return toast('Esa respuesta no tiene fotos');
+      photoEditorImages = imgs.map((img, index) => ({
+        id: crypto.randomUUID(),
+        name: imageName(img, index),
+        type: img.type || 'image/jpeg',
+        size: img.size || 0,
+        sourceDataUrl: img.dataUrl,
+        resultDataUrl: null,
+        processedName: null
+      }));
+      renderPhotoEditorGallery();
+      setPhotoEditorStatus(`Se cargaron ${imgs.length} foto${imgs.length === 1 ? '' : 's'} desde la respuesta "${r.title}".`);
+      toast('Fotos cargadas al editor ✅');
+    }
+
+    function ensureUnlockedForEditor(actionText){
+      if(isAdminUnlocked) return true;
+      switchView('adminView');
+      toast(`Desbloquea con token para ${actionText}`);
+      return false;
+    }
+
+    function buildEditorImagesForResponse(){
+      return photoEditorImages.map((img, index) => editorImageToResponseImage(img, index));
+    }
+
+    function appendEditedPhotosToExistingResponse(){
+      if(!ensureUnlockedForEditor('agregar fotos a una respuesta')) return;
+      const responseId = $('editorAppendResponseSelect').value;
+      const index = responses.findIndex(item => item.id === responseId);
+      if(index < 0) return toast('Selecciona una respuesta destino válida');
+      if(!photoEditorImages.length) return toast('No hay fotos en el editor');
+      const imgs = buildEditorImagesForResponse();
+      const current = getImages(responses[index]);
+      responses[index].images = [...current, ...imgs];
+      saveToStorage();
+      renderAll();
+      if(selectedResponse && selectedResponse.id === responseId) selectResponse(responses[index], false);
+      setPhotoEditorStatus(`Se agregaron ${imgs.length} foto${imgs.length === 1 ? '' : 's'} a la respuesta "${responses[index].title}".`);
+      toast('Fotos agregadas a la respuesta ✅');
+    }
+
+    function createNewResponseFromEditor(){
+      if(!ensureUnlockedForEditor('crear una nueva respuesta con fotos')) return;
+      const title = $('editorNewTitle').value.trim();
+      const shortcut = normalizeShortcut($('editorNewShortcut').value);
+      const category = $('editorNewCategory').value.trim() || 'General';
+      const tags = $('editorNewTags').value.split(',').map(t => t.trim()).filter(Boolean);
+      const message = $('editorNewMessage').value.trim();
+      const images = buildEditorImagesForResponse();
+      if(!title || !shortcut) return toast('Escribe al menos título y atajo para la nueva respuesta');
+      if(!message && !images.length) return toast('La nueva respuesta necesita texto o fotos');
+      const duplicated = responses.find(r => normalizeShortcut(r.shortcut) === shortcut);
+      if(duplicated) return toast('Ese atajo ya existe. Usa otro.');
+      const item = { id: crypto.randomUUID(), title, shortcut, category, tags, message, images };
+      responses.unshift(item);
+      saveToStorage();
+      renderAll();
+      $('editorNewTitle').value = '';
+      $('editorNewShortcut').value = '';
+      $('editorNewCategory').value = '';
+      $('editorNewTags').value = '';
+      $('editorNewMessage').value = '';
+      setPhotoEditorStatus(`Nueva respuesta creada con ${images.length} foto${images.length === 1 ? '' : 's'}.`);
+      toast('Nueva respuesta creada ✅');
     }
 
     function loadGithubConfig(){
