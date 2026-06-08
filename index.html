@@ -1098,8 +1098,11 @@
                 <div class="field span-2">
                   <label for="imageInput">Fotos o videos adjuntos</label>
                   <div class="image-upload-box">
-                    <input id="imageInput" type="file" accept="image/*,video/*" multiple />
-                    <div class="mini-text" style="margin-top:8px">Puedes seleccionar varias fotos, videos o mezclarlos. La herramienta no pone límite; el límite real depende del navegador, memoria del dispositivo, app destino y tamaño permitido por GitHub si sincronizas en nube. Los videos muy pesados pueden llenar el almacenamiento local rápido.</div>
+                    <input id="imageInput" type="file" accept="image/*,video/*,.jpg,.jpeg,.png,.webp,.gif,.heic,.heif,.mp4,.mov,.webm,.m4v,.3gp" multiple />
+                    <div class="mini-text" style="margin-top:8px">Selector mixto para fotos y videos. Si tu galería Android no muestra videos en este selector, usa el selector exclusivo de videos de abajo.</div>
+                    <label class="editor-file-label" for="videoInput">🎞️ Selector exclusivo de videos</label>
+                    <input id="videoInput" type="file" accept="video/*,.mp4,.mov,.webm,.m4v,.3gp" multiple />
+                    <div class="mini-text" style="margin-top:8px">Los videos se pueden mezclar con fotos. Ojo: si el video es muy pesado, el navegador puede tardar en leerlo y puede no caber en el guardado local/GitHub JSON.</div>
                     <div class="form-images-grid" id="formImagesGrid"></div>
                   </div>
                 </div>
@@ -1201,12 +1204,17 @@
 
             <label class="editor-file-label" for="editorGalleryInput">🖼️ Galería / seleccionar fotos o videos</label>
             <button class="btn primary full" type="button" id="editorOpenGalleryBtn">🖼️ Abrir galería / elegir muchos archivos</button>
-            <input id="editorGalleryInput" class="editor-file-input" type="file" accept="image/*,video/*" multiple />
+            <input id="editorGalleryInput" class="editor-file-input" type="file" accept="image/*,video/*,.jpg,.jpeg,.png,.webp,.gif,.heic,.heif,.mp4,.mov,.m4v,.webm,.3gp" multiple />
             <div class="editor-helper">Puedes seleccionar muchas fotos o videos de una sola vez o volver a elegir archivos varias veces; se irán sumando al editor.</div>
+
+            <label class="editor-file-label" for="editorVideoInput">🎞️ Videos / seleccionar solo videos</label>
+            <button class="btn ghost full" type="button" id="editorOpenVideoBtn">🎞️ Abrir galería de videos</button>
+            <input id="editorVideoInput" class="editor-file-input" type="file" accept="video/*,.mp4,.mov,.webm,.m4v,.3gp" multiple />
+            <div class="editor-helper">Este botón es más compatible en Android cuando el selector mixto no muestra videos.</div>
 
             <label class="editor-file-label" for="editorCameraInput">📷 Cámara / tomar foto</label>
             <button class="btn amber full" type="button" id="editorOpenCameraBtn">📷 Abrir cámara / elegir foto o video</button>
-            <input id="editorCameraInput" class="editor-file-input" type="file" accept="image/*,video/*" capture="environment" />
+            <input id="editorCameraInput" class="editor-file-input" type="file" accept="image/*,video/*,.jpg,.jpeg,.png,.webp,.gif,.heic,.heif,.mp4,.mov,.webm,.m4v,.3gp" capture="environment" />
             <div class="editor-helper">En PC puede abrir selector de archivos. En celular normalmente abre cámara o te deja escoger cámara/galería.</div>
 
             <div class="editor-paste-box" id="editorPasteBox" tabindex="0" contenteditable="true">
@@ -1531,6 +1539,7 @@
       $('unlockBtn').addEventListener('click', handleUnlock);
       $('responseForm').addEventListener('submit', saveResponse);
       $('imageInput').addEventListener('change', handleImageInput);
+      $('videoInput')?.addEventListener('change', handleImageInput);
       $('deleteEditingBtn').addEventListener('click', deleteEditingResponse);
       $('clearFormBtn').addEventListener('click', clearForm);
       $('lockBtn').addEventListener('click', lockAdmin);
@@ -1546,8 +1555,10 @@
       // FIX: eventos de la sección Editar fotos
       $('editorOpenGalleryBtn').addEventListener('click', () => openFileInput('editorGalleryInput'));
       $('editorOpenCameraBtn').addEventListener('click', () => openFileInput('editorCameraInput'));
+      $('editorOpenVideoBtn')?.addEventListener('click', () => openFileInput('editorVideoInput'));
       $('editorGalleryInput').addEventListener('change', handlePhotoEditorInput);
       $('editorCameraInput').addEventListener('change', handlePhotoEditorInput);
+      $('editorVideoInput')?.addEventListener('change', handlePhotoEditorInput);
       $('editorPasteBtn').addEventListener('click', readPhotoEditorClipboard);
       $('editorPriceOpacity').addEventListener('input', updateEditorOpacityLabel);
       $('editorNoBgCheckbox').addEventListener('change', updateEditorNoBgState);
@@ -1607,8 +1618,15 @@
     }
 
     function saveToStorage(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
-      scheduleAutoCloudUpload();
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
+        scheduleAutoCloudUpload();
+        return true;
+      }catch(err){
+        console.error(err);
+        toast('No se pudo guardar: uno o más videos pesan demasiado para el almacenamiento del navegador. Prueba con un video más corto/comprimido o solo úsalo sin sincronizar.');
+        return false;
+      }
     }
 
     function normalizeShortcut(value){
@@ -1960,35 +1978,106 @@
       });
     }
 
-    function fileToImageObject(file){
+    async function detectMimeFromFile(file){
+      const type = String(file?.type || '').toLowerCase();
+      const name = String(file?.name || '').toLowerCase();
+      if(type.startsWith('image/') || type.startsWith('video/')) return type;
+      if(/\.mp4$/i.test(name)) return 'video/mp4';
+      if(/\.mov$/i.test(name)) return 'video/quicktime';
+      if(/\.webm$/i.test(name)) return 'video/webm';
+      if(/\.m4v$/i.test(name)) return 'video/mp4';
+      if(/\.3gp$/i.test(name)) return 'video/3gpp';
+      if(/\.jpe?g$/i.test(name)) return 'image/jpeg';
+      if(/\.png$/i.test(name)) return 'image/png';
+      if(/\.webp$/i.test(name)) return 'image/webp';
+      if(/\.gif$/i.test(name)) return 'image/gif';
+      if(/\.heic$/i.test(name)) return 'image/heic';
+      if(/\.heif$/i.test(name)) return 'image/heif';
+
+      try{
+        const bytes = new Uint8Array(await file.slice(0, 32).arrayBuffer());
+        const text = String.fromCharCode(...bytes);
+        if(bytes[0] === 0xff && bytes[1] === 0xd8) return 'image/jpeg';
+        if(bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) return 'image/png';
+        if(text.startsWith('GIF8')) return 'image/gif';
+        if(text.startsWith('RIFF') && text.includes('WEBP')) return 'image/webp';
+        if(bytes[0] === 0x1a && bytes[1] === 0x45 && bytes[2] === 0xdf && bytes[3] === 0xa3) return 'video/webm';
+        if(text.slice(4, 8) === 'ftyp'){
+          const brand = text.slice(8, 24).toLowerCase();
+          if(brand.includes('heic') || brand.includes('heif') || brand.includes('mif1')) return 'image/heic';
+          if(brand.includes('qt')) return 'video/quicktime';
+          return 'video/mp4';
+        }
+      }catch{}
+
+      return type || 'application/octet-stream';
+    }
+
+    function readFileAsDataUrl(file){
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => resolve({
-          id: crypto.randomUUID(),
-          name: file.name || (file.type?.startsWith('video/') ? 'video.mp4' : 'foto.jpg'),
-          type: file.type || (file.name && /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(file.name) ? 'video/mp4' : 'image/jpeg'),
-          size: file.size || 0,
-          dataUrl: reader.result
-        });
+        reader.onload = () => resolve(String(reader.result || ''));
         reader.onerror = () => reject(new Error('No se pudo leer un archivo'));
         reader.readAsDataURL(file);
       });
     }
 
+    async function fileToImageObject(file){
+      const detectedType = await detectMimeFromFile(file);
+      let dataUrl = await readFileAsDataUrl(file);
+      if(detectedType && detectedType !== 'application/octet-stream' && dataUrl.startsWith('data:application/octet-stream')){
+        dataUrl = dataUrl.replace(/^data:[^;]*;/, `data:${detectedType};`);
+      }
+      const isVideo = detectedType.startsWith('video/') || /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(file.name || '');
+      return {
+        id: crypto.randomUUID(),
+        name: file.name || (isVideo ? 'video.mp4' : 'foto.jpg'),
+        type: detectedType || (isVideo ? 'video/mp4' : 'image/jpeg'),
+        size: file.size || 0,
+        dataUrl
+      };
+    }
+
     function isAllowedMediaFile(file){
-      const type = String(file?.type || '').toLowerCase();
-      const name = String(file?.name || '').toLowerCase();
-      return type.startsWith('image/') || type.startsWith('video/') || /\.(png|jpe?g|webp|bmp|gif|heic|heif|mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(name);
+      if(!file) return false;
+      const type = String(file.type || '').toLowerCase();
+      const name = String(file.name || '').toLowerCase();
+      if(type.startsWith('image/') || type.startsWith('video/')) return true;
+      if(/\.(png|jpe?g|webp|bmp|gif|heic|heif|mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(name)) return true;
+      // Algunos selectores de Android devuelven videos/fotos como application/octet-stream o sin MIME.
+      // Si el usuario lo eligió desde el selector de medios, intentamos leerlo y detectar el tipo por cabecera.
+      return !type || type === 'application/octet-stream';
+    }
+
+    function warnIfLargeMedia(files){
+      const heavy = files.filter(f => Number(f.size || 0) > 8 * 1024 * 1024);
+      if(heavy.length){
+        toast(`Leyendo ${heavy.length} video/archivo pesado. Puede tardar y quizá no quepa al guardar en nube/local.`);
+      }
     }
 
     async function handleImageInput(event){
-      const files = [...(event.target.files || [])].filter(isAllowedMediaFile);
-      if(!files.length) return;
+      const selected = [...(event.target.files || [])];
+      const files = selected.filter(isAllowedMediaFile);
+      if(!files.length){
+        if(selected.length) toast('El selector devolvió archivos sin formato de foto/video válido. Prueba el botón exclusivo de videos.');
+        return;
+      }
+      warnIfLargeMedia(files);
+      let added = [];
       try{
-        const media = await Promise.all(files.map(fileToImageObject));
-        formImages.push(...media);
-        renderFormImages();
-        toast(`${mediaCountText(media)} agregado${media.length === 1 ? '' : 's'} ✅`);
+        for(const file of files){
+          const media = await fileToImageObject(file);
+          if(!isImageMedia(media) && !isVideoMedia(media)){
+            console.warn('Archivo no reconocido como foto/video', file);
+            continue;
+          }
+          formImages.push(media);
+          added.push(media);
+          renderFormImages();
+        }
+        if(added.length) toast(`${mediaCountText(added)} agregado${added.length === 1 ? '' : 's'} ✅`);
+        else toast('No pude reconocer esos archivos como fotos o videos. Prueba con MP4/MOV/WebM.');
       }catch(err){
         toast(err.message || 'No se pudieron cargar los archivos');
       }finally{
@@ -2099,24 +2188,43 @@
     }
 
     async function addFilesToPhotoEditor(filesLike, source = 'archivo'){
-      const files = [...(filesLike || [])].filter(isAllowedMediaFile);
+      const selected = [...(filesLike || [])];
+      const files = selected.filter(isAllowedMediaFile);
       if(!files.length){
-        setPhotoEditorStatus('No se detectaron fotos o videos válidos para agregar.');
+        const msg = selected.length ? 'El selector devolvió archivos sin formato de foto/video válido. Prueba el botón exclusivo de videos.' : 'No se detectaron fotos o videos válidos para agregar.';
+        setPhotoEditorStatus(msg);
+        toast(msg);
         return false;
       }
 
+      warnIfLargeMedia(files);
+      let media = [];
       try{
-        const media = await Promise.all(files.map(fileToImageObject));
-        photoEditorImages.push(...media.map((item, index) => ({
-          id: crypto.randomUUID(),
-          name: imageName(item, index),
-          type: item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg'),
-          size: item.size || 0,
-          sourceDataUrl: item.dataUrl,
-          resultDataUrl: null,
-          processedName: null
-        })));
-        renderPhotoEditorGallery();
+        setPhotoEditorStatus(`Leyendo ${files.length} archivo${files.length === 1 ? '' : 's'} desde ${source}...`);
+        for(const file of files){
+          const item = await fileToImageObject(file);
+          if(!isImageMedia(item) && !isVideoMedia(item)){
+            console.warn('Archivo no reconocido como foto/video', file);
+            continue;
+          }
+          const editorItem = {
+            id: crypto.randomUUID(),
+            name: imageName(item, media.length),
+            type: item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg'),
+            size: item.size || 0,
+            sourceDataUrl: item.dataUrl,
+            resultDataUrl: null,
+            processedName: null
+          };
+          photoEditorImages.push(editorItem);
+          media.push(item);
+          renderPhotoEditorGallery();
+        }
+        if(!media.length){
+          setPhotoEditorStatus('No pude reconocer esos archivos como fotos o videos. Prueba con MP4/MOV/WebM.');
+          toast('No pude reconocer esos archivos como fotos o videos.');
+          return false;
+        }
         setPhotoEditorStatus(`${mediaCountText(media)} agregado${media.length === 1 ? '' : 's'} desde ${source}.`);
         toast(`${mediaCountText(media)} agregado${media.length === 1 ? '' : 's'} ✅`);
         return true;
@@ -3052,7 +3160,11 @@
       if(index >= 0) responses[index] = item;
       else responses.unshift(item);
 
-      saveToStorage();
+      if(!saveToStorage()){
+        responses = loadResponses();
+        renderAll();
+        return;
+      }
       if(selectedResponse && selectedResponse.id === id){
         selectResponse(item, false);
       }
@@ -3077,7 +3189,7 @@
         row.innerHTML = `
           <div>
             <strong>${escapeHtml(r.title || 'Sin título')}</strong>
-            <small>/${escapeHtml(normalizeShortcut(r.shortcut))} · ${escapeHtml(r.category || 'General')} · 🖼️ ${getImages(r).length}</small>
+            <small>/${escapeHtml(normalizeShortcut(r.shortcut))} · ${escapeHtml(r.category || 'General')} · 📎 ${mediaCountText(getMedia(r))}</small>
           </div>
           <div class="actions">
             <button class="btn ghost small" data-action="edit">✏️ Editar</button>
@@ -3191,6 +3303,7 @@ Esta acción se guarda localmente y luego puedes subir cambios a GitHub.`);
       $('tagsInput').value = '';
       $('messageInput').value = '';
       $('imageInput').value = '';
+      if($('videoInput')) $('videoInput').value = '';
       formImages = [];
       renderFormImages();
       $('formTitle').textContent = 'Agregar respuesta rápida';
