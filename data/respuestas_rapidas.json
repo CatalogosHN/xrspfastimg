@@ -1,0 +1,70 @@
+{
+  "app": "Respuestas Rápidas",
+  "version": 3,
+  "updatedAt": "2026-06-08T19:32:06.222Z",
+  "owner": "CatalogosHN",
+  "repo": "xrspfastimg",
+  "path": "data/respuestas_rapidas.json",
+  "responses": [
+    {
+      "id": "89346207-7b1f-430e-a1f4-f3c3375a1651",
+      "title": "Video Pruebas cargo expreso",
+      "shortcut": "videopruebascargoexpreso",
+      "category": "Video Pruebas cargo expreso",
+      "tags": [
+        "Video Pruebas cargo expreso"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "9ddb3ae5-d09a-4cc8-8d5b-ec4b71f611d1",
+          "name": "1000998782.mp4",
+          "type": "video/mp4",
+          "size": 56844104,
+          "blobKey": "video-9ddb3ae5-d09a-4cc8-8d5b-ec4b71f611d1",
+          "localOnly": true,
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "c8e0eba2-b9fd-4ce3-9e91-3a3f5e4a5688",
+      "title": "Lista de productos",
+      "shortcut": "productolista",
+      "category": "Productos",
+      "tags": [
+        "catalogo",
+        "lista",
+        "venta"
+      ],
+      "message": "Hola 👋\n\nTe comparto la lista de productos disponibles.\n\nPuedes revisar opciones, precios y disponibilidad. Si te interesa alguno, me mandas captura o el nombre del producto y te confirmo detalles. ✅",
+      "images": []
+    },
+    {
+      "id": "5ec266dc-9e57-416e-9935-b31b72a54406",
+      "title": "Información de envío",
+      "shortcut": "envio",
+      "category": "Envíos",
+      "tags": [
+        "delivery",
+        "entrega",
+        "moto"
+      ],
+      "message": "Claro ✅\n\nRealizamos envío por delivery según la zona. El costo puede variar dependiendo de la ubicación exacta.\n\nEnvíame tu colonia o ubicación de referencia para confirmarte el costo.",
+      "images": []
+    },
+    {
+      "id": "ed04eac1-68b4-4b7b-b5bb-48c7ff37c955",
+      "title": "Producto disponible",
+      "shortcut": "disponible",
+      "category": "Ventas",
+      "tags": [
+        "stock",
+        "cliente",
+        "producto"
+      ],
+      "message": "Sí, está disponible ✅\n\nPuedes reservarlo coordinando el envío o entrega. Para confirmar, necesito tu nombre, dirección y número de contacto.",
+      "images": []
+    }
+  ]
+}
