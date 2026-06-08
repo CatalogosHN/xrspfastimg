@@ -366,11 +366,15 @@
 
     .image-mini img,
     .selected-image img,
-    .form-image img{
+    .form-image img,
+    .image-mini video,
+    .selected-image video,
+    .form-image video{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
+      background:#0f172a;
     }
 
     .image-count-pill{
@@ -401,6 +405,23 @@
       font-weight:900;
       font-size:.86rem;
       box-shadow:0 6px 12px rgba(230,57,70,.25);
+    }
+
+    .media-type-badge{
+      position:absolute;
+      left:5px;
+      bottom:5px;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:4px 7px;
+      border-radius:999px;
+      background:rgba(15,23,42,.78);
+      color:white;
+      font-size:.66rem;
+      font-weight:900;
+      line-height:1;
+      pointer-events:none;
     }
 
     .image-upload-box{
@@ -641,7 +662,7 @@
       overflow:hidden;
       position:relative;
     }
-    .editor-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .editor-thumb img,.editor-thumb video{width:100%;height:100%;object-fit:cover;display:block;background:#0f172a}
     .editor-badges{
       position:absolute;left:8px;top:8px;display:flex;flex-wrap:wrap;gap:6px;
     }
@@ -845,11 +866,13 @@
       min-height:260px;
       overflow:hidden;
     }
-    .photo-modal-preview img{
+    .photo-modal-preview img,
+    .photo-modal-preview video{
       display:block;
       max-width:100%;
       max-height:62vh;
       object-fit:contain;
+      background:#0f172a;
     }
     .photo-modal-actions{
       display:grid;
@@ -912,8 +935,8 @@
     /* FIX3: miniaturas siempre pequeñas en editor */
     #photoEditorGallery .editor-item{max-width:132px!important}
     #photoEditorGallery .editor-thumb{height:104px!important}
-    #photoEditorGallery img{max-width:100%!important;max-height:100%!important}
-    #editorPasteBox img{display:none!important}
+    #photoEditorGallery img,#photoEditorGallery video{max-width:100%!important;max-height:100%!important}
+    #editorPasteBox img,#editorPasteBox video{display:none!important}
 
   
     .editor-color-grid{
@@ -967,7 +990,7 @@
       <nav class="nav">
         <button class="active" data-view="responsesView"><span class="icon">💬</span> Respuestas</button>
         <button data-view="adminView"><span class="icon">➕</span> Agregar / Editar</button>
-        <button data-view="photoEditorView"><span class="icon">🖼️</span> Editar fotos</button>
+        <button data-view="photoEditorView"><span class="icon">🖼️</span> Editar fotos / videos</button>
         <button data-view="settingsView"><span class="icon">🛡️</span> Nube / Seguridad / Backup</button>
       </nav>
 
@@ -1073,10 +1096,10 @@
                   <textarea id="messageInput" placeholder="Escribe aquí la respuesta rápida que quieres copiar o compartir. Si solo quieres enviar fotos, puedes dejar este campo vacío."></textarea>
                 </div>
                 <div class="field span-2">
-                  <label for="imageInput">Fotos adjuntas</label>
+                  <label for="imageInput">Fotos o videos adjuntos</label>
                   <div class="image-upload-box">
-                    <input id="imageInput" type="file" accept="image/*" multiple />
-                    <div class="mini-text" style="margin-top:8px">Puedes seleccionar varias fotos. La herramienta no pone límite; el límite real depende del navegador, memoria del dispositivo, app destino y tamaño permitido por GitHub si sincronizas en nube.</div>
+                    <input id="imageInput" type="file" accept="image/*,video/*" multiple />
+                    <div class="mini-text" style="margin-top:8px">Puedes seleccionar varias fotos, videos o mezclarlos. La herramienta no pone límite; el límite real depende del navegador, memoria del dispositivo, app destino y tamaño permitido por GitHub si sincronizas en nube. Los videos muy pesados pueden llenar el almacenamiento local rápido.</div>
                     <div class="form-images-grid" id="formImagesGrid"></div>
                   </div>
                 </div>
@@ -1106,8 +1129,8 @@
       <section id="photoEditorView" class="view">
         <div class="photo-editor-layout">
           <div class="form-card">
-            <h2>Editar fotos</h2>
-            <p>Sube fotos nuevas o toma fotos de una respuesta guardada, agrega un precio tipo <strong>“L. 200”</strong>, elige la posición y luego descárgalas o agrégalas directo a una respuesta rápida.</p>
+            <h2>Editar fotos / organizar videos</h2>
+            <p>Sube fotos o videos de una respuesta guardada. A las fotos puedes agregarles un precio tipo <strong>“L. 200”</strong>; los videos se conservan intactos para compartirlos junto con las fotos.</p>
 
             <div class="field">
               <label for="editorPriceText">Texto de precio</label>
@@ -1167,7 +1190,7 @@
             </div>
 
             <div class="editor-drop" id="editorDropZone">
-              <strong>⬇️ Arrastra imágenes aquí</strong><br>
+              <strong>⬇️ Arrastra fotos o videos aquí</strong><br>
               <span class="editor-helper">También puedes usar galería, cámara o cargar las fotos de una respuesta guardada.</span>
             </div>
 
@@ -1176,14 +1199,14 @@
               <button class="btn ghost" type="button" id="editorPasteBtn">📋 Leer portapapeles</button>
             </div>
 
-            <label class="editor-file-label" for="editorGalleryInput">🖼️ Galería / seleccionar fotos</label>
-            <button class="btn primary full" type="button" id="editorOpenGalleryBtn">🖼️ Abrir galería / elegir muchas fotos</button>
-            <input id="editorGalleryInput" class="editor-file-input" type="file" accept="image/*" multiple />
-            <div class="editor-helper">Puedes seleccionar muchas fotos de una sola vez o volver a elegir archivos varias veces; se irán sumando al editor.</div>
+            <label class="editor-file-label" for="editorGalleryInput">🖼️ Galería / seleccionar fotos o videos</label>
+            <button class="btn primary full" type="button" id="editorOpenGalleryBtn">🖼️ Abrir galería / elegir muchos archivos</button>
+            <input id="editorGalleryInput" class="editor-file-input" type="file" accept="image/*,video/*" multiple />
+            <div class="editor-helper">Puedes seleccionar muchas fotos o videos de una sola vez o volver a elegir archivos varias veces; se irán sumando al editor.</div>
 
             <label class="editor-file-label" for="editorCameraInput">📷 Cámara / tomar foto</label>
-            <button class="btn amber full" type="button" id="editorOpenCameraBtn">📷 Abrir cámara / elegir foto</button>
-            <input id="editorCameraInput" class="editor-file-input" type="file" accept="image/*" capture="environment" />
+            <button class="btn amber full" type="button" id="editorOpenCameraBtn">📷 Abrir cámara / elegir foto o video</button>
+            <input id="editorCameraInput" class="editor-file-input" type="file" accept="image/*,video/*" capture="environment" />
             <div class="editor-helper">En PC puede abrir selector de archivos. En celular normalmente abre cámara o te deja escoger cámara/galería.</div>
 
             <div class="editor-paste-box" id="editorPasteBox" tabindex="0" contenteditable="true">
@@ -1191,44 +1214,44 @@
             </div>
 
             <div class="editor-toolbar">
-              <button class="btn green" type="button" id="editorApplyPriceBtn">🏷️ Aplicar precio a todas</button>
+              <button class="btn green" type="button" id="editorApplyPriceBtn">🏷️ Aplicar precio a fotos</button>
               <button class="btn ghost" type="button" id="editorResetEditsBtn">↩️ Quitar edición</button>
             </div>
 
             <div class="editor-summary">
-              <span class="editor-chip">Fotos en editor: <b id="editorCount">0</b></span>
-              <span class="editor-chip">Editadas: <b id="editorProcessedCount">0</b></span>
+              <span class="editor-chip">Archivos en editor: <b id="editorCount">0</b></span>
+              <span class="editor-chip">Fotos editadas: <b id="editorProcessedCount">0</b></span>
             </div>
 
-            <div class="editor-status" id="editorStatus">Todavía no has agregado fotos al editor.</div>
+            <div class="editor-status" id="editorStatus">Todavía no has agregado fotos o videos al editor.</div>
 
             <div class="editor-response-tools">
               <div class="form-card" style="margin:0">
-                <h2 style="margin-bottom:8px">Cargar fotos de una respuesta guardada</h2>
+                <h2 style="margin-bottom:8px">Cargar fotos/videos de una respuesta guardada</h2>
                 <div class="field">
                   <label for="editorLoadResponseSelect">Respuesta existente</label>
                   <select id="editorLoadResponseSelect"></select>
                 </div>
                 <div class="editor-inline">
-                  <button class="btn ghost" type="button" id="editorLoadResponseBtn">📥 Cargar fotos de esa respuesta</button>
+                  <button class="btn ghost" type="button" id="editorLoadResponseBtn">📥 Cargar archivos de esa respuesta</button>
                 </div>
-                <div class="editor-helper">Esto reemplaza las fotos actuales del editor por las fotos de esa respuesta.</div>
+                <div class="editor-helper">Esto reemplaza los archivos actuales del editor por las fotos/videos de esa respuesta.</div>
               </div>
 
               <div class="form-card" style="margin:0">
-                <h2 style="margin-bottom:8px">Agregar fotos editadas a una respuesta existente</h2>
+                <h2 style="margin-bottom:8px">Agregar fotos/videos a una respuesta existente</h2>
                 <div class="field">
                   <label for="editorAppendResponseSelect">Respuesta destino</label>
                   <select id="editorAppendResponseSelect"></select>
                 </div>
                 <div class="editor-inline">
-                  <button class="btn primary" type="button" id="editorAppendToExistingBtn">➕ Agregar fotos editadas</button>
+                  <button class="btn primary" type="button" id="editorAppendToExistingBtn">➕ Agregar archivos</button>
                 </div>
-                <div class="editor-helper">Las fotos editadas se agregan a la respuesta elegida. No borra las fotos anteriores.</div>
+                <div class="editor-helper">Las fotos editadas y los videos intactos se agregan a la respuesta elegida. No borra los adjuntos anteriores.</div>
               </div>
 
               <div class="form-card" style="margin:0">
-                <h2 style="margin-bottom:8px">Crear nueva respuesta con estas fotos</h2>
+                <h2 style="margin-bottom:8px">Crear nueva respuesta con estos archivos</h2>
                 <div class="form-grid">
                   <div class="field">
                     <label for="editorNewTitle">Título visible</label>
@@ -1252,7 +1275,7 @@
                   </div>
                 </div>
                 <div class="editor-inline">
-                  <button class="btn green" type="button" id="editorCreateResponseBtn">💾 Crear respuesta nueva con estas fotos</button>
+                  <button class="btn green" type="button" id="editorCreateResponseBtn">💾 Crear respuesta nueva con estos archivos</button>
                 </div>
               </div>
             </div>
@@ -1261,8 +1284,8 @@
           <div class="form-card">
             <div class="section-head">
               <div>
-                <h2>Fotos del editor</h2>
-                <p>Puedes descargar una por una, todas juntas en ZIP o disparar una descarga individual 1 por 1.</p>
+                <h2>Archivos del editor</h2>
+                <p>Puedes descargar una por una, todos juntos en ZIP o disparar una descarga individual 1 por 1.</p>
               </div>
             </div>
             <div class="editor-toolbar-3">
@@ -1270,9 +1293,9 @@
               <button class="btn primary" type="button" id="editorDownloadZipBtn">🗜️ Descargar todas en ZIP</button>
               <button class="btn ghost" type="button" id="editorDownloadCurrentBtn">📁 Descargar visibles</button>
             </div>
-            <div class="editor-preview-note">Si una foto ya fue editada, se descargará la versión editada. Si no, se descargará la original cargada en el editor.</div>
+            <div class="editor-preview-note">Si una foto ya fue editada, se descargará la versión editada. Los videos se descargan intactos.</div>
             <div style="margin-top:14px" id="photoEditorGallery" class="editor-gallery"></div>
-            <div class="editor-empty" id="photoEditorEmpty">No hay fotos en el editor todavía.</div>
+            <div class="editor-empty" id="photoEditorEmpty">No hay fotos ni videos en el editor todavía.</div>
           </div>
         </div>
       </section>
@@ -1378,21 +1401,22 @@
         <button class="btn red small" type="button" id="photoModalCloseBtn">✕ Cerrar</button>
       </div>
       <div class="photo-modal-preview">
-        <img id="photoModalImg" alt="Vista grande de foto editada" />
+        <img id="photoModalImg" alt="Vista grande de archivo" />
+        <video id="photoModalVideo" controls playsinline preload="metadata" style="display:none"></video>
       </div>
       <div class="photo-modal-actions">
         <button class="btn primary" type="button" id="photoModalApplyBtn">🏷️ Aplicar precio a esta foto</button>
-        <button class="btn ghost" type="button" id="photoModalDownloadBtn">⬇️ Descargar esta foto</button>
+        <button class="btn ghost" type="button" id="photoModalDownloadBtn">⬇️ Descargar este archivo</button>
       </div>
       <div class="photo-modal-tools">
         <div class="field" style="margin:0">
-          <label for="photoModalResponseSelect">Agregar esta foto a respuesta existente</label>
+          <label for="photoModalResponseSelect">Agregar este archivo a respuesta existente</label>
           <select id="photoModalResponseSelect"></select>
         </div>
-        <button class="btn green" type="button" id="photoModalAppendBtn">➕ Agregar esta foto</button>
+        <button class="btn green" type="button" id="photoModalAppendBtn">➕ Agregar este archivo</button>
       </div>
       <div class="photo-modal-actions">
-        <button class="btn amber" type="button" id="photoModalUseNewBtn">🆕 Usar solo esta foto para nueva respuesta</button>
+        <button class="btn amber" type="button" id="photoModalUseNewBtn">🆕 Usar solo este archivo para nueva respuesta</button>
         <button class="btn ghost" type="button" id="photoModalBackBtn">↩️ Volver a miniaturas</button>
       </div>
     </div>
@@ -1663,7 +1687,7 @@
           <h3><span>${escapeHtml(r.title || 'Sin título')}</span></h3>
           <div class="cat">${escapeHtml(r.category || 'General')}</div>
           <div class="shortcut">/${escapeHtml(normalizeShortcut(r.shortcut))}</div>
-          <div class="preview">${escapeHtml(r.message || (getImages(r).length ? 'Esta respuesta no tiene texto, solo fotos adjuntas.' : ''))}</div>
+          <div class="preview">${escapeHtml(r.message || (getImages(r).length ? 'Esta respuesta no tiene texto, solo fotos/videos adjuntos.' : ''))}</div>
           ${renderCardImagesHtml(r)}
           <div class="card-actions">
             <button class="btn primary small" data-action="select">📲 Enviar</button>
@@ -1688,7 +1712,7 @@
       selectedResponse = r;
       selectedTitle.textContent = r.title || 'Respuesta seleccionada';
       selectedHint.innerHTML = `Atajo: <strong>/${escapeHtml(normalizeShortcut(r.shortcut))}</strong> · Categoría: <strong>${escapeHtml(r.category || 'General')}</strong>`;
-      selectedMessage.textContent = r.message || (getImages(r).length ? 'Esta respuesta no tiene texto. Solo contiene fotos adjuntas.' : '');
+      selectedMessage.textContent = r.message || (getImages(r).length ? 'Esta respuesta no tiene texto. Solo contiene fotos/videos adjuntos.' : '');
       renderSelectedImages(r);
       selectedTagsPanel.innerHTML = renderTagsHtml(r);
       selectedTagsPanel.classList.remove('show');
@@ -1776,11 +1800,11 @@
 
     async function shareResponse(r){
       const text = String(r.message || '').trim();
-      const images = getImages(r);
-      if(!text && !images.length) return toast('Esta respuesta no tiene texto ni fotos para enviar');
+      const media = getMedia(r);
+      if(!text && !media.length) return toast('Esta respuesta no tiene texto ni fotos/videos para enviar');
 
       const copied = text ? await copyTextSilently(text) : false;
-      const files = images.map(dataUrlToFile).filter(Boolean);
+      const files = media.map(dataUrlToFile).filter(Boolean);
 
       if(navigator.share){
         try{
@@ -1791,15 +1815,15 @@
             if(navigator.canShare && navigator.canShare({ files })){
               shareData.files = files;
               await navigator.share(shareData);
-              toast(text ? 'Texto copiado y fotos listas para enviar ✅' : 'Fotos listas para enviar ✅');
+              toast(text ? 'Texto copiado y archivos listos para enviar ✅' : 'Archivos listos para enviar ✅');
               return;
             }
             if(text){
               await navigator.share(shareData);
-              toast('Texto compartido. Este navegador/app no permitió adjuntar las fotos.');
+              toast('Texto compartido. Este navegador/app no permitió adjuntar las fotos/videos.');
               return;
             }
-            toast('Este navegador o app no permite compartir fotos como adjuntos desde HTML.');
+            toast('Este navegador o app no permite compartir fotos/videos como adjuntos desde HTML.');
             return;
           }
 
@@ -1812,42 +1836,100 @@
         if(text){
           const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
           window.open(wa, '_blank');
-          toast(files.length ? 'Tu navegador no soporta adjuntar fotos desde compartir; el texto fue copiado.' : 'Tu navegador no soporta menú compartir; abrí WhatsApp y copié el mensaje.');
+          toast(files.length ? 'Tu navegador no soporta adjuntar fotos/videos desde compartir; el texto fue copiado.' : 'Tu navegador no soporta menú compartir; abrí WhatsApp y copié el mensaje.');
         }else{
-          toast('Este navegador no soporta compartir fotos como adjuntos desde HTML.');
+          toast('Este navegador no soporta compartir fotos/videos como adjuntos desde HTML.');
         }
       }
     }
 
+    function isVideoMedia(item){
+      const type = String(item?.type || '').toLowerCase();
+      const data = String(item?.dataUrl || item?.sourceDataUrl || item?.resultDataUrl || '').toLowerCase();
+      const name = String(item?.name || item?.processedName || '').toLowerCase();
+      return type.startsWith('video/') || data.startsWith('data:video/') || /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(name);
+    }
+
+    function isImageMedia(item){
+      const type = String(item?.type || '').toLowerCase();
+      const data = String(item?.dataUrl || item?.sourceDataUrl || item?.resultDataUrl || '').toLowerCase();
+      const name = String(item?.name || item?.processedName || '').toLowerCase();
+      return type.startsWith('image/') || data.startsWith('data:image/') || /\.(png|jpe?g|webp|bmp|gif|heic|heif)$/i.test(name);
+    }
+
+    function getMedia(r){
+      const fromMedia = Array.isArray(r?.media) ? r.media : [];
+      const fromImages = Array.isArray(r?.images) ? r.images : [];
+      const list = fromMedia.length ? fromMedia : fromImages;
+      return list.filter(item => item && item.dataUrl);
+    }
+
+    // Compatibilidad: las respuestas viejas usan la propiedad "images".
     function getImages(r){
-      return Array.isArray(r.images) ? r.images.filter(img => img && img.dataUrl) : [];
+      return getMedia(r);
+    }
+
+    function countMedia(list){
+      const media = Array.isArray(list) ? list : [];
+      return {
+        total: media.length,
+        images: media.filter(isImageMedia).length,
+        videos: media.filter(isVideoMedia).length
+      };
+    }
+
+    function mediaCountText(media){
+      const c = countMedia(media);
+      if(!c.total) return '0 archivos';
+      const parts = [];
+      if(c.images) parts.push(`${c.images} foto${c.images === 1 ? '' : 's'}`);
+      if(c.videos) parts.push(`${c.videos} video${c.videos === 1 ? '' : 's'}`);
+      const other = c.total - c.images - c.videos;
+      if(other) parts.push(`${other} archivo${other === 1 ? '' : 's'}`);
+      return parts.join(' + ');
     }
 
     function imageName(img, index = 0){
-      return String(img.name || `foto-${index + 1}.jpg`).replace(/[\\/:*?"<>|]+/g, '-');
+      const fallback = isVideoMedia(img) ? `video-${index + 1}.mp4` : `foto-${index + 1}.jpg`;
+      return String(img?.name || fallback).replace(/[\\/:*?"<>|]+/g, '-');
+    }
+
+    function renderMediaPreviewHtml(media, index, label = 'Adjunto'){
+      const src = escapeHtml(media.dataUrl || '');
+      const title = escapeHtml(imageName(media, index));
+      if(isVideoMedia(media)){
+        return `
+          <video src="${src}" muted playsinline preload="metadata" title="${title}"></video>
+          <span class="media-type-badge">▶ Video</span>
+        `;
+      }
+      return `
+        <img src="${src}" alt="${escapeHtml(label)} ${index + 1}" loading="lazy">
+        <span class="media-type-badge">🖼️ Foto</span>
+      `;
     }
 
     function renderCardImagesHtml(r){
-      const images = getImages(r);
-      if(!images.length) return '';
-      const thumbs = images.slice(0, 4).map((img, index) => `
-        <div class="image-mini" title="${escapeHtml(imageName(img, index))}">
-          <img src="${escapeHtml(img.dataUrl)}" alt="Foto adjunta ${index + 1}" loading="lazy">
+      const media = getMedia(r);
+      if(!media.length) return '';
+      const thumbs = media.slice(0, 4).map((item, index) => `
+        <div class="image-mini" title="${escapeHtml(imageName(item, index))}">
+          ${renderMediaPreviewHtml(item, index, 'Adjunto')}
         </div>
       `).join('');
-      const extra = images.length > 4 ? `<span class="image-count-pill">+${images.length - 4} más</span>` : '';
-      return `<div class="image-count-pill">🖼️ ${images.length} foto${images.length === 1 ? '' : 's'}</div><div class="image-mini-strip">${thumbs}${extra}</div>`;
+      const extra = media.length > 4 ? `<span class="image-count-pill">+${media.length - 4} más</span>` : '';
+      return `<div class="image-count-pill">📎 ${mediaCountText(media)}</div><div class="image-mini-strip">${thumbs}${extra}</div>`;
     }
 
     function renderSelectedImages(r){
-      const images = getImages(r);
+      const media = getMedia(r);
       selectedImages.innerHTML = '';
-      if(!images.length) return;
-      images.forEach((img, index) => {
+      if(!media.length) return;
+      media.forEach((item, index) => {
         const box = document.createElement('div');
         box.className = 'selected-image';
-        box.title = imageName(img, index);
-        box.innerHTML = `<img src="${escapeHtml(img.dataUrl)}" alt="Foto adjunta ${index + 1}" loading="lazy">`;
+        box.title = imageName(item, index);
+        box.innerHTML = renderMediaPreviewHtml(item, index, 'Adjunto');
         selectedImages.appendChild(box);
       });
     }
@@ -1858,17 +1940,17 @@
       if(!formImages.length){
         const note = document.createElement('div');
         note.className = 'mini-text';
-        note.textContent = 'Sin fotos adjuntas todavía.';
+        note.textContent = 'Sin fotos ni videos adjuntos todavía.';
         grid.appendChild(note);
         return;
       }
-      formImages.forEach((img, index) => {
+      formImages.forEach((item, index) => {
         const box = document.createElement('div');
         box.className = 'form-image';
-        box.title = imageName(img, index);
+        box.title = imageName(item, index);
         box.innerHTML = `
-          <img src="${escapeHtml(img.dataUrl)}" alt="Foto ${index + 1}" loading="lazy">
-          <button class="remove-image-btn" type="button" title="Quitar foto">×</button>
+          ${renderMediaPreviewHtml(item, index, 'Adjunto')}
+          <button class="remove-image-btn" type="button" title="Quitar archivo">×</button>
         `;
         box.querySelector('button').addEventListener('click', () => {
           formImages.splice(index, 1);
@@ -1883,26 +1965,32 @@
         const reader = new FileReader();
         reader.onload = () => resolve({
           id: crypto.randomUUID(),
-          name: file.name || 'foto.jpg',
-          type: file.type || 'image/jpeg',
+          name: file.name || (file.type?.startsWith('video/') ? 'video.mp4' : 'foto.jpg'),
+          type: file.type || (file.name && /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(file.name) ? 'video/mp4' : 'image/jpeg'),
           size: file.size || 0,
           dataUrl: reader.result
         });
-        reader.onerror = () => reject(new Error('No se pudo leer una imagen'));
+        reader.onerror = () => reject(new Error('No se pudo leer un archivo'));
         reader.readAsDataURL(file);
       });
     }
 
+    function isAllowedMediaFile(file){
+      const type = String(file?.type || '').toLowerCase();
+      const name = String(file?.name || '').toLowerCase();
+      return type.startsWith('image/') || type.startsWith('video/') || /\.(png|jpe?g|webp|bmp|gif|heic|heif|mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(name);
+    }
+
     async function handleImageInput(event){
-      const files = [...(event.target.files || [])].filter(file => file.type.startsWith('image/'));
+      const files = [...(event.target.files || [])].filter(isAllowedMediaFile);
       if(!files.length) return;
       try{
-        const imgs = await Promise.all(files.map(fileToImageObject));
-        formImages.push(...imgs);
+        const media = await Promise.all(files.map(fileToImageObject));
+        formImages.push(...media);
         renderFormImages();
-        toast(`${imgs.length} foto${imgs.length === 1 ? '' : 's'} agregada${imgs.length === 1 ? '' : 's'} ✅`);
+        toast(`${mediaCountText(media)} agregado${media.length === 1 ? '' : 's'} ✅`);
       }catch(err){
-        toast(err.message || 'No se pudieron cargar las fotos');
+        toast(err.message || 'No se pudieron cargar los archivos');
       }finally{
         event.target.value = '';
       }
@@ -1915,7 +2003,7 @@
         if(parts.length < 2) return null;
         const header = parts[0];
         const mimeMatch = header.match(/data:([^;]+);base64/i);
-        const mime = img.type || (mimeMatch ? mimeMatch[1] : 'image/jpeg');
+        const mime = img.type || (mimeMatch ? mimeMatch[1] : (isVideoMedia(img) ? 'video/mp4' : 'image/jpeg'));
         const binary = atob(parts[1]);
         const bytes = new Uint8Array(binary.length);
         for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
@@ -1932,7 +2020,8 @@
     }
 
     function editorCurrentName(item, index = 0){
-      const name = item.processedName || item.name || `foto-${index + 1}.jpg`;
+      const fallback = isVideoMedia(item) ? `video-${index + 1}.mp4` : `foto-${index + 1}.jpg`;
+      const name = item.processedName || item.name || fallback;
       return String(name).replace(/[\/:*?"<>|]+/g, '-');
     }
 
@@ -1947,6 +2036,21 @@
       $('photoEditorEmpty').style.display = photoEditorImages.length ? 'none' : 'block';
     }
 
+    function renderEditorMediaPreviewHtml(item, index){
+      const currentUrl = escapeHtml(editorCurrentDataUrl(item));
+      const name = escapeHtml(editorCurrentName(item, index));
+      if(isVideoMedia(item)){
+        return `
+          <video src="${currentUrl}" muted playsinline preload="metadata" title="${name}"></video>
+          <span class="media-type-badge">▶ Video</span>
+        `;
+      }
+      return `
+        <img src="${currentUrl}" alt="Foto ${index + 1}" loading="lazy">
+        <span class="media-type-badge">🖼️ Foto</span>
+      `;
+    }
+
     function renderPhotoEditorGallery(){
       const gallery = $('photoEditorGallery');
       if(!gallery) return;
@@ -1957,11 +2061,12 @@
         wrap.className = 'editor-item';
         const currentUrl = editorCurrentDataUrl(item);
         const sizeText = currentUrl ? `${Math.round((item.size || 0)/1024)} KB` : '';
+        const video = isVideoMedia(item);
         wrap.innerHTML = `
           <div class="editor-thumb" data-act="open" title="Tocar para ver en grande">
-            <img src="${escapeHtml(currentUrl)}" alt="Foto ${index + 1}" loading="lazy">
+            ${renderEditorMediaPreviewHtml(item, index)}
             <div class="editor-badges">
-              <span class="editor-badge">${item.resultDataUrl ? 'Editada' : 'Original'}</span>
+              <span class="editor-badge">${video ? 'Video intacto' : (item.resultDataUrl ? 'Editada' : 'Original')}</span>
               <span class="editor-badge">#${index + 1}</span>
             </div>
           </div>
@@ -1994,31 +2099,29 @@
     }
 
     async function addFilesToPhotoEditor(filesLike, source = 'archivo'){
-      const files = [...(filesLike || [])].filter(file =>
-        (file.type && file.type.startsWith('image/')) || /\.(png|jpe?g|webp|bmp|gif|heic|heif)$/i.test(file.name || '')
-      );
+      const files = [...(filesLike || [])].filter(isAllowedMediaFile);
       if(!files.length){
-        setPhotoEditorStatus('No se detectaron fotos válidas para agregar.');
+        setPhotoEditorStatus('No se detectaron fotos o videos válidos para agregar.');
         return false;
       }
 
       try{
-        const imgs = await Promise.all(files.map(fileToImageObject));
-        photoEditorImages.push(...imgs.map((img, index) => ({
+        const media = await Promise.all(files.map(fileToImageObject));
+        photoEditorImages.push(...media.map((item, index) => ({
           id: crypto.randomUUID(),
-          name: imageName(img, index),
-          type: img.type || 'image/jpeg',
-          size: img.size || 0,
-          sourceDataUrl: img.dataUrl,
+          name: imageName(item, index),
+          type: item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg'),
+          size: item.size || 0,
+          sourceDataUrl: item.dataUrl,
           resultDataUrl: null,
           processedName: null
         })));
         renderPhotoEditorGallery();
-        setPhotoEditorStatus(`${imgs.length} foto${imgs.length === 1 ? '' : 's'} agregada${imgs.length === 1 ? '' : 's'} desde ${source}.`);
-        toast(`${imgs.length} foto${imgs.length === 1 ? '' : 's'} agregada${imgs.length === 1 ? '' : 's'} ✅`);
+        setPhotoEditorStatus(`${mediaCountText(media)} agregado${media.length === 1 ? '' : 's'} desde ${source}.`);
+        toast(`${mediaCountText(media)} agregado${media.length === 1 ? '' : 's'} ✅`);
         return true;
       }catch(err){
-        toast(err.message || 'No se pudieron cargar las fotos del editor');
+        toast(err.message || 'No se pudieron cargar los archivos del editor');
         return false;
       }
     }
@@ -2049,7 +2152,7 @@
       const items = [...(e.clipboardData?.items || [])];
       const files = [];
       for(const item of items){
-        if(item.kind === 'file' && item.type && item.type.startsWith('image/')){
+        if(item.kind === 'file' && item.type && (item.type.startsWith('image/') || item.type.startsWith('video/'))){
           const file = item.getAsFile();
           if(file) files.push(file);
         }
@@ -2068,7 +2171,7 @@
         const ok = await addFilesToPhotoEditor(files, 'portapapeles');
         const box = $('editorPasteBox');
         if(box){
-          box.innerHTML = '📋 Foto pegada correctamente. Puedes seguir pegando con Ctrl+V aquí.';
+          box.innerHTML = '📋 Archivo pegado correctamente. Puedes seguir pegando con Ctrl+V aquí.';
           setTimeout(() => {
             if(box) box.innerHTML = '📋 Haz clic aquí y pega con Ctrl+V. En móvil: tocar aquí, mantener presionado y Pegar.';
           }, 1600);
@@ -2089,7 +2192,7 @@
         box.addEventListener('input', () => {
           const hasLargeContent = box.querySelector('img, video, canvas, picture, svg');
           if(hasLargeContent || box.innerText.length > 120){
-            box.innerHTML = '📋 Usa Ctrl+V aquí; la foto se agregará abajo como miniatura pequeña.';
+            box.innerHTML = '📋 Usa Ctrl+V aquí; el archivo se agregará abajo como miniatura pequeña.';
           }
         });
       }
@@ -2099,7 +2202,7 @@
 
     async function readPhotoEditorClipboard(){
       if(!navigator.clipboard || !navigator.clipboard.read){
-        toast('Tu navegador no permite leer fotos del portapapeles con botón. Prueba Ctrl+V en el cuadro de pegar.');
+        toast('Tu navegador no permite leer fotos/videos del portapapeles con botón. Prueba Ctrl+V en el cuadro de pegar.');
         const box = $('editorPasteBox');
         if(box) box.focus();
         return;
@@ -2110,15 +2213,15 @@
         const files = [];
         for(const item of items){
           for(const type of item.types){
-            if(type.startsWith('image/')){
+            if(type.startsWith('image/') || type.startsWith('video/')){
               const blob = await item.getType(type);
-              const ext = type.includes('png') ? 'png' : type.includes('webp') ? 'webp' : 'jpg';
+              const ext = type.includes('png') ? 'png' : type.includes('webp') ? 'webp' : type.includes('mp4') ? 'mp4' : type.includes('webm') ? 'webm' : (type.startsWith('video/') ? 'mp4' : 'jpg');
               files.push(new File([blob], `portapapeles-${Date.now()}-${files.length + 1}.${ext}`, {type}));
             }
           }
         }
         if(!files.length){
-          toast('No encontré fotos en el portapapeles.');
+          toast('No encontré fotos o videos en el portapapeles.');
           return;
         }
         await addFilesToPhotoEditor(files, 'portapapeles');
@@ -2142,7 +2245,7 @@
     }
 
     function resetPhotoEditorEdits(){
-      if(!photoEditorImages.length) return toast('No hay fotos en el editor');
+      if(!photoEditorImages.length) return toast('No hay archivos en el editor');
       photoEditorImages = photoEditorImages.map(item => ({...item, resultDataUrl:null, processedName:null}));
       renderPhotoEditorGallery();
       setPhotoEditorStatus('Se quitaron las ediciones aplicadas.');
@@ -2277,6 +2380,9 @@
     }
 
     async function processEditorItem(item, settings){
+      if(isVideoMedia(item)){
+        return {...item, resultDataUrl: null, processedName: null};
+      }
       const img = await loadImageElement(item.sourceDataUrl);
       const canvas = document.createElement('canvas');
       canvas.width = img.naturalWidth || img.width;
@@ -2311,25 +2417,35 @@
     }
 
     async function applyPriceToEditorImages(){
-      if(!photoEditorImages.length) return toast('Primero agrega fotos al editor');
+      if(!photoEditorImages.length) return toast('Primero agrega fotos o videos al editor');
+      const photos = photoEditorImages.filter(isImageMedia);
+      if(!photos.length) return toast('No hay fotos para aplicar precio. Los videos se conservan intactos.');
       const settings = getEditorPriceSettings();
       if(!settings.text){
         return toast('Escribe el texto del precio para aplicar a las fotos');
       }
-      setPhotoEditorStatus('Procesando fotos del editor...');
+      setPhotoEditorStatus('Procesando fotos del editor. Los videos se mantendrán intactos.');
       const next = [];
+      let processed = 0;
       for(let i = 0; i < photoEditorImages.length; i++){
+        const item = photoEditorImages[i];
+        if(isVideoMedia(item)){
+          next.push({...item});
+          continue;
+        }
         try{
-          next.push(await processEditorItem(photoEditorImages[i], settings));
-          setPhotoEditorStatus(`Procesando ${i + 1} de ${photoEditorImages.length}...`);
+          next.push(await processEditorItem(item, settings));
+          processed++;
+          setPhotoEditorStatus(`Procesando foto ${processed} de ${photos.length}...`);
         }catch(err){
-          next.push({...photoEditorImages[i]});
+          next.push({...item});
         }
       }
       photoEditorImages = next;
       renderPhotoEditorGallery();
-      setPhotoEditorStatus(`Precio aplicado a ${photoEditorImages.length} foto${photoEditorImages.length === 1 ? '' : 's'}.`);
-      toast('Precio aplicado ✅');
+      const videos = photoEditorImages.filter(isVideoMedia).length;
+      setPhotoEditorStatus(`Precio aplicado a ${processed} foto${processed === 1 ? '' : 's'}${videos ? `. ${videos} video${videos === 1 ? '' : 's'} se mantuvieron intactos.` : '.'}`);
+      toast('Precio aplicado a las fotos ✅');
     }
 
     function dataUrlToBlobFile(dataUrl, fileName = 'imagen.jpg', mimeHint = 'image/jpeg'){
@@ -2364,20 +2480,39 @@
       const item = photoEditorImages.find(img => img.id === id);
       if(!item) return;
       activePhotoModalId = id;
-      $('photoModalImg').src = editorCurrentDataUrl(item);
-      $('photoModalTitle').textContent = item.resultDataUrl ? 'Vista grande · Foto editada' : 'Vista grande · Foto original';
-      $('photoModalMeta').textContent = editorCurrentName(item) + (item.resultDataUrl ? ' · Ya tiene precio aplicado' : ' · Sin edición aplicada');
+      const isVideo = isVideoMedia(item);
+      const imgEl = $('photoModalImg');
+      const videoEl = $('photoModalVideo');
+      if(isVideo){
+        imgEl.style.display = 'none';
+        imgEl.removeAttribute('src');
+        videoEl.style.display = 'block';
+        videoEl.src = editorCurrentDataUrl(item);
+      }else{
+        videoEl.pause?.();
+        videoEl.removeAttribute('src');
+        videoEl.style.display = 'none';
+        imgEl.style.display = 'block';
+        imgEl.src = editorCurrentDataUrl(item);
+      }
+      $('photoModalApplyBtn').disabled = isVideo;
+      $('photoModalApplyBtn').textContent = isVideo ? '🏷️ Precio no disponible en video' : '🏷️ Aplicar precio a esta foto';
+      $('photoModalTitle').textContent = isVideo ? 'Vista grande · Video' : (item.resultDataUrl ? 'Vista grande · Foto editada' : 'Vista grande · Foto original');
+      $('photoModalMeta').textContent = editorCurrentName(item) + (isVideo ? ' · Video intacto' : (item.resultDataUrl ? ' · Ya tiene precio aplicado' : ' · Sin edición aplicada'));
       populateResponseSelects();
       $('photoModal').classList.add('show');
     }
 
     function closePhotoEditorModal(){
+      const videoEl = $('photoModalVideo');
+      if(videoEl) videoEl.pause?.();
       $('photoModal').classList.remove('show');
     }
 
     async function applyPriceToSingleEditorImage(id){
       const index = photoEditorImages.findIndex(img => img.id === id);
       if(index < 0) return;
+      if(isVideoMedia(photoEditorImages[index])) return toast('No puedo aplicar precio a un video. El video se mantiene intacto.');
       const settings = getEditorPriceSettings();
       if(!settings.text) return toast('Escribe el precio primero');
       try{
@@ -2396,16 +2531,16 @@
       return {
         id: crypto.randomUUID(),
         name: editorCurrentName(item, index),
-        type: item.type || 'image/jpeg',
+        type: item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg'),
         size: item.size || 0,
         dataUrl: editorCurrentDataUrl(item)
       };
     }
 
     function appendOneEditorImageToExistingResponse(imageId, selectId = 'editorAppendResponseSelect'){
-      if(!ensureUnlockedForEditor('agregar esta foto a una respuesta')) return;
+      if(!ensureUnlockedForEditor('agregar este archivo a una respuesta')) return;
       const item = photoEditorImages.find(img => img.id === imageId);
-      if(!item) return toast('No encontré esa foto');
+      if(!item) return toast('No encontré ese archivo');
       const responseId = $(selectId)?.value;
       const index = responses.findIndex(r => r.id === responseId);
       if(index < 0) return toast('Selecciona una respuesta destino válida');
@@ -2414,8 +2549,8 @@
       saveToStorage();
       renderAll();
       if(selectedResponse && selectedResponse.id === responseId) selectResponse(responses[index], false);
-      setPhotoEditorStatus(`Se agregó 1 foto a la respuesta "${responses[index].title}".`);
-      toast('Foto agregada a la respuesta ✅');
+      setPhotoEditorStatus(`Se agregó 1 archivo a la respuesta "${responses[index].title}".`);
+      toast('Archivo agregado a la respuesta ✅');
     }
 
     function useModalImageForNewResponse(){
@@ -2426,7 +2561,7 @@
       closePhotoEditorModal();
       $('editorNewTitle').focus();
       $('editorNewTitle').scrollIntoView({behavior:'smooth', block:'center'});
-      setPhotoEditorStatus('Dejé solo esta foto en el editor. Ahora escribe título/atajo y crea la nueva respuesta.');
+      setPhotoEditorStatus('Dejé solo este archivo en el editor. Ahora escribe título/atajo y crea la nueva respuesta.');
       toast('Lista para crear nueva respuesta ✅');
     }
 
@@ -2435,7 +2570,7 @@
       const item = photoEditorImages.find(img => img.id === id);
       if(!item) return;
       const file = dataUrlToBlobFile(editorCurrentDataUrl(item), editorCurrentName(item), item.type || 'image/jpeg');
-      if(!file) return toast('No se pudo preparar esa foto');
+      if(!file) return toast('No se pudo preparar ese archivo');
       triggerBlobDownload(file, editorCurrentName(item));
     }
 
@@ -2445,7 +2580,7 @@
 
     async function downloadPhotoEditorZip(){
       const files = getPhotoEditorFiles();
-      if(!files.length) return toast('No hay fotos para descargar');
+      if(!files.length) return toast('No hay archivos para descargar');
       if(typeof JSZip === 'undefined'){
         toast('JSZip no cargó; haré la descarga individual');
         return downloadPhotoEditorAllIndividual();
@@ -2455,12 +2590,12 @@
       const blob = await zip.generateAsync({type:'blob', compression:'DEFLATE', compressionOptions:{level:6}});
       const stamp = new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
       triggerBlobDownload(blob, `fotos_editadas_${stamp}.zip`);
-      setPhotoEditorStatus(`ZIP generado con ${files.length} foto${files.length === 1 ? '' : 's'}.`);
+      setPhotoEditorStatus(`ZIP generado con ${files.length} archivo${files.length === 1 ? '' : 's'}.`);
     }
 
     function downloadPhotoEditorCurrent(){
       const files = getPhotoEditorFiles();
-      if(!files.length) return toast('No hay fotos para descargar');
+      if(!files.length) return toast('No hay archivos para descargar');
       if(files.length === 1){
         triggerBlobDownload(files[0], files[0].name);
         return;
@@ -2470,7 +2605,7 @@
 
     function downloadPhotoEditorAllIndividual(){
       const files = getPhotoEditorFiles();
-      if(!files.length) return toast('No hay fotos para descargar');
+      if(!files.length) return toast('No hay archivos para descargar');
       files.forEach((file, index) => {
         setTimeout(() => triggerBlobDownload(file, file.name), index * 350);
       });
@@ -2498,20 +2633,20 @@
       const id = $('editorLoadResponseSelect').value;
       const r = responses.find(item => item.id === id);
       if(!r) return toast('Selecciona una respuesta válida');
-      const imgs = getImages(r);
-      if(!imgs.length) return toast('Esa respuesta no tiene fotos');
-      photoEditorImages = imgs.map((img, index) => ({
+      const media = getMedia(r);
+      if(!media.length) return toast('Esa respuesta no tiene fotos ni videos');
+      photoEditorImages = media.map((item, index) => ({
         id: crypto.randomUUID(),
-        name: imageName(img, index),
-        type: img.type || 'image/jpeg',
-        size: img.size || 0,
-        sourceDataUrl: img.dataUrl,
+        name: imageName(item, index),
+        type: item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg'),
+        size: item.size || 0,
+        sourceDataUrl: item.dataUrl,
         resultDataUrl: null,
         processedName: null
       }));
       renderPhotoEditorGallery();
-      setPhotoEditorStatus(`Se cargaron ${imgs.length} foto${imgs.length === 1 ? '' : 's'} desde la respuesta "${r.title}".`);
-      toast('Fotos cargadas al editor ✅');
+      setPhotoEditorStatus(`Se cargaron ${mediaCountText(media)} desde la respuesta "${r.title}".`);
+      toast('Archivos cargados al editor ✅');
     }
 
     function ensureUnlockedForEditor(actionText){
@@ -2526,23 +2661,23 @@
     }
 
     function appendEditedPhotosToExistingResponse(){
-      if(!ensureUnlockedForEditor('agregar fotos a una respuesta')) return;
+      if(!ensureUnlockedForEditor('agregar archivos a una respuesta')) return;
       const responseId = $('editorAppendResponseSelect').value;
       const index = responses.findIndex(item => item.id === responseId);
       if(index < 0) return toast('Selecciona una respuesta destino válida');
-      if(!photoEditorImages.length) return toast('No hay fotos en el editor');
+      if(!photoEditorImages.length) return toast('No hay archivos en el editor');
       const imgs = buildEditorImagesForResponse();
       const current = getImages(responses[index]);
       responses[index].images = [...current, ...imgs];
       saveToStorage();
       renderAll();
       if(selectedResponse && selectedResponse.id === responseId) selectResponse(responses[index], false);
-      setPhotoEditorStatus(`Se agregaron ${imgs.length} foto${imgs.length === 1 ? '' : 's'} a la respuesta "${responses[index].title}".`);
-      toast('Fotos agregadas a la respuesta ✅');
+      setPhotoEditorStatus(`Se agregaron ${imgs.length} archivo${imgs.length === 1 ? '' : 's'} a la respuesta "${responses[index].title}".`);
+      toast('Archivos agregados a la respuesta ✅');
     }
 
     function createNewResponseFromEditor(){
-      if(!ensureUnlockedForEditor('crear una nueva respuesta con fotos')) return;
+      if(!ensureUnlockedForEditor('crear una nueva respuesta con archivos')) return;
       const title = $('editorNewTitle').value.trim();
       const shortcut = normalizeShortcut($('editorNewShortcut').value);
       const category = $('editorNewCategory').value.trim() || 'General';
@@ -2550,7 +2685,7 @@
       const message = $('editorNewMessage').value.trim();
       const images = buildEditorImagesForResponse();
       if(!title || !shortcut) return toast('Escribe al menos título y atajo para la nueva respuesta');
-      if(!message && !images.length) return toast('La nueva respuesta necesita texto o fotos');
+      if(!message && !images.length) return toast('La nueva respuesta necesita texto o fotos/videos');
       const duplicated = responses.find(r => normalizeShortcut(r.shortcut) === shortcut);
       if(duplicated) return toast('Ese atajo ya existe. Usa otro.');
       const item = { id: crypto.randomUUID(), title, shortcut, category, tags, message, images };
@@ -2562,7 +2697,7 @@
       $('editorNewCategory').value = '';
       $('editorNewTags').value = '';
       $('editorNewMessage').value = '';
-      setPhotoEditorStatus(`Nueva respuesta creada con ${images.length} foto${images.length === 1 ? '' : 's'}.`);
+      setPhotoEditorStatus(`Nueva respuesta creada con ${images.length} archivo${images.length === 1 ? '' : 's'}.`);
       toast('Nueva respuesta creada ✅');
     }
 
@@ -2899,15 +3034,15 @@
         message: $('messageInput').value.trim(),
         images: formImages.map((img, index) => ({
           id: img.id || crypto.randomUUID(),
-          name: img.name || `foto-${index + 1}.jpg`,
-          type: img.type || 'image/jpeg',
+          name: img.name || (isVideoMedia(img) ? `video-${index + 1}.mp4` : `foto-${index + 1}.jpg`),
+          type: img.type || (isVideoMedia(img) ? 'video/mp4' : 'image/jpeg'),
           size: Number(img.size || 0),
           dataUrl: img.dataUrl
         })).filter(img => img.dataUrl)
       };
 
       if(!item.title || !item.shortcut || (!item.message && !item.images.length)){
-        return toast('Completa título, atajo y agrega mensaje o al menos una foto');
+        return toast('Completa título, atajo y agrega mensaje o al menos una foto/video');
       }
 
       const duplicated = responses.find(r => normalizeShortcut(r.shortcut) === item.shortcut && r.id !== id);
