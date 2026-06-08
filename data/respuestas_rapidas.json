@@ -1,8 +1,32 @@
 {
   "app": "Respuestas Rápidas",
-  "version": 2,
-  "exportedAt": "2026-06-08T19:42:14.332Z",
+  "version": 3,
+  "updatedAt": "2026-06-08T19:49:44.187Z",
+  "owner": "CatalogosHN",
+  "repo": "xrspfastimg",
+  "path": "data/respuestas_rapidas.json",
   "responses": [
+    {
+      "id": "b4737fa7-0828-4f04-a4fa-4e3cfedffa50",
+      "title": "Video Pruebas cargo expreso",
+      "shortcut": "videopruebascargoexpreso",
+      "category": "Video Pruebas cargo expreso",
+      "tags": [
+        "Video caex"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "e96bc441-c1e6-4198-8376-31e77a70a759",
+          "name": "1000998782.mp4",
+          "type": "video/mp4",
+          "size": 56844104,
+          "blobKey": "video-e96bc441-c1e6-4198-8376-31e77a70a759",
+          "localOnly": true,
+          "dataUrl": ""
+        }
+      ]
+    },
     {
       "id": "724e98c1-6712-4c9e-9bf8-1965913bba67",
       "title": "Tigo Money Bry",
