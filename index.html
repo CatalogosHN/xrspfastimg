@@ -972,6 +972,20 @@
       .editor-color-grid{grid-template-columns:1fr}
     }
 
+    .media-placeholder{
+      width:100%;
+      height:100%;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:8px;
+      background:#eaf2ff;
+      color:#315b8f;
+      font-size:.72rem;
+      font-weight:900;
+      line-height:1.2;
+    }
+
   </style>
 </head>
 <body>
@@ -1442,6 +1456,9 @@
     const GITHUB_CONFIG_KEY = 'respuestas_rapidas_github_config_v1';
     const GITHUB_TOKEN_KEY = 'respuestas_rapidas_github_token_v1';
     const GITHUB_SESSION_TOKEN_KEY = 'respuestas_rapidas_github_session_token_v1';
+    const MEDIA_DB_NAME = 'respuestas_rapidas_media_db_v1';
+    const MEDIA_DB_VERSION = 1;
+    const MEDIA_STORE = 'media_blobs';
 
     const defaultGithubConfig = {
       owner: 'CatalogosHN',
@@ -1489,6 +1506,8 @@
     let formImages = [];
     let photoEditorImages = [];
     let activePhotoModalId = null;
+    let mediaDbPromise = null;
+    const mediaObjectUrlCache = new Map();
 
     const $ = (id) => document.getElementById(id);
     const sidebar = $('sidebar');
@@ -1517,6 +1536,7 @@
       renderPhotoEditorGallery();
       populateResponseSelects();
       $('firstTokenNotice').style.display = hasToken() ? 'none' : 'block';
+      hydrateStoredVideos();
     }
 
     function bindEvents(){
@@ -1617,15 +1637,119 @@
       }
     }
 
+    function mediaStorageCopy(item, index = 0){
+      const video = isVideoMedia(item);
+      const base = {
+        id: item.id || crypto.randomUUID(),
+        name: item.name || (video ? `video-${index + 1}.mp4` : `foto-${index + 1}.jpg`),
+        type: item.type || (video ? 'video/mp4' : 'image/jpeg'),
+        size: Number(item.size || 0)
+      };
+      if(video && item.blobKey){
+        base.blobKey = item.blobKey;
+        base.localOnly = true;
+        base.dataUrl = '';
+        return base;
+      }
+      base.dataUrl = String(item.dataUrl || item.sourceDataUrl || item.resultDataUrl || '');
+      return base;
+    }
+
+    function sanitizeResponsesForStorage(list){
+      return (Array.isArray(list) ? list : []).map(r => ({
+        id: r.id || crypto.randomUUID(),
+        title: String(r.title || 'Sin título').trim(),
+        shortcut: normalizeShortcut(r.shortcut || r.title || crypto.randomUUID().slice(0,6)),
+        category: String(r.category || 'General').trim() || 'General',
+        tags: Array.isArray(r.tags) ? r.tags.map(t => String(t).trim()).filter(Boolean) : [],
+        message: String(r.message || '').trim(),
+        images: getMedia(r).map(mediaStorageCopy).filter(img => img.dataUrl || img.blobKey)
+      })).filter(r => r.shortcut && (r.message || (Array.isArray(r.images) && r.images.length)));
+    }
+
     function saveToStorage(){
       try{
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizeResponsesForStorage(responses)));
         scheduleAutoCloudUpload();
         return true;
       }catch(err){
         console.error(err);
-        toast('No se pudo guardar: uno o más videos pesan demasiado para el almacenamiento del navegador. Prueba con un video más corto/comprimido o solo úsalo sin sincronizar.');
+        toast('No se pudo guardar en el navegador. Si agregaste muchas fotos pesadas, reduce cantidad o tamaño. Los videos grandes ahora se guardan aparte en IndexedDB.');
         return false;
+      }
+    }
+
+    function openMediaDb(){
+      if(mediaDbPromise) return mediaDbPromise;
+      mediaDbPromise = new Promise((resolve, reject) => {
+        if(!('indexedDB' in window)) return reject(new Error('IndexedDB no disponible'));
+        const req = indexedDB.open(MEDIA_DB_NAME, MEDIA_DB_VERSION);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if(!db.objectStoreNames.contains(MEDIA_STORE)) db.createObjectStore(MEDIA_STORE, { keyPath:'key' });
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error || new Error('No se pudo abrir IndexedDB'));
+      });
+      return mediaDbPromise;
+    }
+
+    async function putMediaBlob(key, blob, meta = {}){
+      const db = await openMediaDb();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(MEDIA_STORE, 'readwrite');
+        tx.objectStore(MEDIA_STORE).put({ key, blob, meta, updatedAt: new Date().toISOString() });
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => reject(tx.error || new Error('No se pudo guardar el video local'));
+      });
+    }
+
+    async function getMediaBlob(key){
+      if(!key) return null;
+      const db = await openMediaDb();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(MEDIA_STORE, 'readonly');
+        const req = tx.objectStore(MEDIA_STORE).get(key);
+        req.onsuccess = () => resolve(req.result?.blob || null);
+        req.onerror = () => reject(req.error || new Error('No se pudo leer el video local'));
+      });
+    }
+
+    async function ensureVideoObjectUrl(item){
+      if(!item || !item.blobKey) return item?.dataUrl || item?.sourceDataUrl || item?.resultDataUrl || '';
+      if(mediaObjectUrlCache.has(item.blobKey)) return mediaObjectUrlCache.get(item.blobKey);
+      try{
+        const blob = await getMediaBlob(item.blobKey);
+        if(!blob) return '';
+        const url = URL.createObjectURL(blob);
+        mediaObjectUrlCache.set(item.blobKey, url);
+        return url;
+      }catch(err){
+        console.warn('No se pudo hidratar video local', err);
+        return '';
+      }
+    }
+
+    function getMediaSrc(item){
+      if(!item) return '';
+      if(item.resultDataUrl) return item.resultDataUrl;
+      if(item.sourceDataUrl) return item.sourceDataUrl;
+      if(item.dataUrl) return item.dataUrl;
+      if(item.blobKey && mediaObjectUrlCache.has(item.blobKey)) return mediaObjectUrlCache.get(item.blobKey);
+      return '';
+    }
+
+    async function hydrateStoredVideos(){
+      const tasks = [];
+      responses.forEach(r => getMedia(r).forEach(item => {
+        if(item.blobKey && !getMediaSrc(item)) tasks.push(ensureVideoObjectUrl(item));
+      }));
+      if(!tasks.length) return;
+      await Promise.allSettled(tasks);
+      renderAll();
+      if(selectedResponse){
+        const fresh = responses.find(r => r.id === selectedResponse.id);
+        if(fresh) selectResponse(fresh, false);
       }
     }
 
@@ -1822,7 +1946,7 @@
       if(!text && !media.length) return toast('Esta respuesta no tiene texto ni fotos/videos para enviar');
 
       const copied = text ? await copyTextSilently(text) : false;
-      const files = media.map(dataUrlToFile).filter(Boolean);
+      const files = (await Promise.all(media.map((item, index) => mediaToFile(item, index)))).filter(Boolean);
 
       if(navigator.share){
         try{
@@ -1863,14 +1987,14 @@
 
     function isVideoMedia(item){
       const type = String(item?.type || '').toLowerCase();
-      const data = String(item?.dataUrl || item?.sourceDataUrl || item?.resultDataUrl || '').toLowerCase();
+      const data = String(item?.dataUrl || item?.sourceDataUrl || item?.resultDataUrl || item?.blobKey || '').toLowerCase();
       const name = String(item?.name || item?.processedName || '').toLowerCase();
       return type.startsWith('video/') || data.startsWith('data:video/') || /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(name);
     }
 
     function isImageMedia(item){
       const type = String(item?.type || '').toLowerCase();
-      const data = String(item?.dataUrl || item?.sourceDataUrl || item?.resultDataUrl || '').toLowerCase();
+      const data = String(item?.dataUrl || item?.sourceDataUrl || item?.resultDataUrl || item?.blobKey || '').toLowerCase();
       const name = String(item?.name || item?.processedName || '').toLowerCase();
       return type.startsWith('image/') || data.startsWith('data:image/') || /\.(png|jpe?g|webp|bmp|gif|heic|heif)$/i.test(name);
     }
@@ -1879,7 +2003,7 @@
       const fromMedia = Array.isArray(r?.media) ? r.media : [];
       const fromImages = Array.isArray(r?.images) ? r.images : [];
       const list = fromMedia.length ? fromMedia : fromImages;
-      return list.filter(item => item && item.dataUrl);
+      return list.filter(item => item && (item.dataUrl || item.sourceDataUrl || item.resultDataUrl || item.blobKey));
     }
 
     // Compatibilidad: las respuestas viejas usan la propiedad "images".
@@ -1913,12 +2037,25 @@
     }
 
     function renderMediaPreviewHtml(media, index, label = 'Adjunto'){
-      const src = escapeHtml(media.dataUrl || '');
+      const rawSrc = getMediaSrc(media);
+      const src = escapeHtml(rawSrc);
       const title = escapeHtml(imageName(media, index));
       if(isVideoMedia(media)){
+        if(!rawSrc){
+          return `
+            <div class="media-placeholder">🎞️ Video local no disponible en este dispositivo</div>
+            <span class="media-type-badge">▶ Video</span>
+          `;
+        }
         return `
           <video src="${src}" muted playsinline preload="metadata" title="${title}"></video>
           <span class="media-type-badge">▶ Video</span>
+        `;
+      }
+      if(!rawSrc){
+        return `
+          <div class="media-placeholder">Archivo no disponible</div>
+          <span class="media-type-badge">📎 Archivo</span>
         `;
       }
       return `
@@ -2024,15 +2161,41 @@
 
     async function fileToImageObject(file){
       const detectedType = await detectMimeFromFile(file);
+      const isVideo = detectedType.startsWith('video/') || /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(file.name || '');
+      const id = crypto.randomUUID();
+      if(isVideo){
+        const blobKey = `video-${id}`;
+        try{
+          await putMediaBlob(blobKey, file, {
+            name: file.name || 'video.mp4',
+            type: detectedType || file.type || 'video/mp4',
+            size: file.size || 0
+          });
+        }catch(err){
+          console.error(err);
+          throw new Error('No pude guardar el video grande en IndexedDB. Revisa espacio del navegador o permisos.');
+        }
+        const objectUrl = URL.createObjectURL(file);
+        mediaObjectUrlCache.set(blobKey, objectUrl);
+        return {
+          id,
+          name: file.name || 'video.mp4',
+          type: detectedType || file.type || 'video/mp4',
+          size: file.size || 0,
+          dataUrl: objectUrl,
+          blobKey,
+          localOnly: true
+        };
+      }
+
       let dataUrl = await readFileAsDataUrl(file);
       if(detectedType && detectedType !== 'application/octet-stream' && dataUrl.startsWith('data:application/octet-stream')){
         dataUrl = dataUrl.replace(/^data:[^;]*;/, `data:${detectedType};`);
       }
-      const isVideo = detectedType.startsWith('video/') || /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(file.name || '');
       return {
-        id: crypto.randomUUID(),
-        name: file.name || (isVideo ? 'video.mp4' : 'foto.jpg'),
-        type: detectedType || (isVideo ? 'video/mp4' : 'image/jpeg'),
+        id,
+        name: file.name || 'foto.jpg',
+        type: detectedType || 'image/jpeg',
         size: file.size || 0,
         dataUrl
       };
@@ -2050,9 +2213,9 @@
     }
 
     function warnIfLargeMedia(files){
-      const heavy = files.filter(f => Number(f.size || 0) > 8 * 1024 * 1024);
-      if(heavy.length){
-        toast(`Leyendo ${heavy.length} video/archivo pesado. Puede tardar y quizá no quepa al guardar en nube/local.`);
+      const heavyVideos = files.filter(f => Number(f.size || 0) > 8 * 1024 * 1024 && (String(f.type || '').startsWith('video/') || /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(f.name || '')));
+      if(heavyVideos.length){
+        toast(`Video pesado detectado. Se guardará localmente en IndexedDB, no dentro del JSON/localStorage.`);
       }
     }
 
@@ -2085,9 +2248,39 @@
       }
     }
 
-    function dataUrlToFile(img, index = 0){
+    async function mediaToFile(img, index = 0){
       try{
-        const dataUrl = img.dataUrl || '';
+        const name = imageName(img, index);
+        const mime = img.type || (isVideoMedia(img) ? 'video/mp4' : 'image/jpeg');
+        if(img.blobKey){
+          const blob = await getMediaBlob(img.blobKey);
+          if(blob) return new File([blob], name, { type: mime });
+        }
+        const dataUrl = img.dataUrl || img.sourceDataUrl || img.resultDataUrl || '';
+        if(dataUrl.startsWith('blob:')){
+          const res = await fetch(dataUrl);
+          const blob = await res.blob();
+          return new File([blob], name, { type: mime || blob.type });
+        }
+        const parts = dataUrl.split(',');
+        if(parts.length < 2) return null;
+        const header = parts[0];
+        const mimeMatch = header.match(/data:([^;]+);base64/i);
+        const finalMime = mimeMatch ? mimeMatch[1] : mime;
+        const binary = atob(parts[1]);
+        const bytes = new Uint8Array(binary.length);
+        for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        return new File([bytes], name, { type: finalMime });
+      }catch(err){
+        console.warn('No se pudo preparar archivo para compartir', err);
+        return null;
+      }
+    }
+
+    function dataUrlToFile(img, index = 0){
+      const dataUrl = img?.dataUrl || img?.sourceDataUrl || img?.resultDataUrl || '';
+      if(!dataUrl || dataUrl.startsWith('blob:')) return null;
+      try{
         const parts = dataUrl.split(',');
         if(parts.length < 2) return null;
         const header = parts[0];
@@ -2105,7 +2298,7 @@
 
 
     function editorCurrentDataUrl(item){
-      return item.resultDataUrl || item.sourceDataUrl || '';
+      return getMediaSrc(item);
     }
 
     function editorCurrentName(item, index = 0){
@@ -2126,12 +2319,25 @@
     }
 
     function renderEditorMediaPreviewHtml(item, index){
-      const currentUrl = escapeHtml(editorCurrentDataUrl(item));
+      const rawUrl = editorCurrentDataUrl(item);
+      const currentUrl = escapeHtml(rawUrl);
       const name = escapeHtml(editorCurrentName(item, index));
       if(isVideoMedia(item)){
+        if(!rawUrl){
+          return `
+            <div class="media-placeholder">🎞️ Video local no disponible</div>
+            <span class="media-type-badge">▶ Video</span>
+          `;
+        }
         return `
           <video src="${currentUrl}" muted playsinline preload="metadata" title="${name}"></video>
           <span class="media-type-badge">▶ Video</span>
+        `;
+      }
+      if(!rawUrl){
+        return `
+          <div class="media-placeholder">Archivo no disponible</div>
+          <span class="media-type-badge">📎 Archivo</span>
         `;
       }
       return `
@@ -2212,7 +2418,9 @@
             name: imageName(item, media.length),
             type: item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg'),
             size: item.size || 0,
-            sourceDataUrl: item.dataUrl,
+            sourceDataUrl: getMediaSrc(item),
+            blobKey: item.blobKey || null,
+            localOnly: !!item.blobKey,
             resultDataUrl: null,
             processedName: null
           };
@@ -2636,13 +2844,21 @@
     }
 
     function editorImageToResponseImage(item, index = 0){
-      return {
+      const video = isVideoMedia(item);
+      const out = {
         id: crypto.randomUUID(),
         name: editorCurrentName(item, index),
-        type: item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg'),
-        size: item.size || 0,
-        dataUrl: editorCurrentDataUrl(item)
+        type: item.type || (video ? 'video/mp4' : 'image/jpeg'),
+        size: item.size || 0
       };
+      if(video && item.blobKey){
+        out.blobKey = item.blobKey;
+        out.localOnly = true;
+        out.dataUrl = '';
+      }else{
+        out.dataUrl = editorCurrentDataUrl(item);
+      }
+      return out;
     }
 
     function appendOneEditorImageToExistingResponse(imageId, selectId = 'editorAppendResponseSelect'){
@@ -2674,20 +2890,35 @@
     }
 
 
-    function downloadPhotoEditorSingle(id){
+    async function editorItemToFile(item, index = 0){
+      if(!item) return null;
+      if(item.blobKey){
+        const blob = await getMediaBlob(item.blobKey);
+        if(blob) return new File([blob], editorCurrentName(item, index), {type:item.type || blob.type || 'video/mp4'});
+      }
+      const current = editorCurrentDataUrl(item);
+      if(current.startsWith('blob:')){
+        const res = await fetch(current);
+        const blob = await res.blob();
+        return new File([blob], editorCurrentName(item, index), {type:item.type || blob.type || 'application/octet-stream'});
+      }
+      return dataUrlToBlobFile(current, editorCurrentName(item, index), item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg'));
+    }
+
+    async function downloadPhotoEditorSingle(id){
       const item = photoEditorImages.find(img => img.id === id);
       if(!item) return;
-      const file = dataUrlToBlobFile(editorCurrentDataUrl(item), editorCurrentName(item), item.type || 'image/jpeg');
+      const file = await editorItemToFile(item);
       if(!file) return toast('No se pudo preparar ese archivo');
       triggerBlobDownload(file, editorCurrentName(item));
     }
 
-    function getPhotoEditorFiles(){
-      return photoEditorImages.map((item, index) => dataUrlToBlobFile(editorCurrentDataUrl(item), editorCurrentName(item, index), item.type || 'image/jpeg')).filter(Boolean);
+    async function getPhotoEditorFiles(){
+      return (await Promise.all(photoEditorImages.map((item, index) => editorItemToFile(item, index)))).filter(Boolean);
     }
 
     async function downloadPhotoEditorZip(){
-      const files = getPhotoEditorFiles();
+      const files = await getPhotoEditorFiles();
       if(!files.length) return toast('No hay archivos para descargar');
       if(typeof JSZip === 'undefined'){
         toast('JSZip no cargó; haré la descarga individual');
@@ -2697,12 +2928,12 @@
       files.forEach(file => zip.file(file.name, file));
       const blob = await zip.generateAsync({type:'blob', compression:'DEFLATE', compressionOptions:{level:6}});
       const stamp = new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
-      triggerBlobDownload(blob, `fotos_editadas_${stamp}.zip`);
+      triggerBlobDownload(blob, `archivos_respuestas_${stamp}.zip`);
       setPhotoEditorStatus(`ZIP generado con ${files.length} archivo${files.length === 1 ? '' : 's'}.`);
     }
 
-    function downloadPhotoEditorCurrent(){
-      const files = getPhotoEditorFiles();
+    async function downloadPhotoEditorCurrent(){
+      const files = await getPhotoEditorFiles();
       if(!files.length) return toast('No hay archivos para descargar');
       if(files.length === 1){
         triggerBlobDownload(files[0], files[0].name);
@@ -2711,13 +2942,13 @@
       downloadPhotoEditorAllIndividual();
     }
 
-    function downloadPhotoEditorAllIndividual(){
-      const files = getPhotoEditorFiles();
+    async function downloadPhotoEditorAllIndividual(){
+      const files = await getPhotoEditorFiles();
       if(!files.length) return toast('No hay archivos para descargar');
       files.forEach((file, index) => {
         setTimeout(() => triggerBlobDownload(file, file.name), index * 350);
       });
-      setPhotoEditorStatus(`Se lanzó la descarga individual 1 por 1 para ${files.length} foto${files.length === 1 ? '' : 's'}.`);
+      setPhotoEditorStatus(`Se lanzó la descarga individual 1 por 1 para ${files.length} archivo${files.length === 1 ? '' : 's'}.`);
       toast('Descarga individual iniciada ✅');
     }
 
@@ -2748,7 +2979,9 @@
         name: imageName(item, index),
         type: item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg'),
         size: item.size || 0,
-        sourceDataUrl: item.dataUrl,
+        sourceDataUrl: getMediaSrc(item),
+        blobKey: item.blobKey || null,
+        localOnly: !!item.blobKey,
         resultDataUrl: null,
         processedName: null
       }));
@@ -2921,7 +3154,7 @@
         owner: githubConfig.owner,
         repo: githubConfig.repo,
         path: githubConfig.path,
-        responses
+        responses: sanitizeResponsesForStorage(responses)
       };
     }
 
@@ -2933,12 +3166,14 @@
         category: String(r.category || 'General').trim(),
         tags: Array.isArray(r.tags) ? r.tags.map(t => String(t).trim()).filter(Boolean) : String(r.tags || '').split(',').map(t => t.trim()).filter(Boolean),
         message: String(r.message || '').trim(),
-        images: Array.isArray(r.images) ? r.images.filter(img => img && img.dataUrl).map((img, index) => ({
+        images: Array.isArray(r.images) ? r.images.filter(img => img && (img.dataUrl || img.blobKey)).map((img, index) => ({
           id: img.id || crypto.randomUUID(),
-          name: img.name || `foto-${index + 1}.jpg`,
-          type: img.type || 'image/jpeg',
+          name: img.name || (isVideoMedia(img) ? `video-${index + 1}.mp4` : `foto-${index + 1}.jpg`),
+          type: img.type || (isVideoMedia(img) ? 'video/mp4' : 'image/jpeg'),
           size: Number(img.size || 0),
-          dataUrl: img.dataUrl
+          dataUrl: img.blobKey ? '' : (img.dataUrl || ''),
+          blobKey: img.blobKey || null,
+          localOnly: !!img.blobKey
         })) : []
       })).filter(r => r.shortcut && (r.message || (Array.isArray(r.images) && r.images.length)));
     }
@@ -2975,6 +3210,7 @@
         cloudLoaded = true;
         resetSelectedResponse();
         renderAll();
+        hydrateStoredVideos();
         renderCloudStatus(`Nube cargada correctamente. Archivo SHA: ${(cloudSha || '').slice(0,7) || 'nuevo'}.`);
         toast('Respuestas cargadas desde GitHub ✅');
       }catch(err){
@@ -2985,7 +3221,7 @@
     }
 
     function saveToStorageNoAuto(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizeResponsesForStorage(responses)));
     }
 
     async function uploadCloudResponses(isAuto = false){
@@ -3140,13 +3376,7 @@
         category: $('categoryInput').value.trim() || 'General',
         tags: $('tagsInput').value.split(',').map(t => t.trim()).filter(Boolean),
         message: $('messageInput').value.trim(),
-        images: formImages.map((img, index) => ({
-          id: img.id || crypto.randomUUID(),
-          name: img.name || (isVideoMedia(img) ? `video-${index + 1}.mp4` : `foto-${index + 1}.jpg`),
-          type: img.type || (isVideoMedia(img) ? 'video/mp4' : 'image/jpeg'),
-          size: Number(img.size || 0),
-          dataUrl: img.dataUrl
-        })).filter(img => img.dataUrl)
+        images: formImages.map(mediaStorageCopy).filter(img => img.dataUrl || img.blobKey)
       };
 
       if(!item.title || !item.shortcut || (!item.message && !item.images.length)){
@@ -3316,7 +3546,7 @@ Esta acción se guarda localmente y luego puedes subir cambios a GitHub.`);
         app: 'Respuestas Rápidas',
         version: 2,
         exportedAt: new Date().toISOString(),
-        responses
+        responses: sanitizeResponsesForStorage(responses)
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
       const url = URL.createObjectURL(blob);
@@ -3347,6 +3577,7 @@ Esta acción se guarda localmente y luego puedes subir cambios a GitHub.`);
           responses = mode ? mergeResponses(responses, clean) : clean;
           saveToStorage();
           renderAll();
+          hydrateStoredVideos();
           toast('Respuestas importadas ✅');
         }catch{
           toast('No se pudo importar. Revisa que sea un JSON válido.');
