@@ -1,28 +1,46 @@
 {
   "app": "Respuestas Rápidas",
-  "version": 3,
-  "updatedAt": "2026-06-08T19:49:44.187Z",
+  "version": 4,
+  "updatedAt": "2026-06-13T19:24:02.159Z",
   "owner": "CatalogosHN",
   "repo": "xrspfastimg",
   "path": "data/respuestas_rapidas.json",
+  "customSections": [],
+  "customCategories": [
+    "Publicaciones de Facebook"
+  ],
   "responses": [
     {
-      "id": "b4737fa7-0828-4f04-a4fa-4e3cfedffa50",
-      "title": "Video Pruebas cargo expreso",
-      "shortcut": "videopruebascargoexpreso",
-      "category": "Video Pruebas cargo expreso",
+      "id": "34988cfa-cd7e-44ad-8080-c3c42d862429",
+      "title": "Cuentas bancarias para pagossss",
+      "shortcut": "cuentaswe",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
       "tags": [
-        "Video caex"
+        "Cuentas bancarias para pagossss"
+      ],
+      "message": "sad",
+      "images": []
+    },
+    {
+      "id": "acbd9766-9ff1-4af3-98c3-7958078b9a3a",
+      "title": "Inflador de Llantas Portatil Recargable",
+      "shortcut": "inflador",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Inflador"
       ],
       "message": "",
       "images": [
         {
-          "id": "e96bc441-c1e6-4198-8376-31e77a70a759",
-          "name": "1000998782.mp4",
-          "type": "video/mp4",
-          "size": 56844104,
-          "blobKey": "video-e96bc441-c1e6-4198-8376-31e77a70a759",
-          "localOnly": true,
+          "id": "90220dcf-b8c8-47da-8a0a-e9695d1aad9e",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 685907,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfast/main/media/respuestas-rapidas/inflador/90220dcf-b8c-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfast/main/media/respuestas-rapidas/inflador/90220dcf-b8c-image.png",
+          "cloudPath": "media/respuestas-rapidas/inflador/90220dcf-b8c-image.png",
           "dataUrl": ""
         }
       ]
@@ -31,6 +49,7 @@
       "id": "724e98c1-6712-4c9e-9bf8-1965913bba67",
       "title": "Tigo Money Bry",
       "shortcut": "tigomoney",
+      "section": "Respuestas para clientes",
       "category": "Tigo Money",
       "tags": [
         "Tigo Money",
@@ -44,6 +63,7 @@
       "id": "cf0505d9-4d2d-43cd-8977-10efeb3a9390",
       "title": "Banco Bac Credomatic",
       "shortcut": "bancobaccredomatic",
+      "section": "Respuestas para clientes",
       "category": "Banco Bac Credomatic",
       "tags": [
         "Banco Bac Credomatic",
@@ -59,6 +79,7 @@
       "id": "6fbd9142-3663-4429-818f-9b27603f996b",
       "title": "Banco Occidente",
       "shortcut": "bancooccidente",
+      "section": "Respuestas para clientes",
       "category": "Banco Occidente",
       "tags": [
         "Banco Occidente",
@@ -72,6 +93,7 @@
       "id": "284e7d49-e802-4607-821b-65d58779f6c0",
       "title": "BanPais",
       "shortcut": "banpais",
+      "section": "Respuestas para clientes",
       "category": "BanPais",
       "tags": [
         "BanPais",
@@ -85,6 +107,7 @@
       "id": "389e56d5-59c5-42d8-be49-25cee0d693d7",
       "title": "Ficohsa",
       "shortcut": "ficohsa",
+      "section": "Respuestas para clientes",
       "category": "Ficohsa",
       "tags": [
         "Ficohsa",
@@ -98,6 +121,7 @@
       "id": "a7998a82-f3db-45a7-9f1b-00010c6d8d1a",
       "title": "Banco atlantida",
       "shortcut": "bancoatlantida",
+      "section": "Respuestas para clientes",
       "category": "Banco atlantida",
       "tags": [
         "banco atlantida",
@@ -110,6 +134,7 @@
       "id": "9d8b8345-1def-458e-9a4e-48abf1581a01",
       "title": "Cuentas bancarias para pago",
       "shortcut": "cuentas",
+      "section": "Respuestas para clientes",
       "category": "Pagos",
       "tags": [
         "cuentas",
@@ -123,6 +148,7 @@
       "id": "d681af50-40b4-49e5-800f-3a3065e5140d",
       "title": "Saludo inicial al cliente",
       "shortcut": "saludo",
+      "section": "Respuestas para clientes",
       "category": "Atención al cliente",
       "tags": [],
       "message": "Gracias por comunicarte con asesora autorizada de International items 📦Dime 👀 Que producto está interesado@ ?\n\nInteresad@ en Alguna publicacion en Facebook, Tiktok o WhatsApp?",
@@ -132,6 +158,7 @@
       "id": "3f9862f5-fb3a-439d-b63c-93c44dab00dc",
       "title": "Métodos de pago Cargo Expreso",
       "shortcut": "metodospago",
+      "section": "Respuestas para clientes",
       "category": "Pagos",
       "tags": [],
       "message": "*PRIMER METODO* 🔐\n\nEste metodo consiste en que nosotros le pedimos datos para enviarle el paquete, la guia de cargo expreso es impresa y enviada a ud como cliente.\n\nLuego de ello ud debe de realizar el deposito o transferencia de 160 lempiras antes de las 1:00 pm del mismo dia que acordamos el trato.\n\nNosotros ya tendremos su paquete listo, pero si el deposito o transferencia no ha sido realizado antes de las 1:00 pm, nos queda como única opcion llamar al camionero de cargo expreso y cancelar su pedido por incumplimiento de su palabra.\n\n*SEGUNDO METODO* 🔐\n\n160 lempiras anticipados para envio y empaquetado de su producto\n\n273 paga en efectivo al recibir\n\n\n*TERCER METODO* 🔐\n\nPagar todo anticipado \n400 lps total\n\n*Nota:* VENTAJA: no paga el 5% que cobra cargo expreso de pagar al recibir, por eso el segundo metodo paga una pequeña diferencia.",
@@ -141,6 +168,7 @@
       "id": "52b8cb2e-6486-424f-aa46-3f63555afcee",
       "title": "Preguntar método elegido",
       "shortcut": "metodo",
+      "section": "Respuestas para clientes",
       "category": "Pagos",
       "tags": [],
       "message": "Me indica cual de los métodos seria",
@@ -150,6 +178,7 @@
       "id": "a2d488ea-ebe4-47c7-921a-71e5d470fb3f",
       "title": "Aviso de cuentas disponibles",
       "shortcut": "deposito",
+      "section": "Respuestas para clientes",
       "category": "Pagos",
       "tags": [],
       "message": "El depósito/transferencia puede hacerlo a cualquiera de las siguientes cuentas",
@@ -159,6 +188,7 @@
       "id": "0c571993-a4cd-4b75-8053-8e7715e266a1",
       "title": "Pedido agendado",
       "shortcut": "agendado",
+      "section": "Respuestas para clientes",
       "category": "Confirmación",
       "tags": [],
       "message": "Está bien con todo gusto\n\nManténgase pendiente del celular ya que acercándose la hora lo estarán llamando por llamada normal o WhatsApp \n\n*YA QUEDA AGENDADO@ ✅*",
@@ -168,6 +198,7 @@
       "id": "2106bc8b-0ae3-428b-9539-7fa922a26395",
       "title": "Agradecimiento final",
       "shortcut": "gracias",
+      "section": "Respuestas para clientes",
       "category": "Atención al cliente",
       "tags": [],
       "message": "¡Muchas gracias por preferirnos! Esperamos poder servirte nuevamente.",
@@ -177,6 +208,7 @@
       "id": "658e880f-bba8-44c9-bc11-6d07ffb65f37",
       "title": "Pedir foto del lugar y unidades",
       "shortcut": "fotolugar",
+      "section": "Respuestas para clientes",
       "category": "Entrega",
       "tags": [],
       "message": "Al llegar mande foto del lugar para corroborar que hablamos del mismo lugar\n\nEl entregador le toma 2 minutos entregarle por qué solo baja de ahi mismo\n\nY me dice cuantas unidades serian",
@@ -186,6 +218,7 @@
       "id": "f85289ef-93cf-4a41-ad79-baa2933ac1da",
       "title": "Nota si no recibe en punto de entrega",
       "shortcut": "notaentrega",
+      "section": "Respuestas para clientes",
       "category": "Entrega",
       "tags": [],
       "message": "⚠️⚠️⚠️ *NOTA:* Si no recibe el producto agendando en unos de los puntos de entrega, debe de pagarle 50 lempiras al muchacho aunque no compre nada ya que eso corresponde al envío de él.\nYo lo pago y le doy beneficio a usted de no pagarlo al comprar un producto\n\n*CONFIRMAR SI ESTA DE ACUERDO:*\nElegir una opción:\n\nEstoy de acuerdo ✅\nNO estoy de acuerdo ❌",
@@ -195,6 +228,7 @@
       "id": "b825d1e9-eaad-4fc8-9eb8-56e33a720a5d",
       "title": "Página web International Items",
       "shortcut": "web",
+      "section": "Respuestas para clientes",
       "category": "Catálogo",
       "tags": [],
       "message": "🛍️✨ Descubre International Items ✨\nTu tienda online con todo lo que necesitas: tecnología, cámaras de seguridad, artículos para el hogar, moda, herramientas y mucho más 🔥\nEncuentra calidad, variedad y precios que te encantarán 💥\n\n🌐 Nuestra Página Web 🤩\n👉 https://www.international.itemshn.com/\n\n🛒 Al confirmar tu compra, selecciona que fuiste atendid@ por Mayra 🫡\nAsí activarás futuros descuentos y promociones por cliente frecuente 💖",
@@ -204,6 +238,7 @@
       "id": "7d8b7b76-2b05-4fd5-86e7-d564da1e995f",
       "title": "Solicitar comprobante de pago",
       "shortcut": "comprobante",
+      "section": "Respuestas para clientes",
       "category": "Pagos",
       "tags": [],
       "message": "Recuerde guardar el comprobante y enviarlo como respaldo de su pago ✅\n\nYa que debe presentarse el comprobante de pago para que autorizen el despacho de bodega y se le realice el envio del producto que está solicitando ✅🫡",
@@ -213,6 +248,7 @@
       "id": "2bff67bb-e1d2-40ab-97f3-ea81168cb143",
       "title": "Explicación de garantía",
       "shortcut": "garantia",
+      "section": "Respuestas para clientes",
       "category": "Garantía",
       "tags": [],
       "message": "Le comentamos como funciona nuestra garantía 🥳⭐\n\nNosotros NO SOMOS como los demás que le dicen que le dan \"garantía\" y luego ni les contestan o bloquean 🫤\n\nUd puede probar el producto al recibir sin ningún problema ✅, solo tenga todo listo para no retrasar al chico en las demás entregas se le agradecera mucho ✅\n\nProductos sellados que se abren Y FUNCIONAN no se pueden devolver por esa razón se especifican detalles del producto en las publicaciones, favor revisar antes los detalles 🌟💥",
@@ -222,6 +258,7 @@
       "id": "ea13788c-35a9-4594-996d-125c05ef69e4",
       "title": "Tiempo de envío Cargo Expreso",
       "shortcut": "tiempoenvio",
+      "section": "Respuestas para clientes",
       "category": "Cargo Expreso",
       "tags": [],
       "message": "Si pide retiro en agencia le llega al siguiente dia que se le envia\n\nO tambien se puede direccion exacta solamente que eso ya depende de donde viva normalmente al siguiente dia llega pero depende el lugar aveces tarda 2",
@@ -231,6 +268,7 @@
       "id": "d27816b3-699a-4eff-86d2-b7494921fc11",
       "title": "Datos para envío Cargo Expreso",
       "shortcut": "datoscargo",
+      "section": "Respuestas para clientes",
       "category": "Cargo Expreso",
       "tags": [],
       "message": "*Cargo Expreso Envio*\n\nNombre y apellido de quien recibe\n\nDireccion exacta en escrito \nDepartamento y poblado \n\nNumero al que puedan llamar llamada normal\n\n2 referencias Ejemplo:\nCasa color, casa de dos pisos \nEsquina opuesta a farmacia o pulperia\n\n*NOTA* O si solo quiere recibir en agencia solo nombre y numero al que puedan llamar",
@@ -240,6 +278,7 @@
       "id": "c65a532d-3007-41a9-a397-7302daf0e208",
       "title": "Especificaciones foco cámara 360",
       "shortcut": "fococamara",
+      "section": "Respuestas para clientes",
       "category": "Productos",
       "tags": [],
       "message": "ESPECIFICACIONES:\nGraba audio y video en una memoria MicroSD, se enrosca a las rosetas de su casa, tiene visión de 360° y visión nocturna, monitoreable desde cualquier parte del mundo es compatible con IOS, Android y Windows.\n\n CARACTERÍSTICAS:  \n \n- Soporta memorias MicroSD de 8GB hasta 64GB.\n- Resolución de 1280x960 HD\n- Se conecta a través de APP con IOS, Android y Windows.\n- Detección de movimiento, Infrarrojos, Visión nocturna y Alertas por Correo Electrónico.\n- Permite conectar 10 visitantes al mismo tiempo.\n- Transmisión de Audio y Video en vivo HD.\n- Alcance de Señal Wifi de 15 - 25 Mts",
@@ -249,6 +288,7 @@
       "id": "6e608a38-030d-44c7-96ae-86d9b1c26881",
       "title": "Datos recolectados y guía pendiente",
       "shortcut": "datosrecolectados",
+      "section": "Respuestas para clientes",
       "category": "Confirmación",
       "tags": [],
       "message": "Sus datos han sido Recolectados ✅\n\nAntes de las 6:00 pm del dia de mañana le mando foto de su guia 🧾 seguimiento de su paquete para que vea por donde viene su paquete 📦🫡",
