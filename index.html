@@ -213,6 +213,78 @@
       margin-bottom:16px;
     }
 
+    .filter-block{
+      margin-bottom:13px;
+    }
+
+    .filter-label{
+      margin:0 0 8px;
+      color:#334155;
+      font-size:.78rem;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.055em;
+    }
+
+    .section-badge{
+      display:inline-flex;
+      align-items:center;
+      max-width:100%;
+      padding:5px 9px;
+      border-radius:999px;
+      background:#e7f1ff;
+      color:var(--primary-dark);
+      border:1px solid #cfe3ff;
+      font-weight:900;
+      font-size:.72rem;
+      text-transform:none;
+      letter-spacing:0;
+      vertical-align:middle;
+    }
+
+    .option-manager{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .option-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .option-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:8px 10px;
+      border-radius:999px;
+      background:#f1f7ff;
+      color:#275489;
+      border:1px solid #cfe3ff;
+      font-size:.78rem;
+      font-weight:900;
+    }
+
+    .option-pill.base{
+      background:#f8fbff;
+      color:var(--muted);
+    }
+
+    .option-pill button{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      background:#fff0f2;
+      color:var(--red);
+      font-weight:900;
+      line-height:1;
+    }
+
     .chip{
       padding:9px 12px;
       border-radius:999px;
@@ -966,7 +1038,7 @@
       .topbar{padding-top:7px}
       .search-wrap{min-height:54px; border-radius:19px; padding:0 12px}
       .search-wrap input{font-size:.92rem}
-      .form-grid, .settings-grid, .sync-panel, .photo-editor-layout, .editor-toolbar, .editor-toolbar-3{grid-template-columns:1fr}
+      .form-grid, .settings-grid, .sync-panel, .photo-editor-layout, .editor-toolbar, .editor-toolbar-3, .option-manager{grid-template-columns:1fr}
       .field.span-2{grid-column:auto}
       .admin-row{grid-template-columns:1fr}
       .admin-row .actions{justify-content:flex-start}
@@ -1078,7 +1150,14 @@
               </div>
             </div>
 
-            <div class="filters" id="categoryFilters"></div>
+            <div class="filter-block">
+              <div class="filter-label">Secciones</div>
+              <div class="filters" id="sectionFilters"></div>
+            </div>
+            <div class="filter-block">
+              <div class="filter-label">Categorías</div>
+              <div class="filters" id="categoryFilters"></div>
+            </div>
             <div class="grid" id="responsesGrid"></div>
             <div class="empty" id="emptyBox">
               <strong>No encontré ninguna respuesta.</strong>
@@ -1148,13 +1227,19 @@
                   <input id="shortcutInput" required placeholder="Ej: productolista" />
                 </div>
                 <div class="field">
+                  <label for="sectionInput">Sección / tipo</label>
+                  <input id="sectionInput" list="sectionDatalist" placeholder="Ej: Respuestas para clientes" />
+                </div>
+                <div class="field">
                   <label for="categoryInput">Categoría</label>
-                  <input id="categoryInput" placeholder="Ej: Productos, Envíos, Garantía" />
+                  <input id="categoryInput" list="categoryDatalist" placeholder="Ej: Productos, Envíos, Garantía" />
                 </div>
                 <div class="field">
                   <label for="tagsInput">Etiquetas separadas por coma</label>
                   <input id="tagsInput" placeholder="Ej: catálogo, cliente, venta" />
                 </div>
+                <datalist id="sectionDatalist"></datalist>
+                <datalist id="categoryDatalist"></datalist>
                 <div class="field span-2">
                   <label for="messageInput">Mensaje completo opcional</label>
                   <textarea id="messageInput" placeholder="Escribe aquí la respuesta rápida que quieres copiar o compartir. Si solo quieres enviar fotos, puedes dejar este campo vacío."></textarea>
@@ -1178,6 +1263,34 @@
                 <button class="btn amber" type="button" id="lockBtn">🔒 Bloquear admin</button>
               </div>
             </form>
+          </div>
+
+          <div class="form-card">
+            <div class="section-head">
+              <div>
+                <h2>Secciones y categorías personalizadas</h2>
+                <p>Usa esto para crear separaciones como <strong>Publicaciones de Facebook</strong>, <strong>Respuestas para clientes</strong> o cualquier categoría nueva que quieras reutilizar.</p>
+              </div>
+            </div>
+            <div class="option-manager">
+              <div>
+                <label for="newSectionInput">Nueva sección / tipo</label>
+                <div class="editor-inline">
+                  <input id="newSectionInput" placeholder="Ej: Publicaciones de Facebook" />
+                  <button class="btn primary" type="button" id="addSectionBtn">➕ Agregar sección</button>
+                </div>
+                <div class="option-list" id="customSectionsList"></div>
+              </div>
+              <div>
+                <label for="newCategoryInput">Nueva categoría</label>
+                <div class="editor-inline">
+                  <input id="newCategoryInput" placeholder="Ej: Promos, Garantías, Marketplace" />
+                  <button class="btn green" type="button" id="addCategoryBtn">➕ Agregar categoría</button>
+                </div>
+                <div class="option-list" id="customCategoriesList"></div>
+              </div>
+            </div>
+            <div class="mini-text" style="margin-top:12px">Borrar una opción de esta lista solo quita la sugerencia. No borra respuestas que ya estén guardadas con esa sección o categoría.</div>
           </div>
 
           <div class="form-card">
@@ -1334,8 +1447,12 @@
                     <input id="editorNewShortcut" placeholder="Ej: camarapromo" />
                   </div>
                   <div class="field">
+                    <label for="editorNewSection">Sección / tipo</label>
+                    <input id="editorNewSection" list="sectionDatalist" placeholder="Ej: Publicaciones de Facebook" />
+                  </div>
+                  <div class="field">
                     <label for="editorNewCategory">Categoría</label>
-                    <input id="editorNewCategory" placeholder="Ej: Productos" />
+                    <input id="editorNewCategory" list="categoryDatalist" placeholder="Ej: Productos" />
                   </div>
                   <div class="field">
                     <label for="editorNewTags">Etiquetas separadas por coma</label>
@@ -1511,6 +1628,8 @@
     const GITHUB_CONFIG_KEY = 'respuestas_rapidas_github_config_v1';
     const GITHUB_TOKEN_KEY = 'respuestas_rapidas_github_token_v1';
     const GITHUB_SESSION_TOKEN_KEY = 'respuestas_rapidas_github_session_token_v1';
+    const CUSTOM_SECTIONS_KEY = 'respuestas_rapidas_custom_sections_v1';
+    const CUSTOM_CATEGORIES_KEY = 'respuestas_rapidas_custom_categories_v1';
     const MEDIA_DB_NAME = 'respuestas_rapidas_media_db_v1';
     const MEDIA_DB_VERSION = 1;
     const MEDIA_STORE = 'media_blobs';
@@ -1523,11 +1642,15 @@
       autoSync: false
     };
 
+    const DEFAULT_SECTIONS = ['Respuestas para clientes', 'Publicaciones de Facebook', 'Otro / personalizado'];
+    const DEFAULT_CATEGORIES = ['General', 'Productos', 'Envíos', 'Ventas', 'Garantía', 'Promociones', 'Marketplace'];
+
     const defaultResponses = [
       {
         id: crypto.randomUUID(),
         title: 'Lista de productos',
         shortcut: 'productolista',
+        section: 'Respuestas para clientes',
         category: 'Productos',
         tags: ['catalogo', 'lista', 'venta'],
         message: 'Hola 👋\n\nTe comparto la lista de productos disponibles.\n\nPuedes revisar opciones, precios y disponibilidad. Si te interesa alguno, me mandas captura o el nombre del producto y te confirmo detalles. ✅'
@@ -1536,6 +1659,7 @@
         id: crypto.randomUUID(),
         title: 'Información de envío',
         shortcut: 'envio',
+        section: 'Respuestas para clientes',
         category: 'Envíos',
         tags: ['delivery', 'entrega', 'moto'],
         message: 'Claro ✅\n\nRealizamos envío por delivery según la zona. El costo puede variar dependiendo de la ubicación exacta.\n\nEnvíame tu colonia o ubicación de referencia para confirmarte el costo.'
@@ -1544,6 +1668,7 @@
         id: crypto.randomUUID(),
         title: 'Producto disponible',
         shortcut: 'disponible',
+        section: 'Respuestas para clientes',
         category: 'Ventas',
         tags: ['stock', 'cliente', 'producto'],
         message: 'Sí, está disponible ✅\n\nPuedes reservarlo coordinando el envío o entrega. Para confirmar, necesito tu nombre, dirección y número de contacto.'
@@ -1552,7 +1677,10 @@
 
     let responses = loadResponses();
     let selectedResponse = null;
+    let currentSection = 'Todos';
     let currentCategory = 'Todos';
+    let customSections = loadCustomList(CUSTOM_SECTIONS_KEY);
+    let customCategories = loadCustomList(CUSTOM_CATEGORIES_KEY);
     let isAdminUnlocked = sessionStorage.getItem(UNLOCK_SESSION) === 'true' || localStorage.getItem(TRUST_KEY) === 'true';
     let githubConfig = loadGithubConfig();
     let cloudLoaded = false;
@@ -1577,6 +1705,7 @@
     const selectedImages = $('selectedImages');
     const selectedTagsPanel = $('selectedTagsPanel');
     const selectedTagsBtn = $('selectedTagsBtn');
+    const sectionFilters = $('sectionFilters');
     const categoryFilters = $('categoryFilters');
 
     init();
@@ -1627,6 +1756,10 @@
       $('loadCloudBtn').addEventListener('click', loadCloudResponses);
       $('uploadCloudBtn').addEventListener('click', () => uploadCloudResponses(false));
       $('forgetGhTokenBtn').addEventListener('click', forgetGithubToken);
+      $('addSectionBtn')?.addEventListener('click', addCustomSection);
+      $('addCategoryBtn')?.addEventListener('click', addCustomCategory);
+      $('newSectionInput')?.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); addCustomSection(); } });
+      $('newCategoryInput')?.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); addCustomCategory(); } });
 
       // FIX: eventos de la sección Editar fotos
       $('editorOpenGalleryBtn').addEventListener('click', () => openFileInput('editorGalleryInput'));
@@ -1739,7 +1872,8 @@
         id: r.id || crypto.randomUUID(),
         title: String(r.title || 'Sin título').trim(),
         shortcut: normalizeShortcut(r.shortcut || r.title || crypto.randomUUID().slice(0,6)),
-        category: String(r.category || 'General').trim() || 'General',
+        section: getResponseSection(r),
+        category: getResponseCategory(r),
         tags: Array.isArray(r.tags) ? r.tags.map(t => String(t).trim()).filter(Boolean) : [],
         message: String(r.message || '').trim(),
         images: getMedia(r).map(mediaStorageCopy).filter(img => img.dataUrl || img.blobKey || img.url || img.downloadUrl || img.cloudPath)
@@ -1751,7 +1885,8 @@
         id: r.id || crypto.randomUUID(),
         title: String(r.title || 'Sin título').trim(),
         shortcut: normalizeShortcut(r.shortcut || r.title || crypto.randomUUID().slice(0,6)),
-        category: String(r.category || 'General').trim() || 'General',
+        section: getResponseSection(r),
+        category: getResponseCategory(r),
         tags: Array.isArray(r.tags) ? r.tags.map(t => String(t).trim()).filter(Boolean) : [],
         message: String(r.message || '').trim(),
         images: getMedia(r).map(mediaCloudStorageCopy).filter(img => img.dataUrl || img.url || img.downloadUrl || img.cloudPath)
@@ -1863,23 +1998,95 @@
         .toLowerCase();
     }
 
+    function cleanLabel(value, fallback = ''){
+      const text = String(value || '').replace(/\s+/g, ' ').trim();
+      return text || fallback;
+    }
+
+    function uniqueLabels(list){
+      const map = new Map();
+      (Array.isArray(list) ? list : []).forEach(item => {
+        const label = cleanLabel(item);
+        if(label && !map.has(label.toLowerCase())) map.set(label.toLowerCase(), label);
+      });
+      return [...map.values()];
+    }
+
+    function loadCustomList(key){
+      try{
+        return uniqueLabels(JSON.parse(localStorage.getItem(key) || '[]'));
+      }catch{
+        return [];
+      }
+    }
+
+    function saveCustomList(key, list){
+      localStorage.setItem(key, JSON.stringify(uniqueLabels(list)));
+    }
+
+    function getResponseSection(r){
+      const direct = cleanLabel(r?.section || r?.type || r?.group || '');
+      if(direct) return direct;
+      const category = String(r?.category || '').toLowerCase();
+      if(category.includes('facebook') || category.includes('publicaci') || category.includes('marketplace') || category.includes('promo')) return 'Publicaciones de Facebook';
+      return 'Respuestas para clientes';
+    }
+
+    function getResponseCategory(r){
+      return cleanLabel(r?.category || '', 'General');
+    }
+
+    function getSections(){
+      const set = new Set(['Todos']);
+      [...DEFAULT_SECTIONS, ...customSections].forEach(label => set.add(label));
+      responses.forEach(r => set.add(getResponseSection(r)));
+      return [...set];
+    }
+
     function getCategories(){
       const set = new Set(['Todos']);
-      responses.forEach(r => set.add(r.category || 'General'));
+      [...DEFAULT_CATEGORIES, ...customCategories].forEach(label => set.add(label));
+      responses.forEach(r => {
+        if(currentSection === 'Todos' || getResponseSection(r) === currentSection) set.add(getResponseCategory(r));
+      });
       return [...set];
     }
 
     function renderAll(){
+      renderSections();
       renderCategories();
+      renderCustomTools();
       renderResponses();
       renderAdminList();
       populateResponseSelects();
       renderPhotoEditorGallery();
     }
 
+    function renderSections(){
+      if(!sectionFilters) return;
+      sectionFilters.innerHTML = '';
+      const sections = getSections();
+      if(currentSection !== 'Todos' && !sections.includes(currentSection)) currentSection = 'Todos';
+      sections.forEach(section => {
+        const chip = document.createElement('button');
+        chip.className = 'chip' + (section === currentSection ? ' active' : '');
+        chip.textContent = section;
+        chip.addEventListener('click', () => {
+          currentSection = section;
+          currentCategory = 'Todos';
+          renderSections();
+          renderCategories();
+          renderResponses();
+        });
+        sectionFilters.appendChild(chip);
+      });
+    }
+
     function renderCategories(){
       categoryFilters.innerHTML = '';
-      getCategories().forEach(cat => {
+      const categories = getCategories();
+      if(currentCategory !== 'Todos' && !categories.includes(currentCategory)) currentCategory = 'Todos';
+      categories.forEach(cat => {
         const chip = document.createElement('button');
         chip.className = 'chip' + (cat === currentCategory ? ' active' : '');
         chip.textContent = cat;
@@ -1890,18 +2097,128 @@
         });
         categoryFilters.appendChild(chip);
       });
+      updateDataLists();
+    }
+
+    function fillDataList(id, items){
+      const datalist = $(id);
+      if(!datalist) return;
+      datalist.innerHTML = uniqueLabels(items).map(item => `<option value="${escapeHtml(item)}"></option>`).join('');
+    }
+
+    function updateDataLists(){
+      fillDataList('sectionDatalist', getSections().filter(x => x !== 'Todos'));
+      fillDataList('categoryDatalist', getCategories().filter(x => x !== 'Todos'));
+    }
+
+    function renderCustomTools(){
+      updateDataLists();
+      renderOptionPills('customSectionsList', DEFAULT_SECTIONS, customSections, 'section');
+      renderOptionPills('customCategoriesList', DEFAULT_CATEGORIES, customCategories, 'category');
+    }
+
+    function renderOptionPills(containerId, baseList, customList, type){
+      const box = $(containerId);
+      if(!box) return;
+      const base = uniqueLabels(baseList);
+      const customs = uniqueLabels(customList).filter(item => !base.some(b => b.toLowerCase() === item.toLowerCase()));
+      box.innerHTML = '';
+      base.forEach(label => {
+        const pill = document.createElement('span');
+        pill.className = 'option-pill base';
+        pill.textContent = `${label} · base`;
+        box.appendChild(pill);
+      });
+      customs.forEach(label => {
+        const pill = document.createElement('span');
+        pill.className = 'option-pill';
+        pill.innerHTML = `<span>${escapeHtml(label)}</span><button type="button" title="Quitar sugerencia">×</button>`;
+        pill.querySelector('button').addEventListener('click', () => {
+          if(type === 'section'){
+            customSections = customSections.filter(item => item.toLowerCase() !== label.toLowerCase());
+            saveCustomList(CUSTOM_SECTIONS_KEY, customSections);
+          }else{
+            customCategories = customCategories.filter(item => item.toLowerCase() !== label.toLowerCase());
+            saveCustomList(CUSTOM_CATEGORIES_KEY, customCategories);
+          }
+          renderAll();
+          toast('Sugerencia eliminada');
+        });
+        box.appendChild(pill);
+      });
+    }
+
+    function addCustomSection(){
+      const input = $('newSectionInput');
+      const label = cleanLabel(input?.value || '');
+      if(!label) return toast('Escribe el nombre de la sección');
+      const exists = getSections().some(item => item.toLowerCase() === label.toLowerCase());
+      if(exists) return toast('Esa sección ya existe');
+      customSections = uniqueLabels([...customSections, label]);
+      saveCustomList(CUSTOM_SECTIONS_KEY, customSections);
+      input.value = '';
+      renderAll();
+      toast('Sección agregada ✅');
+    }
+
+    function addCustomCategory(){
+      const input = $('newCategoryInput');
+      const label = cleanLabel(input?.value || '');
+      if(!label) return toast('Escribe el nombre de la categoría');
+      const exists = getCategories().some(item => item.toLowerCase() === label.toLowerCase());
+      if(exists) return toast('Esa categoría ya existe');
+      customCategories = uniqueLabels([...customCategories, label]);
+      saveCustomList(CUSTOM_CATEGORIES_KEY, customCategories);
+      input.value = '';
+      renderAll();
+      toast('Categoría agregada ✅');
+    }
+
+    function rememberLabels(section, category){
+      const sectionLabel = cleanLabel(section);
+      const categoryLabel = cleanLabel(category);
+      const baseSections = DEFAULT_SECTIONS.map(item => item.toLowerCase());
+      const baseCategories = DEFAULT_CATEGORIES.map(item => item.toLowerCase());
+      let changed = false;
+      if(sectionLabel && !baseSections.includes(sectionLabel.toLowerCase()) && !customSections.some(item => item.toLowerCase() === sectionLabel.toLowerCase())){
+        customSections = uniqueLabels([...customSections, sectionLabel]);
+        saveCustomList(CUSTOM_SECTIONS_KEY, customSections);
+        changed = true;
+      }
+      if(categoryLabel && !baseCategories.includes(categoryLabel.toLowerCase()) && !customCategories.some(item => item.toLowerCase() === categoryLabel.toLowerCase())){
+        customCategories = uniqueLabels([...customCategories, categoryLabel]);
+        saveCustomList(CUSTOM_CATEGORIES_KEY, customCategories);
+        changed = true;
+      }
+      if(changed) updateDataLists();
+    }
+
+    function applyImportedCustomLists(data){
+      if(!data || Array.isArray(data)) return;
+      if(Array.isArray(data.customSections)){
+        customSections = uniqueLabels([...customSections, ...data.customSections]);
+        saveCustomList(CUSTOM_SECTIONS_KEY, customSections);
+      }
+      if(Array.isArray(data.customCategories)){
+        customCategories = uniqueLabels([...customCategories, ...data.customCategories]);
+        saveCustomList(CUSTOM_CATEGORIES_KEY, customCategories);
+      }
     }
 
     function filterResponses(){
       const qRaw = searchInput.value || '';
       const q = normalizeSearch(qRaw);
       return responses.filter(r => {
-        const catMatch = currentCategory === 'Todos' || (r.category || 'General') === currentCategory;
+        const section = getResponseSection(r);
+        const category = getResponseCategory(r);
+        const sectionMatch = currentSection === 'Todos' || section === currentSection;
+        if(!sectionMatch) return false;
+        const catMatch = currentCategory === 'Todos' || category === currentCategory;
         if(!catMatch) return false;
         if(!q) return true;
         const shortcut = normalizeShortcut(r.shortcut);
         const tags = Array.isArray(r.tags) ? r.tags.join(' ') : '';
-        const haystack = [r.title, r.shortcut, r.category, tags, r.message].join(' ').toLowerCase();
+        const haystack = [r.title, r.shortcut, section, category, tags, r.message].join(' ').toLowerCase();
         return shortcut === q || shortcut.includes(q) || haystack.includes(q);
       }).sort((a, b) => {
         const q = normalizeSearch(searchInput.value || '');
@@ -1922,7 +2239,7 @@
         card.className = 'card response-card';
         card.innerHTML = `
           <h3><span>${escapeHtml(r.title || 'Sin título')}</span></h3>
-          <div class="cat">${escapeHtml(r.category || 'General')}</div>
+          <div class="cat"><span class="section-badge">${escapeHtml(getResponseSection(r))}</span> · ${escapeHtml(getResponseCategory(r))}</div>
           <div class="shortcut">/${escapeHtml(normalizeShortcut(r.shortcut))}</div>
           <div class="preview">${escapeHtml(r.message || (getImages(r).length ? 'Esta respuesta no tiene texto, solo fotos/videos adjuntos.' : ''))}</div>
           ${renderCardImagesHtml(r)}
@@ -1948,7 +2265,7 @@
     function selectResponse(r, notify = true){
       selectedResponse = r;
       selectedTitle.textContent = r.title || 'Respuesta seleccionada';
-      selectedHint.innerHTML = `Atajo: <strong>/${escapeHtml(normalizeShortcut(r.shortcut))}</strong> · Categoría: <strong>${escapeHtml(r.category || 'General')}</strong>`;
+      selectedHint.innerHTML = `Atajo: <strong>/${escapeHtml(normalizeShortcut(r.shortcut))}</strong> · Sección: <strong>${escapeHtml(getResponseSection(r))}</strong> · Categoría: <strong>${escapeHtml(getResponseCategory(r))}</strong>`;
       selectedMessage.textContent = r.message || (getImages(r).length ? 'Esta respuesta no tiene texto. Solo contiene fotos/videos adjuntos.' : '');
       renderSelectedImages(r);
       selectedTagsPanel.innerHTML = renderTagsHtml(r);
@@ -3176,7 +3493,7 @@
         responses.forEach(r => {
           const option = document.createElement('option');
           option.value = r.id;
-          option.textContent = `${r.title || 'Sin título'} · /${normalizeShortcut(r.shortcut)}`;
+          option.textContent = `${getResponseSection(r)} · ${r.title || 'Sin título'} · /${normalizeShortcut(r.shortcut)}`;
           select.appendChild(option);
         });
         if(previous && [...select.options].some(opt => opt.value === previous)) select.value = previous;
@@ -3236,7 +3553,8 @@
       if(!ensureUnlockedForEditor('crear una nueva respuesta con archivos')) return;
       const title = $('editorNewTitle').value.trim();
       const shortcut = normalizeShortcut($('editorNewShortcut').value);
-      const category = $('editorNewCategory').value.trim() || 'General';
+      const section = cleanLabel($('editorNewSection')?.value || '', 'Publicaciones de Facebook');
+      const category = cleanLabel($('editorNewCategory').value, 'General');
       const tags = $('editorNewTags').value.split(',').map(t => t.trim()).filter(Boolean);
       const message = $('editorNewMessage').value.trim();
       const images = buildEditorImagesForResponse();
@@ -3244,12 +3562,14 @@
       if(!message && !images.length) return toast('La nueva respuesta necesita texto o fotos/videos');
       const duplicated = responses.find(r => normalizeShortcut(r.shortcut) === shortcut);
       if(duplicated) return toast('Ese atajo ya existe. Usa otro.');
-      const item = { id: crypto.randomUUID(), title, shortcut, category, tags, message, images };
+      const item = { id: crypto.randomUUID(), title, shortcut, section, category, tags, message, images };
+      rememberLabels(section, category);
       responses.unshift(item);
       saveToStorage();
       renderAll();
       $('editorNewTitle').value = '';
       $('editorNewShortcut').value = '';
+      if($('editorNewSection')) $('editorNewSection').value = '';
       $('editorNewCategory').value = '';
       $('editorNewTags').value = '';
       $('editorNewMessage').value = '';
@@ -3387,11 +3707,13 @@
     function buildCloudPayload(){
       return {
         app: 'Respuestas Rápidas',
-        version: 3,
+        version: 4,
         updatedAt: new Date().toISOString(),
         owner: githubConfig.owner,
         repo: githubConfig.repo,
         path: githubConfig.path,
+        customSections: uniqueLabels(customSections),
+        customCategories: uniqueLabels(customCategories),
         responses: sanitizeResponsesForCloud(responses)
       };
     }
@@ -3401,7 +3723,8 @@
         id: r.id || crypto.randomUUID(),
         title: String(r.title || 'Sin título').trim(),
         shortcut: normalizeShortcut(r.shortcut || r.title || crypto.randomUUID().slice(0,6)),
-        category: String(r.category || 'General').trim(),
+        section: getResponseSection(r),
+        category: getResponseCategory(r),
         tags: Array.isArray(r.tags) ? r.tags.map(t => String(t).trim()).filter(Boolean) : String(r.tags || '').split(',').map(t => t.trim()).filter(Boolean),
         message: String(r.message || '').trim(),
         images: Array.isArray(r.images) ? r.images.filter(img => img && (img.dataUrl || img.blobKey || img.url || img.downloadUrl || img.cloudPath)).map((img, index) => ({
@@ -3780,6 +4103,7 @@
         if(!Array.isArray(imported)) throw new Error('El JSON de nube no tiene una lista válida de respuestas');
 
         responses = cleanImportedResponses(imported);
+        applyImportedCustomLists(data);
         saveToStorageNoAuto();
         cloudLoaded = true;
         resetSelectedResponse();
@@ -3951,11 +4275,14 @@
         id,
         title: $('titleInput').value.trim(),
         shortcut: normalizeShortcut($('shortcutInput').value),
-        category: $('categoryInput').value.trim() || 'General',
+        section: cleanLabel($('sectionInput')?.value || '', 'Respuestas para clientes'),
+        category: cleanLabel($('categoryInput').value, 'General'),
         tags: $('tagsInput').value.split(',').map(t => t.trim()).filter(Boolean),
         message: $('messageInput').value.trim(),
-        images: formImages.map(mediaStorageCopy).filter(img => img.dataUrl || img.blobKey)
+        images: formImages.map(mediaStorageCopy).filter(img => img.dataUrl || img.blobKey || img.url || img.downloadUrl || img.cloudPath)
       };
+
+      rememberLabels(item.section, item.category);
 
       if(!item.title || !item.shortcut || (!item.message && !item.images.length)){
         return toast('Completa título, atajo y agrega mensaje o al menos una foto/video');
@@ -3997,7 +4324,7 @@
         row.innerHTML = `
           <div>
             <strong>${escapeHtml(r.title || 'Sin título')}</strong>
-            <small>/${escapeHtml(normalizeShortcut(r.shortcut))} · ${escapeHtml(r.category || 'General')} · 📎 ${mediaCountText(getMedia(r))}</small>
+            <small>/${escapeHtml(normalizeShortcut(r.shortcut))} · ${escapeHtml(getResponseSection(r))} · ${escapeHtml(getResponseCategory(r))} · 📎 ${mediaCountText(getMedia(r))}</small>
           </div>
           <div class="actions">
             <button class="btn ghost small" data-action="edit">✏️ Editar</button>
@@ -4067,7 +4394,8 @@
       $('editId').value = r.id;
       $('titleInput').value = r.title || '';
       $('shortcutInput').value = normalizeShortcut(r.shortcut || '');
-      $('categoryInput').value = r.category || '';
+      if($('sectionInput')) $('sectionInput').value = getResponseSection(r);
+      $('categoryInput').value = getResponseCategory(r);
       $('tagsInput').value = Array.isArray(r.tags) ? r.tags.join(', ') : '';
       $('messageInput').value = r.message || '';
       formImages = getImages(r).map(img => ({...img}));
@@ -4108,6 +4436,7 @@ Esta acción se guarda localmente y luego puedes subir cambios a GitHub.`);
       $('editId').value = '';
       $('titleInput').value = '';
       $('shortcutInput').value = '';
+      if($('sectionInput')) $('sectionInput').value = '';
       $('categoryInput').value = '';
       $('tagsInput').value = '';
       $('messageInput').value = '';
@@ -4123,8 +4452,10 @@ Esta acción se guarda localmente y luego puedes subir cambios a GitHub.`);
     function exportResponses(){
       const payload = {
         app: 'Respuestas Rápidas',
-        version: 2,
+        version: 4,
         exportedAt: new Date().toISOString(),
+        customSections: uniqueLabels(customSections),
+        customCategories: uniqueLabels(customCategories),
         responses: sanitizeResponsesForCloud(responses)
       };
       const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
@@ -4151,6 +4482,7 @@ Esta acción se guarda localmente y luego puedes subir cambios a GitHub.`);
           if(!Array.isArray(imported)) throw new Error('Formato inválido');
 
           const clean = cleanImportedResponses(imported);
+          applyImportedCustomLists(data);
 
           const mode = confirm('Presiona Aceptar para combinar con las actuales. Presiona Cancelar para reemplazar todo.');
           responses = mode ? mergeResponses(responses, clean) : clean;
