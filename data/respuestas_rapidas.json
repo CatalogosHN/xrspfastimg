@@ -1,7 +1,7 @@
 {
   "app": "Respuestas Rápidas",
   "version": 4,
-  "updatedAt": "2026-06-13T19:51:08.749Z",
+  "updatedAt": "2026-06-13T20:55:15.757Z",
   "owner": "CatalogosHN",
   "repo": "xrspfastimg",
   "path": "data/respuestas_rapidas.json",
@@ -10,6 +10,456 @@
     "Publicaciones de Facebook"
   ],
   "responses": [
+    {
+      "id": "6d9d65e5-da1b-4faa-86cc-b208aa71feed",
+      "title": "Saco de Boxeo Kit con Guantes Nuevo",
+      "shortcut": "sacodeboxeo",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Saco de Boxeo",
+        "Saco de Boxeo 120cm"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "c8159d7b-19d8-464b-a3b0-cb1e445be259",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1208842,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sacodeboxeo/c8159d7b-19d-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sacodeboxeo/c8159d7b-19d-image.png",
+          "cloudPath": "media/respuestas-rapidas/sacodeboxeo/c8159d7b-19d-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "9b664493-f15b-4ac3-b0b9-c03658a5bb6e",
+      "title": "Saco de Boxeo 80 cm Nuevos",
+      "shortcut": "sacodeboxeo80cm",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Saco de Boxeo 80 cm",
+        "saco boxeo"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "b5592d74-ae72-467a-9209-e82e77dd63b6",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 765506,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sacodeboxeo80cm/b5592d74-ae7-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sacodeboxeo80cm/b5592d74-ae7-image.png",
+          "cloudPath": "media/respuestas-rapidas/sacodeboxeo80cm/b5592d74-ae7-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "99867c0c-1f1c-400a-8d27-8d9670ff0279",
+      "title": "Lapiz Tactil para iPad Nuevos PROMO",
+      "shortcut": "lapiztactilparaipad",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Lapiz Tactil para iPad",
+        "lapiz ipad"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "dc6d2a15-7a5f-422b-a377-fb1ca684bc0b",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1100970,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/lapiztactilparaipad/dc6d2a15-7a5-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/lapiztactilparaipad/dc6d2a15-7a5-image.png",
+          "cloudPath": "media/respuestas-rapidas/lapiztactilparaipad/dc6d2a15-7a5-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "ce00af12-5cad-40ad-8ab7-f0363ccf3c12",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 820053,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/lapiztactilparaipad/ce00af12-5ca-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/lapiztactilparaipad/ce00af12-5ca-image.png",
+          "cloudPath": "media/respuestas-rapidas/lapiztactilparaipad/ce00af12-5ca-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "47d3d3ed-15bd-430d-9a74-fd0c0245ea6f",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 298297,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/lapiztactilparaipad/47d3d3ed-15b-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/lapiztactilparaipad/47d3d3ed-15b-image.png",
+          "cloudPath": "media/respuestas-rapidas/lapiztactilparaipad/47d3d3ed-15b-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "d93ed832-764a-4b00-8f76-9d641e2a8fa6",
+      "title": "Camara de Seguridad tipo Foco Giratoria Wifi",
+      "shortcut": "fococamara",
+      "section": "Respuestas para clientes",
+      "category": "General",
+      "tags": [
+        "foco camara",
+        "camara foco"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "753d713c-778f-4836-9cd5-85d00ba2bff4",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 731359,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/fococamara/753d713c-778-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/fococamara/753d713c-778-image.png",
+          "cloudPath": "media/respuestas-rapidas/fococamara/753d713c-778-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "ff0b26f4-35a5-4a27-9f1a-397bf4d2a6a5",
+      "title": "Camara para Moto 4K Full Accesorios Envios a Todo Honduras",
+      "shortcut": "camaraparamoto4k",
+      "section": "Respuestas para clientes",
+      "category": "General",
+      "tags": [
+        "Camara para Moto 4K",
+        "CAMARA MOTO"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "4369b522-1190-4fd1-8c2c-e37ebec7cd91",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1296023,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/camaraparamoto4k/4369b522-119-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/camaraparamoto4k/4369b522-119-image.png",
+          "cloudPath": "media/respuestas-rapidas/camaraparamoto4k/4369b522-119-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "4766a830-04ee-4b32-9985-7cc31fbe6e86",
+      "title": "Roku Streaming Stick HD Nuevos Sellados",
+      "shortcut": "roku",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Roku"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "2ebaf6f3-5092-43f1-8960-6797903c59e5",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 744378,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/roku/2ebaf6f3-509-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/roku/2ebaf6f3-509-image.png",
+          "cloudPath": "media/respuestas-rapidas/roku/2ebaf6f3-509-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "49232dec-52bf-4e78-922d-1175448e97b2",
+      "title": "Memoria USB 128GB Nueva Envios a Todo Honduras",
+      "shortcut": "memoriausb128gb",
+      "section": "Respuestas para clientes",
+      "category": "General",
+      "tags": [
+        "Memoria USB 128GB",
+        "usb"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "69ad08ca-07ab-4915-9cfe-66e8be00f64b",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1290797,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/memoriausb128gb/69ad08ca-07a-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/memoriausb128gb/69ad08ca-07a-image.png",
+          "cloudPath": "media/respuestas-rapidas/memoriausb128gb/69ad08ca-07a-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "c0d3ae84-2eb5-4797-a826-5749dd28b881",
+      "title": "Dron K3 E99 Pro PREMIUM Gris Nuevos en Caja",
+      "shortcut": "dronk3e99",
+      "section": "Respuestas para clientes",
+      "category": "General",
+      "tags": [
+        "Dron K3 E99",
+        "drone"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "644a4f21-bff9-4c3e-81dc-9befa7d4874d",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 648823,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dronk3e99/644a4f21-bff-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dronk3e99/644a4f21-bff-image.png",
+          "cloudPath": "media/respuestas-rapidas/dronk3e99/644a4f21-bff-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "edbbbd14-4621-44af-a797-5789bf290ca3",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 956076,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dronk3e99/edbbbd14-462-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dronk3e99/edbbbd14-462-image.png",
+          "cloudPath": "media/respuestas-rapidas/dronk3e99/edbbbd14-462-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "a6d9989e-7283-428f-b095-5e8b14e788ee",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 664947,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dronk3e99/a6d9989e-728-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dronk3e99/a6d9989e-728-image.png",
+          "cloudPath": "media/respuestas-rapidas/dronk3e99/a6d9989e-728-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "f0235494-4695-42a4-99cd-e26270f576a1",
+      "title": "Mouse Logitech G502 Hero Black + Mousepad Logitech G240 Combo",
+      "shortcut": "mouselogitechg502",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Mouse Logitech G502"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nPUNTOS DE ENTREGAS GRATIS 🚛:\nResidencial Hacienda Real adelante de Mayan School \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "65c0e8e6-06fd-4005-8991-c004d8046939",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 848186,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/mouselogitechg502/65c0e8e6-06f-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/mouselogitechg502/65c0e8e6-06f-image.png",
+          "cloudPath": "media/respuestas-rapidas/mouselogitechg502/65c0e8e6-06f-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "c659bf8d-75a8-4428-8d89-af6cbf996f66",
+      "title": "Chaleco Naranja Reflectivo para Moto peto",
+      "shortcut": "peto",
+      "section": "Respuestas para clientes",
+      "category": "General",
+      "tags": [
+        "peto",
+        "chaleco"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio 90🚚 y TODO el pais 100 Disponibles\nPUNTOS DE ENTREGAS GRATIS 🚛:\nResidencial Hacienda Real adelante de Mayan School \nO directo a su domicilio desde 90lps\nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "fa9f4b1b-ae99-4f23-bcb0-91d8cfad170d",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1275496,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/peto/fa9f4b1b-ae9-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/peto/fa9f4b1b-ae9-image.png",
+          "cloudPath": "media/respuestas-rapidas/peto/fa9f4b1b-ae9-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "9d4befad-09ad-431f-9a69-fd70dde81544",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 927443,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/peto/9d4befad-09a-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/peto/9d4befad-09a-image.png",
+          "cloudPath": "media/respuestas-rapidas/peto/9d4befad-09a-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "cf432000-f1f3-49ca-bdde-920037d54ede",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 866366,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/peto/cf432000-f1f-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/peto/cf432000-f1f-image.png",
+          "cloudPath": "media/respuestas-rapidas/peto/cf432000-f1f-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "0f3e5201-661a-4caa-ba51-101aacf55881",
+      "title": "Foco Inteligente para Alexa Combo 4 Bombillos",
+      "shortcut": "foco",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Foco"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nPUNTOS DE ENTREGAS GRATIS 🚛:\nResidencial Hacienda Real adelante de Mayan School \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "7bd11782-e93d-4459-b77d-5d08925ee390",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 396823,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/foco/7bd11782-e93-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/foco/7bd11782-e93-image.png",
+          "cloudPath": "media/respuestas-rapidas/foco/7bd11782-e93-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "3997a793-6431-4024-8f9e-350fa9e44c1a",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 412180,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/foco/3997a793-643-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/foco/3997a793-643-image.png",
+          "cloudPath": "media/respuestas-rapidas/foco/3997a793-643-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "fea45b57-cfa6-4d78-8f28-ee5405e92f81",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 753212,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/foco/fea45b57-cfa-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/foco/fea45b57-cfa-image.png",
+          "cloudPath": "media/respuestas-rapidas/foco/fea45b57-cfa-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "2cc48dab-8ca1-49b5-8c07-8e1ec5b08e81",
+      "title": "Repetidor WiFi Inalambrico Envios a todo Honduras",
+      "shortcut": "repetidor",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Repetidor"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nPUNTOS DE ENTREGAS GRATIS 🚛:\nResidencial Hacienda Real adelante de Mayan School \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "4983e3dd-75ce-4798-8f06-778b436b6026",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 953041,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/repetidor/4983e3dd-75c-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/repetidor/4983e3dd-75c-image.png",
+          "cloudPath": "media/respuestas-rapidas/repetidor/4983e3dd-75c-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "e6699fed-2c5c-419f-98f7-b0a7e86a0cad",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 493860,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/repetidor/e6699fed-2c5-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/repetidor/e6699fed-2c5-image.png",
+          "cloudPath": "media/respuestas-rapidas/repetidor/e6699fed-2c5-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "52a88065-8940-463c-b73c-6268704522b1",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 547660,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/repetidor/52a88065-894-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/repetidor/52a88065-894-image.png",
+          "cloudPath": "media/respuestas-rapidas/repetidor/52a88065-894-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "958a9981-9ec2-4538-87b1-6149f6f09333",
+      "title": "Mouse Inalambrico para Computadora",
+      "shortcut": "mouse",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Mouse"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nPUNTOS DE ENTREGAS GRATIS 🚛:\nResidencial Hacienda Real adelante de Mayan School \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "e1a20f1b-71c9-44f0-847e-97b6414c0621",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 366726,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/mouse/e1a20f1b-71c-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/mouse/e1a20f1b-71c-image.png",
+          "cloudPath": "media/respuestas-rapidas/mouse/e1a20f1b-71c-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "cbc9afa2-59ed-4062-95d9-0f5042d8799e",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 313980,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/mouse/cbc9afa2-59e-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/mouse/cbc9afa2-59e-image.png",
+          "cloudPath": "media/respuestas-rapidas/mouse/cbc9afa2-59e-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "c8ce8d03-9c60-425b-b1eb-296e6dae9ad0",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 106312,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/mouse/c8ce8d03-9c6-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/mouse/c8ce8d03-9c6-image.png",
+          "cloudPath": "media/respuestas-rapidas/mouse/c8ce8d03-9c6-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "0c76e354-5834-4871-aa74-76b8e983fe51",
+      "title": "Arnes Reflectivo Naranja y Verde PROMO",
+      "shortcut": "arnes",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Arnes"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO y TRANSFERENCIA 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "db3eedd3-e31d-4e59-a1d6-9a97a357c126",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1189013,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/arnes/db3eedd3-e31-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/arnes/db3eedd3-e31-image.png",
+          "cloudPath": "media/respuestas-rapidas/arnes/db3eedd3-e31-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
     {
       "id": "90eedfd8-b6b1-4fae-8777-b01072be2e3f",
       "title": "Moto Escala 1:18 Kawasaki Ninja H2R",
@@ -183,29 +633,6 @@
       ],
       "message": "sad",
       "images": []
-    },
-    {
-      "id": "acbd9766-9ff1-4af3-98c3-7958078b9a3a",
-      "title": "Inflador de Llantas Portatil Recargable",
-      "shortcut": "inflador",
-      "section": "Publicaciones de Facebook",
-      "category": "Publicaciones de Facebook",
-      "tags": [
-        "Inflador"
-      ],
-      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
-      "images": [
-        {
-          "id": "90220dcf-b8c8-47da-8a0a-e9695d1aad9e",
-          "name": "image.png",
-          "type": "image/png",
-          "size": 685907,
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfast/main/media/respuestas-rapidas/inflador/90220dcf-b8c-image.png",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfast/main/media/respuestas-rapidas/inflador/90220dcf-b8c-image.png",
-          "cloudPath": "media/respuestas-rapidas/inflador/90220dcf-b8c-image.png",
-          "dataUrl": ""
-        }
-      ]
     },
     {
       "id": "724e98c1-6712-4c9e-9bf8-1965913bba67",
