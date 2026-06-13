@@ -1881,18 +1881,19 @@
 
     function mediaCloudStorageCopy(item, index = 0){
       const base = mediaStorageCopy(item, index);
-      const video = isVideoMedia(item);
-      if(video){
-        delete base.blobKey;
-        delete base.localOnly;
-        if(base.url || base.downloadUrl || base.cloudPath){
-          base.dataUrl = '';
-          return base;
-        }
-        // Solo videos pequeños que realmente estén en base64 viajan dentro del JSON.
-        if(base.dataUrl && base.dataUrl.startsWith('data:video/')) return base;
+      const hasRemote = !!(base.url || base.downloadUrl || base.cloudPath);
+      delete base.blobKey;
+      delete base.localOnly;
+
+      // Si el archivo ya fue subido a GitHub, el JSON solo guarda el enlace.
+      // Esto evita que el archivo respuestas_rapidas.json se vuelva enorme y falle la subida.
+      if(hasRemote){
+        base.dataUrl = '';
         return base;
       }
+
+      // Fotos y videos recién agregados pueden viajar en base64 solo como respaldo temporal.
+      // Antes de guardar en nube, uploadLocalMediaToCloud() intenta subirlos como archivos separados.
       return base;
     }
 
@@ -3651,8 +3652,6 @@
       const images = buildEditorImagesForResponse();
       if(!title || !shortcut) return toast('Escribe al menos título y atajo para la nueva respuesta');
       if(!message && !images.length) return toast('La nueva respuesta necesita texto o fotos/videos');
-      const duplicated = responses.find(r => normalizeShortcut(r.shortcut) === shortcut);
-      if(duplicated) return toast('Ese atajo ya existe. Usa otro.');
       const item = { id: crypto.randomUUID(), title, shortcut, section, category, tags, message, images };
       responses.unshift(item);
       saveToStorage();
@@ -4099,12 +4098,14 @@
       return data.content || {};
     }
 
-    async function uploadLocalVideosToCloud(token){
+    async function uploadLocalMediaToCloud(token){
       let uploaded = 0;
-      let pending = [];
+      const pending = [];
       responses.forEach((r, responseIndex) => {
         getMedia(r).forEach((item, mediaIndex) => {
-          if(isVideoMedia(item) && (item.blobKey || item.dataUrl || item.sourceDataUrl || item.resultDataUrl) && !(item.url || item.downloadUrl || item.cloudPath)){
+          const hasLocalFile = !!(item.blobKey || item.dataUrl || item.sourceDataUrl || item.resultDataUrl);
+          const alreadyUploaded = !!(item.url || item.downloadUrl || item.cloudPath);
+          if(hasLocalFile && !alreadyUploaded){
             pending.push({r, responseIndex, item, mediaIndex});
           }
         });
@@ -4114,19 +4115,20 @@
       for(let i = 0; i < pending.length; i++){
         const {r, item, mediaIndex} = pending[i];
         const name = imageName(item, mediaIndex);
-        const file = await mediaToFile(item, mediaIndex, (pct, msg) => setCloudProgress('Preparando video local', msg || name, Math.min(8, Number(pct || 0) * .08)));
-        if(!file) throw new Error(`No pude preparar el video "${name}" para subirlo`);
+        const kind = isVideoMedia(item) ? 'video' : 'foto';
+        const file = await mediaToFile(item, mediaIndex, (pct, msg) => setCloudProgress(`Preparando ${kind} local`, msg || name, Math.min(8, Number(pct || 0) * .08)));
+        if(!file) throw new Error(`No pude preparar el archivo "${name}" para subirlo`);
         const path = mediaCloudPathForResponse(r, item, mediaIndex);
         const base = (i / pending.length) * 88;
         const span = 88 / pending.length;
-        setCloudWorking(`Subiendo video ${i + 1} de ${pending.length}: ${name} (${formatBytes(file.size)})...`);
-        setCloudProgress('Subiendo videos a GitHub', `${i + 1} de ${pending.length}: ${name} (${formatBytes(file.size)})`, 8 + base);
+        setCloudWorking(`Subiendo archivo ${i + 1} de ${pending.length}: ${name} (${formatBytes(file.size)})...`);
+        setCloudProgress('Subiendo archivos a GitHub', `${i + 1} de ${pending.length}: ${name} (${formatBytes(file.size)})`, 8 + base);
         let uploadedUrl = '';
         let content = null;
         const useReleaseAsset = file.size >= 25 * 1024 * 1024;
         if(useReleaseAsset){
           const asset = await uploadMediaAsReleaseAsset(r, item, file, token, (pct, msg) => {
-            setCloudProgress('Subiendo video pesado a GitHub', msg || `${i + 1} de ${pending.length}: ${name}`, 8 + base + ((Number(pct || 0) / 100) * span));
+            setCloudProgress('Subiendo archivo pesado a GitHub', msg || `${i + 1} de ${pending.length}: ${name}`, 8 + base + ((Number(pct || 0) / 100) * span));
           });
           uploadedUrl = asset.browser_download_url;
           item.releaseAssetId = asset.id || null;
@@ -4134,8 +4136,8 @@
           item.cloudPath = '';
         }else{
           try{
-            content = await putGithubContentFile(path, file, `Subir video respuesta rápida ${name}`, token, (pct, msg) => {
-              setCloudProgress('Subiendo videos a GitHub', msg || `${i + 1} de ${pending.length}: ${name}`, 8 + base + ((Number(pct || 0) / 100) * span));
+            content = await putGithubContentFile(path, file, `Subir archivo respuesta rápida ${name}`, token, (pct, msg) => {
+              setCloudProgress('Subiendo archivos a GitHub', msg || `${i + 1} de ${pending.length}: ${name}`, 8 + base + ((Number(pct || 0) / 100) * span));
             });
             item.cloudPath = path;
             uploadedUrl = content.download_url || getCloudPublicUrl(path);
@@ -4143,7 +4145,7 @@
             if(!isGithubTooLargeError(err)) throw err;
             setCloudProgress('Cambiando método de subida', 'GitHub rechazó Contents API por tamaño. Probando como Release asset...', 8 + base + (span * .55));
             const asset = await uploadMediaAsReleaseAsset(r, item, file, token, (pct, msg) => {
-              setCloudProgress('Subiendo video pesado a GitHub', msg || `${i + 1} de ${pending.length}: ${name}`, 8 + base + ((Number(pct || 0) / 100) * span));
+              setCloudProgress('Subiendo archivo pesado a GitHub', msg || `${i + 1} de ${pending.length}: ${name}`, 8 + base + ((Number(pct || 0) / 100) * span));
             });
             uploadedUrl = asset.browser_download_url;
             item.releaseAssetId = asset.id || null;
@@ -4154,6 +4156,9 @@
         item.url = uploadedUrl;
         item.downloadUrl = uploadedUrl;
         item.localOnly = false;
+        item.dataUrl = '';
+        item.sourceDataUrl = '';
+        item.resultDataUrl = '';
         uploaded++;
       }
 
@@ -4220,15 +4225,14 @@
         const token = getGithubToken();
         if(!token) throw new Error('Pega tu GitHub token primero');
         if(!cloudLoaded && isAuto) return;
-        if(!cloudLoaded && !confirm('Todavía no has cargado nube en esta pestaña. Para evitar pisar datos de otro dispositivo, lo ideal es Cargar nube primero. ¿Deseas subir de todos modos?')) return;
 
-        setCloudWorking(isAuto ? 'Auto-subiendo cambios a GitHub...' : 'Subiendo cambios a GitHub...');
+        setCloudWorking(isAuto ? 'Auto-subiendo cambios a GitHub...' : 'Leyendo nube y subiendo cambios a GitHub...');
         let latest = null;
         try{ latest = await fetchCloudFile(true); }catch(err){ throw err; }
-        cloudSha = latest?.sha || cloudSha || null;
+        cloudSha = latest?.sha || null;
 
-        const uploadedVideos = await uploadLocalVideosToCloud(token);
-        if(uploadedVideos) setCloudWorking(`Videos subidos: ${uploadedVideos}. Guardando JSON principal...`);
+        const uploadedMedia = await uploadLocalMediaToCloud(token);
+        if(uploadedMedia) setCloudWorking(`Archivos subidos: ${uploadedMedia}. Guardando JSON principal...`);
 
         const body = {
           message: `Actualizar respuestas rápidas ${new Date().toLocaleString('es-HN')}`,
@@ -4247,7 +4251,7 @@
         cloudSha = data.content?.sha || cloudSha;
         cloudLoaded = true;
         renderCloudStatus(isAuto ? 'Cambios auto-subidos a GitHub ✅' : 'Cambios subidos a GitHub correctamente ✅', 'ok');
-        setCloudProgress('Subida completa', 'Videos y JSON guardados en GitHub ✅', 100);
+        setCloudProgress('Subida completa', 'Archivos y JSON guardados en GitHub ✅', 100);
         hideCloudProgress();
         if(!isAuto) toast('Cambios subidos a GitHub ✅');
       }catch(err){
@@ -4369,15 +4373,12 @@
         category: cleanLabel($('categoryInput').value, 'General'),
         tags: $('tagsInput').value.split(',').map(t => t.trim()).filter(Boolean),
         message: $('messageInput').value.trim(),
-        images: formImages.map(mediaStorageCopy).filter(img => img.dataUrl || img.blobKey)
+        images: formImages.map(mediaStorageCopy).filter(img => img.dataUrl || img.blobKey || img.url || img.downloadUrl || img.cloudPath)
       };
 
       if(!item.title || !item.shortcut || (!item.message && !item.images.length)){
         return toast('Completa título, atajo y agrega mensaje o al menos una foto/video');
       }
-
-      const duplicated = responses.find(r => normalizeShortcut(r.shortcut) === item.shortcut && r.id !== id);
-      if(duplicated) return toast('Ese atajo ya existe. Usa otro.');
 
       const index = responses.findIndex(r => r.id === id);
       if(index >= 0) responses[index] = item;
