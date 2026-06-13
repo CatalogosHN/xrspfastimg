@@ -1776,8 +1776,9 @@
 
     init();
 
-    function init(){
+    async function init(){
       loadGithubConfigToForm();
+      await migrateLegacyBase64MediaToIndexedDB();
       renderAll();
       bindEvents();
       applyAdminState();
@@ -1891,6 +1892,7 @@
     function loadResponses(){
       const raw = localStorage.getItem(STORAGE_KEY);
       if(!raw){
+        localStorage.removeItem(STORAGE_KEY);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultResponses));
         return [...defaultResponses];
       }
@@ -1915,12 +1917,16 @@
       if(item.cloudPath) base.cloudPath = item.cloudPath;
       if(item.releaseAssetId) base.releaseAssetId = item.releaseAssetId;
       if(item.releaseAssetName) base.releaseAssetName = item.releaseAssetName;
-      if(video && item.blobKey){
+
+      // IMPORTANTE: fotos y videos con blobKey viven en IndexedDB.
+      // localStorage solo guarda la llave, nunca el base64, así Chrome no se llena con 5-10 fotos.
+      if(item.blobKey){
         base.blobKey = item.blobKey;
-        base.localOnly = !base.url && !base.downloadUrl && !base.cloudPath;
+        base.localOnly = !base.url && !base.downloadUrl && !base.cloudPath && !base.releaseAssetId;
         base.dataUrl = '';
         return base;
       }
+
       const dataUrl = String(item.dataUrl || item.sourceDataUrl || item.resultDataUrl || '');
       base.dataUrl = dataUrl.startsWith('blob:') ? '' : dataUrl;
       return base;
@@ -1966,13 +1972,17 @@
 
     function saveToStorage(){
       try{
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizeResponsesForStorage(responses)));
+        const payload = JSON.stringify(sanitizeResponsesForStorage(responses));
+        // Reemplazar primero evita que Chrome duplique temporalmente el JSON viejo + el nuevo
+        // y lance cuota llena aunque el nuevo JSON sea pequeño.
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.setItem(STORAGE_KEY, payload);
         renderMediaAudit();
         scheduleAutoCloudUpload();
         return true;
       }catch(err){
         console.error(err);
-        toast('No se pudo guardar en el navegador. Si agregaste muchas fotos pesadas, reduce cantidad o tamaño. Los videos grandes ahora se guardan aparte en IndexedDB.');
+        toast('No se pudo guardar localmente. Ya no guardo fotos dentro del JSON; presiona Subir cambios o revisa espacio del navegador.');
         return false;
       }
     }
@@ -2009,8 +2019,57 @@
         const tx = db.transaction(MEDIA_STORE, 'readonly');
         const req = tx.objectStore(MEDIA_STORE).get(key);
         req.onsuccess = () => resolve(req.result?.blob || null);
-        req.onerror = () => reject(req.error || new Error('No se pudo leer el video local'));
+        req.onerror = () => reject(req.error || new Error('No se pudo leer el archivo local'));
       });
+    }
+
+    async function saveBlobAsLocalMedia(fileOrBlob, meta = {}){
+      const id = meta.id || crypto.randomUUID();
+      const type = meta.type || fileOrBlob.type || 'application/octet-stream';
+      const prefix = type.startsWith('video/') ? 'video' : 'media';
+      const blobKey = `${prefix}-${id}`;
+      await putMediaBlob(blobKey, fileOrBlob, {
+        name: meta.name || fileOrBlob.name || (type.startsWith('video/') ? 'video.mp4' : 'foto.jpg'),
+        type,
+        size: fileOrBlob.size || 0
+      });
+      const objectUrl = URL.createObjectURL(fileOrBlob);
+      mediaObjectUrlCache.set(blobKey, objectUrl);
+      return { id, blobKey, objectUrl, type, size: fileOrBlob.size || 0 };
+    }
+
+    async function migrateLegacyBase64MediaToIndexedDB(){
+      let migrated = 0;
+      try{
+        for(const r of responses){
+          for(const item of getMedia(r)){
+            if(!item || item.blobKey) continue;
+            const raw = String(item.dataUrl || item.sourceDataUrl || item.resultDataUrl || '');
+            if(!raw.startsWith('data:') || !raw.includes('base64,')) continue;
+            const file = dataUrlToBlobFile(raw, item.name || 'imagen.jpg', item.type || 'image/jpeg');
+            if(!file) continue;
+            const saved = await saveBlobAsLocalMedia(file, {
+              id: item.id || crypto.randomUUID(),
+              name: item.name || file.name,
+              type: item.type || file.type || 'image/jpeg'
+            });
+            item.id = item.id || saved.id;
+            item.blobKey = saved.blobKey;
+            item.dataUrl = saved.objectUrl;
+            item.sourceDataUrl = '';
+            item.resultDataUrl = '';
+            item.localOnly = true;
+            migrated++;
+          }
+        }
+        if(migrated){
+          saveToStorageNoAuto();
+          setTimeout(() => toast(`${migrated} foto${migrated === 1 ? '' : 's'} antigua${migrated === 1 ? '' : 's'} movida${migrated === 1 ? '' : 's'} a IndexedDB. El JSON local quedó liviano.`), 450);
+        }
+      }catch(err){
+        console.warn('No se pudo migrar base64 antiguo a IndexedDB', err);
+      }
+      return migrated;
     }
 
     async function ensureVideoObjectUrl(item){
@@ -2714,42 +2773,30 @@
       const detectedType = await detectMimeFromFile(file);
       const isVideo = detectedType.startsWith('video/') || /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(file.name || '');
       const id = crypto.randomUUID();
-      if(isVideo){
-        const blobKey = `video-${id}`;
-        try{
-          await putMediaBlob(blobKey, file, {
-            name: file.name || 'video.mp4',
-            type: detectedType || file.type || 'video/mp4',
-            size: file.size || 0
-          });
-        }catch(err){
-          console.error(err);
-          throw new Error('No pude guardar el video grande en IndexedDB. Revisa espacio del navegador o permisos.');
-        }
-        const objectUrl = URL.createObjectURL(file);
-        mediaObjectUrlCache.set(blobKey, objectUrl);
+      const finalType = detectedType || file.type || (isVideo ? 'video/mp4' : 'image/jpeg');
+      const fallbackName = isVideo ? 'video.mp4' : 'foto.jpg';
+
+      // IMPORTANTE: fotos y videos se guardan aparte en IndexedDB.
+      // localStorage solo guarda nombre/blobKey, no base64. Así puedes trabajar cientos de respuestas.
+      try{
+        const saved = await saveBlobAsLocalMedia(file, {
+          id,
+          name: file.name || fallbackName,
+          type: finalType
+        });
         return {
           id,
-          name: file.name || 'video.mp4',
-          type: detectedType || file.type || 'video/mp4',
+          name: file.name || fallbackName,
+          type: finalType,
           size: file.size || 0,
-          dataUrl: objectUrl,
-          blobKey,
+          dataUrl: saved.objectUrl,
+          blobKey: saved.blobKey,
           localOnly: true
         };
+      }catch(err){
+        console.error(err);
+        throw new Error('No pude guardar el archivo en IndexedDB. Revisa espacio del navegador o permisos de Chrome.');
       }
-
-      let dataUrl = await readFileAsDataUrl(file);
-      if(detectedType && detectedType !== 'application/octet-stream' && dataUrl.startsWith('data:application/octet-stream')){
-        dataUrl = dataUrl.replace(/^data:[^;]*;/, `data:${detectedType};`);
-      }
-      return {
-        id,
-        name: file.name || 'foto.jpg',
-        type: detectedType || 'image/jpeg',
-        size: file.size || 0,
-        dataUrl
-      };
     }
 
     function isAllowedMediaFile(file){
@@ -2766,7 +2813,7 @@
     function warnIfLargeMedia(files){
       const heavyVideos = files.filter(f => Number(f.size || 0) > 8 * 1024 * 1024 && (String(f.type || '').startsWith('video/') || /\.(mp4|mov|webm|m4v|avi|mkv|3gp)$/i.test(f.name || '')));
       if(heavyVideos.length){
-        toast(`Video pesado detectado. Se guardará localmente en IndexedDB, no dentro del JSON/localStorage.`);
+        toast(`Archivo pesado detectado. Se guardará aparte en IndexedDB, no dentro del JSON/localStorage.`);
       }
     }
 
@@ -4278,6 +4325,189 @@
       return missing;
     }
 
+
+    function githubBranchRefPath(){
+      return String(githubConfig.branch || 'main').split('/').map(encodeURIComponent).join('/');
+    }
+
+    async function getGithubHeadCommit(token){
+      const base = githubRepoApiBase(githubConfig);
+      const branchPath = githubBranchRefPath();
+      const ref = await githubJson(`${base}/git/ref/heads/${branchPath}`, token);
+      const commitSha = ref?.object?.sha;
+      if(!commitSha) throw new Error('GitHub no devolvió el commit actual del branch');
+      const commit = await githubJson(`${base}/git/commits/${encodeURIComponent(commitSha)}`, token);
+      const treeSha = commit?.tree?.sha;
+      if(!treeSha) throw new Error('GitHub no devolvió el árbol actual del repo');
+      return {commitSha, treeSha};
+    }
+
+    async function createGithubBlobFromText(text, token){
+      const base = githubRepoApiBase(githubConfig);
+      const blob = await githubJson(`${base}/git/blobs`, token, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          content: String(text || ''),
+          encoding: 'utf-8'
+        })
+      });
+      if(!blob?.sha) throw new Error('GitHub no devolvió SHA del JSON');
+      return blob.sha;
+    }
+
+    async function createGithubBlobFromFile(file, token, onProgress = null){
+      const base = githubRepoApiBase(githubConfig);
+      const content = await blobToBase64(file, (pct, msg) => {
+        if(onProgress) onProgress(Math.min(70, Number(pct || 0) * .70), msg || 'Preparando archivo...');
+      });
+      if(onProgress) onProgress(76, 'Creando objeto interno en GitHub...');
+      const blob = await githubJson(`${base}/git/blobs`, token, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({content, encoding: 'base64'})
+      });
+      if(!blob?.sha) throw new Error('GitHub no devolvió SHA del archivo');
+      if(onProgress) onProgress(100, 'Archivo preparado para el commit único.');
+      return blob.sha;
+    }
+
+    async function commitGithubFilesInOneRun(files, message, token, onProgress = null){
+      if(!files.length) throw new Error('No hay archivos para subir');
+      const base = githubRepoApiBase(githubConfig);
+      if(onProgress) onProgress(2, 'Leyendo branch actual para preparar un solo commit...');
+      const head = await getGithubHeadCommit(token);
+      const treeEntries = [];
+
+      for(let i = 0; i < files.length; i++){
+        const entry = files[i];
+        const basePct = 6 + ((i / files.length) * 76);
+        const span = 76 / files.length;
+        if(onProgress) onProgress(basePct, `Preparando ${i + 1} de ${files.length}: ${entry.label || entry.path}`);
+        let sha = '';
+        if(entry.blob){
+          sha = await createGithubBlobFromFile(entry.blob, token, (pct, msg) => {
+            if(onProgress) onProgress(basePct + ((Number(pct || 0) / 100) * span), msg || `Preparando ${entry.label || entry.path}`);
+          });
+        }else{
+          sha = await createGithubBlobFromText(entry.text || '', token);
+          if(onProgress) onProgress(basePct + span, `JSON preparado: ${entry.path}`);
+        }
+        treeEntries.push({
+          path: String(entry.path || '').replace(/^\/+/, ''),
+          mode: '100644',
+          type: 'blob',
+          sha
+        });
+      }
+
+      if(onProgress) onProgress(84, 'Armando árbol de archivos en GitHub...');
+      const tree = await githubJson(`${base}/git/trees`, token, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          base_tree: head.treeSha,
+          tree: treeEntries
+        })
+      });
+      if(!tree?.sha) throw new Error('GitHub no devolvió SHA del árbol nuevo');
+
+      if(onProgress) onProgress(91, 'Creando un solo commit con archivos + JSON...');
+      const commit = await githubJson(`${base}/git/commits`, token, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          message,
+          tree: tree.sha,
+          parents: [head.commitSha]
+        })
+      });
+      if(!commit?.sha) throw new Error('GitHub no devolvió SHA del commit nuevo');
+
+      if(onProgress) onProgress(97, 'Publicando commit único en el branch...');
+      await githubJson(`${base}/git/refs/heads/${githubBranchRefPath()}`, token, {
+        method: 'PATCH',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({sha: commit.sha, force: false})
+      });
+      if(onProgress) onProgress(100, 'Commit único publicado. GitHub Pages debería ejecutar una sola vez.');
+      return commit;
+    }
+
+    async function prepareLocalMediaForBatchCommit(token){
+      const pending = [];
+      responses.forEach((r, responseIndex) => {
+        getMedia(r).forEach((item, mediaIndex) => {
+          const hasLocalFile = !!(item.blobKey || item.dataUrl || item.sourceDataUrl || item.resultDataUrl);
+          const alreadyUploaded = !!(item.url || item.downloadUrl || item.cloudPath || item.releaseAssetId);
+          if(hasLocalFile && !alreadyUploaded){
+            pending.push({r, responseIndex, item, mediaIndex});
+          }
+        });
+      });
+      if(!pending.length) return {count: 0, files: [], rollbacks: [], committedMedia: []};
+
+      const files = [];
+      const rollbacks = [];
+      const committedMedia = [];
+      let releaseUploaded = 0;
+
+      for(let i = 0; i < pending.length; i++){
+        const {r, item, mediaIndex} = pending[i];
+        const name = imageName(item, mediaIndex);
+        const kind = isVideoMedia(item) ? 'video' : 'foto';
+        setCloudWorking(`Preparando ${kind} ${i + 1} de ${pending.length}: ${name}...`);
+        setCloudProgress('Preparando archivos locales', `${i + 1} de ${pending.length}: ${name}`, Math.min(10, (i / pending.length) * 10));
+        const file = await mediaToFile(item, mediaIndex, (pct, msg) => setCloudProgress(`Preparando ${kind} local`, msg || name, Math.min(12, Number(pct || 0) * .12)));
+        if(!file) throw new Error(`No pude preparar el archivo "${name}" para subirlo`);
+
+        const prev = {
+          url: item.url || '',
+          downloadUrl: item.downloadUrl || '',
+          cloudPath: item.cloudPath || '',
+          releaseAssetId: item.releaseAssetId || null,
+          releaseAssetName: item.releaseAssetName || '',
+          localOnly: !!item.localOnly,
+          dataUrl: item.dataUrl || '',
+          sourceDataUrl: item.sourceDataUrl || '',
+          resultDataUrl: item.resultDataUrl || ''
+        };
+        rollbacks.push(() => Object.assign(item, prev));
+
+        if(file.size >= 95 * 1024 * 1024){
+          const asset = await uploadMediaAsReleaseAsset(r, item, file, token, (pct, msg) => {
+            setCloudProgress('Subiendo archivo pesado a Release', msg || `${i + 1} de ${pending.length}: ${name}`, 12 + ((Number(pct || 0) / 100) * 15));
+          });
+          item.url = asset.browser_download_url;
+          item.downloadUrl = asset.browser_download_url;
+          item.releaseAssetId = asset.id || null;
+          item.releaseAssetName = asset.name || '';
+          item.cloudPath = '';
+          item.localOnly = false;
+          releaseUploaded++;
+          continue;
+        }
+
+        const path = mediaCloudPathForResponse(r, item, mediaIndex);
+        const uploadedUrl = getCloudPublicUrl(path);
+        item.cloudPath = path;
+        item.url = uploadedUrl;
+        item.downloadUrl = uploadedUrl;
+        item.releaseAssetId = null;
+        item.releaseAssetName = '';
+        item.localOnly = false;
+        files.push({
+          path,
+          blob: file,
+          label: `${name} (${formatBytes(file.size)})`,
+          mediaItem: item
+        });
+        committedMedia.push(item);
+      }
+
+      return {count: files.length + releaseUploaded, files, rollbacks, committedMedia};
+    }
+
     async function fetchCloudFile(allowMissing = false){
       githubConfig = readGithubConfigFromForm();
       localStorage.setItem(GITHUB_CONFIG_KEY, JSON.stringify(githubConfig));
@@ -4322,11 +4552,18 @@
     }
 
     function saveToStorageNoAuto(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizeResponsesForStorage(responses)));
+      try{
+        const payload = JSON.stringify(sanitizeResponsesForStorage(responses));
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.setItem(STORAGE_KEY, payload);
+      }catch(err){
+        console.warn('No se pudo guardar copia local liviana', err);
+      }
       renderMediaAudit();
     }
 
     async function uploadCloudResponses(isAuto = false){
+      let prepared = null;
       try{
         githubConfig = readGithubConfigFromForm();
         localStorage.setItem(GITHUB_CONFIG_KEY, JSON.stringify(githubConfig));
@@ -4335,42 +4572,63 @@
         if(!token) throw new Error('Pega tu GitHub token primero');
         if(!cloudLoaded && isAuto) return;
 
-        setCloudWorking(isAuto ? 'Auto-subiendo cambios a GitHub...' : 'Leyendo nube y subiendo cambios a GitHub...');
+        setCloudWorking(isAuto ? 'Auto-subiendo cambios a GitHub en un solo commit...' : 'Preparando subida a GitHub en un solo commit...');
+        setCloudProgress('Preparando subida', 'Revisando enlaces /media y archivos locales...', 2);
+
         let latest = null;
         try{ latest = await fetchCloudFile(true); }catch(err){ throw err; }
         cloudSha = latest?.sha || null;
 
         const repairedMedia = await repairMissingMediaLinksBeforeUpload(token);
-        if(repairedMedia) setCloudWorking(`Detecté ${repairedMedia} enlace(s) /media que no existían en GitHub. Resubiendo archivos locales...`);
-        const uploadedMedia = await uploadLocalMediaToCloud(token);
+        if(repairedMedia) setCloudWorking(`Detecté ${repairedMedia} enlace(s) /media que no existían. Se van a resubir en el mismo commit...`);
+
+        prepared = await prepareLocalMediaForBatchCommit(token);
         const missingMedia = findUnuploadedMediaForCloud();
         if(missingMedia.length){
           const preview = missingMedia.slice(0, 3).map(m => `${m.kind}: ${m.name} (${m.responseTitle})`).join(' · ');
-          throw new Error(`Quedan ${missingMedia.length} archivo(s) local(es) sin subir a /media. No subiré el JSON con base64. Reintenta Subir cambios. Pendientes: ${preview}`);
+          throw new Error(`Quedan ${missingMedia.length} archivo(s) local(es) sin preparar. No subiré el JSON con base64. Pendientes: ${preview}`);
         }
-        if(uploadedMedia) setCloudWorking(`Archivos subidos a /media: ${uploadedMedia}. Guardando JSON principal...`);
 
-        const body = {
-          message: `Actualizar respuestas rápidas ${new Date().toLocaleString('es-HN')}`,
-          content: encodeBase64Utf8(JSON.stringify(buildCloudPayload(), null, 2)),
-          branch: githubConfig.branch
-        };
-        if(cloudSha) body.sha = cloudSha;
+        const files = [...prepared.files];
+        const cloudJson = JSON.stringify(buildCloudPayload(), null, 2);
+        files.push({
+          path: githubConfig.path,
+          text: cloudJson,
+          label: 'JSON principal de respuestas'
+        });
 
-        setCloudProgress('Guardando JSON principal', 'Subiendo lista de respuestas a GitHub...', 92);
-        const data = await putJsonWithUploadProgress(
-          githubContentUrl(githubConfig),
-          body,
-          {...githubHeaders(token), 'Content-Type':'application/json'},
-          (pct, msg) => setCloudProgress('Guardando JSON principal', msg || 'Subiendo lista de respuestas...', 92 + (Number(pct || 0) * .08))
+        const mediaText = prepared.files.length
+          ? `${prepared.files.length} archivo(s) en /media + JSON principal`
+          : 'Solo JSON principal';
+        setCloudWorking(`Subiendo ${mediaText} en UN solo commit para no disparar mil workflows...`);
+
+        const commit = await commitGithubFilesInOneRun(
+          files,
+          `Actualizar respuestas rápidas ${new Date().toLocaleString('es-HN')} · commit único`,
+          token,
+          (pct, msg) => setCloudProgress('Subiendo en commit único', msg || 'Procesando...', pct)
         );
-        cloudSha = data.content?.sha || cloudSha;
+
+        for(const item of prepared.committedMedia){
+          item.dataUrl = '';
+          item.sourceDataUrl = '';
+          item.resultDataUrl = '';
+          item.localOnly = false;
+        }
+
+        saveToStorageNoAuto();
+        renderAll();
+        hydrateStoredVideos();
+        cloudSha = commit?.sha || cloudSha;
         cloudLoaded = true;
-        renderCloudStatus(isAuto ? 'Cambios auto-subidos a GitHub ✅' : 'Cambios subidos a GitHub correctamente ✅', 'ok');
-        setCloudProgress('Subida completa', 'Archivos guardados en /media y JSON guardado en GitHub ✅', 100);
+        renderCloudStatus(isAuto ? 'Cambios auto-subidos en un solo commit ✅' : 'Cambios subidos en un solo commit ✅', 'ok');
+        setCloudProgress('Subida completa', `Commit único listo. Archivos: ${files.length}. GitHub Pages debería ejecutar una sola vez ✅`, 100);
         hideCloudProgress();
-        if(!isAuto) toast('Cambios subidos a GitHub ✅');
+        if(!isAuto) toast('Cambios subidos en un solo commit ✅');
       }catch(err){
+        if(prepared?.rollbacks?.length){
+          prepared.rollbacks.forEach(fn => { try{ fn(); }catch{} });
+        }
         renderCloudStatus(`No se pudo subir: ${err.message}`, 'bad');
         setCloudProgress('Error al subir', err.message || 'No se pudo completar la subida', 100);
         if(!isAuto) toast(`Error: ${err.message}`);
