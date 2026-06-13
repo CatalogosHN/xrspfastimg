@@ -1205,7 +1205,7 @@
 
           <aside class="selected-box">
             <h2 id="selectedTitle">Respuesta seleccionada</h2>
-            <p class="hint" id="selectedHint">Selecciona una respuesta para copiarla o compartirla por WhatsApp, Messenger u otra app instalada.</p>
+            <p class="hint" id="selectedHint">Selecciona una respuesta: las fotos/videos se comparten completos y el mensaje se copia al portapapeles para que tú lo pegues cuando quieras.</p>
             <div class="message-preview" id="selectedMessage">Aquí aparecerá el mensaje completo.</div>
             <div class="selected-images" id="selectedImages"></div>
             <div class="progress-panel" id="mediaProgressPanel">
@@ -1225,7 +1225,7 @@
               <button class="btn red" id="deleteSelectedBtn" disabled>🗑️ Eliminar</button>
             </div>
             <div class="quick-tip">
-              Consejo: en celulares Android, el botón compartir abre el menú de apps instaladas cuando el navegador lo permite.
+              Consejo: para evitar texto repetido en WhatsApp, el botón compartir envía solo fotos/videos y deja el mensaje copiado para pegarlo manualmente.
             </div>
           </aside>
         </div>
@@ -2511,6 +2511,9 @@
       const media = getMedia(r);
       if(!text && !media.length) return toast('Esta respuesta no tiene texto ni fotos/videos para enviar');
 
+      // WhatsApp/Android puede repetir el texto cuando se comparte texto + varias fotos juntas.
+      // Flujo limpio: copiar mensaje y compartir SOLO fotos/videos.
+      // Así tú decides cuándo pegar el mensaje y cuándo enviarlo.
       const copied = text ? await copyTextSilently(text) : false;
       const files = [];
       try{
@@ -2519,20 +2522,20 @@
           const base = media.length ? (index / media.length) * 100 : 100;
           const span = media.length ? 100 / media.length : 100;
           const name = imageName(item, index);
-          setMediaProgress('Preparando para compartir', `${index + 1} de ${media.length}: ${name}`, base);
-          const file = await mediaToFile(item, index, (pct, msg) => setMediaProgress('Preparando para compartir', msg || name, base + ((Number(pct || 0) / 100) * span)));
+          setMediaProgress('Preparando fotos/videos', `${index + 1} de ${media.length}: ${name}`, base);
+          const file = await mediaToFile(item, index, (pct, msg) => setMediaProgress('Preparando fotos/videos', msg || name, base + ((Number(pct || 0) / 100) * span)));
           if(file) files.push(file);
         }
-        if(media.length) setMediaProgress('Listo para compartir', 'Archivos preparados. Abriendo menú de apps...', 100);
+        if(media.length) setMediaProgress('Listo para compartir', `${files.length} de ${media.length} archivo${media.length === 1 ? '' : 's'} preparado${media.length === 1 ? '' : 's'}.`, 100);
       }catch(prepErr){
         console.warn(prepErr);
       }
 
       const fallbackMsg = () => {
-        if(files.length){
+        if(files.length || media.length){
           toast(text
-            ? 'No se pudo abrir compartir. El texto quedó copiado; toca la miniatura o Descargar archivos y adjunta manualmente.'
-            : 'No se pudo abrir compartir. Toca la miniatura o Descargar archivos y adjunta manualmente.');
+            ? 'El mensaje quedó copiado. No se pudo abrir compartir archivos; toca la miniatura o Descargar archivos y adjunta manualmente.'
+            : 'No se pudo abrir compartir archivos. Toca la miniatura o Descargar archivos y adjunta manualmente.');
         }else{
           toast(text ? 'No se pudo abrir compartir. El texto ya fue copiado.' : 'No se pudo abrir compartir.');
         }
@@ -2540,33 +2543,12 @@
 
       if(navigator.share){
         try{
-          const shareData = { title: r.title || 'Respuesta rápida' };
-          if(text) shareData.text = text;
-
           if(files.length){
             if(navigator.canShare && navigator.canShare({ files })){
-              try{
-                await navigator.share({...shareData, files});
-                toast(text ? 'Texto copiado y archivos listos para enviar ✅' : 'Archivos listos para enviar ✅');
-                hideMediaProgress();
-                return;
-              }catch(errFilesText){
-                // Algunos Android/WhatsApp fallan cuando se manda texto + video. Intentamos solo archivos.
-                try{
-                  await navigator.share({ title: r.title || 'Respuesta rápida', files });
-                  toast(text ? 'Archivos listos para enviar. El texto quedó copiado ✅' : 'Archivos listos para enviar ✅');
-                  hideMediaProgress();
-                  return;
-                }catch(errFilesOnly){
-                  if(errFilesOnly && errFilesOnly.name === 'AbortError') return;
-                  fallbackMsg();
-                  return;
-                }
-              }
-            }
-            if(text){
-              await navigator.share(shareData);
-              toast('Texto compartido. Este navegador/app no permitió adjuntar las fotos/videos.');
+              await navigator.share({ title: r.title || 'Respuesta rápida', files });
+              toast(text
+                ? 'Fotos/videos enviados al menú. Mensaje copiado: pégalo manualmente ✅'
+                : 'Fotos/videos enviados al menú ✅');
               hideMediaProgress();
               return;
             }
@@ -2575,17 +2557,19 @@
             return;
           }
 
-          await navigator.share(shareData);
-          toast(copied ? 'Texto copiado y listo para compartir ✅' : 'Listo para compartir ✅');
+          if(text){
+            await navigator.share({ title: r.title || 'Respuesta rápida', text });
+            toast(copied ? 'Texto copiado y listo para compartir ✅' : 'Listo para compartir ✅');
+          }
         }catch(err){
           if(err && err.name !== 'AbortError') fallbackMsg();
           hideMediaProgress();
         }
       }else{
-        if(text){
+        if(text && !files.length && !media.length){
           const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
           window.open(wa, '_blank');
-          toast(files.length ? 'Tu navegador no soporta adjuntar fotos/videos desde compartir; el texto fue copiado.' : 'Tu navegador no soporta menú compartir; abrí WhatsApp y copié el mensaje.');
+          toast('Tu navegador no soporta menú compartir; abrí WhatsApp y copié el mensaje.');
         }else{
           fallbackMsg();
         }
@@ -5040,7 +5024,7 @@
     function resetSelectedResponse(){
       selectedResponse = null;
       selectedTitle.textContent = 'Respuesta seleccionada';
-      selectedHint.textContent = 'Selecciona una respuesta para copiarla o compartirla por WhatsApp, Messenger u otra app instalada.';
+      selectedHint.textContent = 'Selecciona una respuesta: las fotos/videos se comparten completos y el mensaje se copia al portapapeles para que tú lo pegues cuando quieras.';
       selectedMessage.textContent = 'Aquí aparecerá el mensaje completo.';
       if(selectedImages) selectedImages.innerHTML = '';
       if(selectedTagsPanel){
