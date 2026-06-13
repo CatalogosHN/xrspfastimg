@@ -704,6 +704,44 @@
       font-size:.88rem;
       line-height:1.35;
     }
+
+    .media-audit-box{
+      margin-top:10px;
+      padding:12px;
+      border-radius:16px;
+      background:#ffffff;
+      border:1px dashed #bad7ff;
+      color:#334155;
+      font-size:.82rem;
+      line-height:1.35;
+    }
+    .media-audit-box strong{color:#14213d}
+    .media-audit-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:8px;
+      margin-top:8px;
+    }
+    .media-audit-pill{
+      padding:8px 9px;
+      border-radius:13px;
+      background:#f1f7ff;
+      border:1px solid #dbeafe;
+      font-weight:850;
+    }
+    .media-audit-pill.ok{background:#f0fff8;border-color:#b7efd7;color:#087047}
+    .media-audit-pill.warn{background:#fff7e7;border-color:#ffe3a7;color:#8a5900}
+    .media-audit-pill.bad{background:#fff0f2;border-color:#ffd2d7;color:#b4232f}
+    .media-audit-list{
+      margin-top:8px;
+      color:#64748b;
+      font-size:.76rem;
+      word-break:break-word;
+    }
+    @media(max-width:640px){
+      .media-audit-grid{grid-template-columns:1fr}
+    }
+
     .status-line{display:flex; gap:8px; align-items:flex-start}
     .status-dot{width:11px; height:11px; border-radius:99px; background:#94a3b8; flex:0 0 auto; margin-top:4px}
     .status-dot.ok{background:var(--green)}
@@ -1515,7 +1553,7 @@
         <div class="settings-grid">
           <div class="form-card span-full">
             <h2>Sincronización con GitHub / CatalogosHN</h2>
-            <p>Esta parte es la que actualiza las respuestas en la nube. Primero presiona <strong>Cargar nube</strong>; después puedes guardar localmente y usar <strong>Subir cambios</strong>.</p>
+            <p>Esta parte es la que actualiza las respuestas en la nube. Para trabajar en lote: guarda localmente, presiona <strong>Subir cambios</strong> y luego usa <strong>🧪 Revisar fotos</strong> para confirmar que los adjuntos quedaron en GitHub.</p>
 
             <div class="sync-panel">
               <div>
@@ -1556,6 +1594,7 @@
                   <button class="btn ghost" type="button" id="saveGhConfigBtn">💾 Guardar config</button>
                   <button class="btn primary" type="button" id="loadCloudBtn">☁️ Cargar nube</button>
                   <button class="btn green" type="button" id="uploadCloudBtn">⬆️ Subir cambios</button>
+                  <button class="btn ghost" type="button" id="auditMediaBtn">🧪 Revisar fotos</button>
                   <button class="btn red" type="button" id="forgetGhTokenBtn">🚫 Borrar token GitHub</button>
                 </div>
               </div>
@@ -1568,6 +1607,10 @@
                   <div class="progress-head"><strong id="cloudProgressTitle">Subiendo cambios</strong><span id="cloudProgressPercent">0%</span></div>
                   <div class="progress-track"><div class="progress-fill" id="cloudProgressFill"></div></div>
                   <div class="progress-text" id="cloudProgressText">Esperando...</div>
+                </div>
+                <div class="media-audit-box" id="mediaAuditBox">
+                  <strong>Revisión de fotos/videos:</strong><br>
+                  Todavía no se ha calculado. Presiona <strong>🧪 Revisar fotos</strong> antes de trabajar en lote.
                 </div>
               </div>
             </div>
@@ -1740,6 +1783,7 @@
       renderCloudStatus();
       renderFormImages();
       renderPhotoEditorGallery();
+      renderMediaAudit();
       populateResponseSelects();
       $('firstTokenNotice').style.display = hasToken() ? 'none' : 'block';
       hydrateStoredVideos();
@@ -1781,6 +1825,7 @@
       $('saveGhConfigBtn').addEventListener('click', saveGithubConfigFromForm);
       $('loadCloudBtn').addEventListener('click', loadCloudResponses);
       $('uploadCloudBtn').addEventListener('click', () => uploadCloudResponses(false));
+      $('auditMediaBtn')?.addEventListener('click', showMediaAudit);
       $('forgetGhTokenBtn').addEventListener('click', forgetGithubToken);
       $('addSectionBtn')?.addEventListener('click', addCustomSection);
       $('addCategoryBtn')?.addEventListener('click', addCustomCategory);
@@ -1920,6 +1965,7 @@
     function saveToStorage(){
       try{
         localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizeResponsesForStorage(responses)));
+        renderMediaAudit();
         scheduleAutoCloudUpload();
         return true;
       }catch(err){
@@ -4227,6 +4273,7 @@
 
     function saveToStorageNoAuto(){
       localStorage.setItem(STORAGE_KEY, JSON.stringify(sanitizeResponsesForStorage(responses)));
+      renderMediaAudit();
     }
 
     async function uploadCloudResponses(isAuto = false){
@@ -4296,6 +4343,97 @@
       toast('Token GitHub borrado');
     }
 
+
+    function getMediaAudit(){
+      const audit = {
+        total: 0,
+        images: 0,
+        videos: 0,
+        inMediaFolder: 0,
+        remoteOther: 0,
+        pendingLocal: 0,
+        base64Local: 0,
+        releaseAssets: 0,
+        examples: []
+      };
+      responses.forEach((response) => {
+        getMedia(response).forEach((item, mediaIndex) => {
+          audit.total++;
+          const isVideo = isVideoMedia(item);
+          if(isVideo) audit.videos++; else audit.images++;
+          const paths = [item.cloudPath, item.url, item.downloadUrl, item.releaseAssetName].map(v => String(v || ''));
+          const hasMediaFolder = String(item.cloudPath || '').startsWith('media/');
+          const hasRelease = !!item.releaseAssetId || paths.some(v => v.includes('/releases/download/'));
+          const hasRemote = hasMediaFolder || hasRelease || !!(item.url || item.downloadUrl || item.cloudPath);
+          const localValues = [item.dataUrl, item.sourceDataUrl, item.resultDataUrl].map(v => String(v || ''));
+          const hasLocal = !!item.blobKey || localValues.some(Boolean);
+          const hasBase64 = localValues.some(v => v.startsWith('data:'));
+
+          if(hasMediaFolder) audit.inMediaFolder++;
+          else if(hasRelease) audit.releaseAssets++;
+          else if(hasRemote) audit.remoteOther++;
+          if(hasLocal && !hasRemote) audit.pendingLocal++;
+          if(hasBase64) audit.base64Local++;
+
+          if(audit.examples.length < 8 && (hasLocal && !hasRemote || hasBase64 || hasMediaFolder || hasRelease)){
+            audit.examples.push({
+              title: response.title || response.shortcut || 'Sin título',
+              name: imageName(item, mediaIndex),
+              status: hasMediaFolder ? 'GitHub /media' : hasRelease ? 'Release asset' : hasRemote ? 'URL remota' : hasBase64 ? 'Pendiente base64/local' : 'Pendiente local',
+              path: item.cloudPath || item.downloadUrl || item.url || ''
+            });
+          }
+        });
+      });
+      return audit;
+    }
+
+    function renderMediaAudit(expanded = false){
+      const box = $('mediaAuditBox');
+      if(!box) return;
+      const audit = getMediaAudit();
+      let stateText = 'Sin fotos ni videos agregados todavía.';
+      let stateClass = 'ok';
+      if(audit.total){
+        if(audit.pendingLocal){
+          stateText = `Hay ${audit.pendingLocal} archivo(s) pendiente(s) de subir. Presiona “Subir cambios” antes de seguir con muchas respuestas.`;
+          stateClass = 'bad';
+        }else if(audit.base64Local){
+          stateText = `Todo tiene enlace remoto, pero quedan ${audit.base64Local} copia(s) local/base64 en este navegador. Eso es normal como caché local, pero la nube no debe depender de eso.`;
+          stateClass = 'warn';
+        }else{
+          stateText = 'Todo lo adjunto ya tiene enlace remoto. Puedes seguir trabajando con más seguridad.';
+          stateClass = 'ok';
+        }
+      }
+      const examples = expanded && audit.examples.length
+        ? `<div class="media-audit-list"><strong>Ejemplos:</strong><br>${audit.examples.map(ex => `• ${escapeHtml(ex.status)} · ${escapeHtml(ex.title)} · ${escapeHtml(ex.name)}${ex.path ? `<br><span class="mono">${escapeHtml(ex.path)}</span>` : ''}`).join('<br>')}</div>`
+        : '';
+      box.innerHTML = `
+        <strong>Revisión de fotos/videos:</strong><br>
+        <span>${escapeHtml(stateText)}</span>
+        <div class="media-audit-grid">
+          <div class="media-audit-pill ${stateClass}">Total: ${audit.total} archivo(s)</div>
+          <div class="media-audit-pill ok">En /media: ${audit.inMediaFolder}</div>
+          <div class="media-audit-pill ${audit.pendingLocal ? 'bad' : 'ok'}">Pendientes/locales: ${audit.pendingLocal}</div>
+          <div class="media-audit-pill ${audit.base64Local ? 'warn' : 'ok'}">Base64 local: ${audit.base64Local}</div>
+          <div class="media-audit-pill">Fotos: ${audit.images}</div>
+          <div class="media-audit-pill">Videos: ${audit.videos}</div>
+          <div class="media-audit-pill">Release assets: ${audit.releaseAssets}</div>
+          <div class="media-audit-pill">Otras URLs: ${audit.remoteOther}</div>
+        </div>
+        ${examples}
+      `;
+    }
+
+    function showMediaAudit(){
+      renderMediaAudit(true);
+      const audit = getMediaAudit();
+      if(!audit.total) return toast('No hay fotos ni videos agregados todavía.');
+      if(audit.pendingLocal) return toast(`Ojo: ${audit.pendingLocal} archivo(s) pendiente(s). Dale Subir cambios y revisa que suban a /media.`);
+      toast('Revisión lista: no hay archivos pendientes sin enlace remoto ✅');
+    }
+
     function setCloudWorking(text){
       setCloudProgress('Procesando...', text, 3);
       $('cloudDot').className = 'status-dot warn';
@@ -4319,6 +4457,7 @@
         : 'Falta pegar GitHub token para cargar o subir cambios.';
       $('cloudTargetText').textContent = `${cfg.owner}/${cfg.repo} · ${cfg.path}`;
       if(lastAction) $('cloudLastAction').textContent = lastAction;
+      renderMediaAudit();
     }
 
     function hasToken(){
