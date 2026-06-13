@@ -1,7 +1,7 @@
 {
   "app": "Respuestas Rápidas",
   "version": 4,
-  "updatedAt": "2026-06-13T19:48:19.298Z",
+  "updatedAt": "2026-06-13T19:51:08.749Z",
   "owner": "CatalogosHN",
   "repo": "xrspfastimg",
   "path": "data/respuestas_rapidas.json",
@@ -10,6 +10,40 @@
     "Publicaciones de Facebook"
   ],
   "responses": [
+    {
+      "id": "90eedfd8-b6b1-4fae-8777-b01072be2e3f",
+      "title": "Moto Escala 1:18 Kawasaki Ninja H2R",
+      "shortcut": "motoescala",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Moto Escala",
+        "moto"
+      ],
+      "message": "aga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "0b33d3d3-cc4f-4ac0-8a9d-e4f2b8e871ca",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1120618,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/motoescala/0b33d3d3-cc4-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/motoescala/0b33d3d3-cc4-image.png",
+          "cloudPath": "media/respuestas-rapidas/motoescala/0b33d3d3-cc4-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "1843a61e-c484-4ab7-8f98-4f427a3afe08",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 999013,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/motoescala/1843a61e-c48-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/motoescala/1843a61e-c48-image.png",
+          "cloudPath": "media/respuestas-rapidas/motoescala/1843a61e-c48-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
     {
       "id": "d8a6c6d7-035b-4277-a4f1-edea99e29de1",
       "title": "Arnes Reflectivo Naranja para Moto",
@@ -21,7 +55,18 @@
         "chaleco"
       ],
       "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
-      "images": []
+      "images": [
+        {
+          "id": "c725963a-b2d8-4622-8788-6df1c3acce38",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 601328,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/arnes/c725963a-b2d-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/arnes/c725963a-b2d-image.png",
+          "cloudPath": "media/respuestas-rapidas/arnes/c725963a-b2d-image.png",
+          "dataUrl": ""
+        }
+      ]
     },
     {
       "id": "687b06cb-fdaf-41af-8c93-40722063ad08",
