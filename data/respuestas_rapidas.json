@@ -1,7 +1,7 @@
 {
   "app": "Respuestas Rápidas",
   "version": 4,
-  "updatedAt": "2026-06-13T20:55:15.757Z",
+  "updatedAt": "2026-06-13T21:09:24.097Z",
   "owner": "CatalogosHN",
   "repo": "xrspfastimg",
   "path": "data/respuestas_rapidas.json",
@@ -10,6 +10,583 @@
     "Publicaciones de Facebook"
   ],
   "responses": [
+    {
+      "id": "95a9e83a-ee49-4b62-ab17-09c540403cf6",
+      "title": "Guantes para Motocicleta Biker",
+      "shortcut": "guantesparamotocicletabiker",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Guantes para Motocicleta Biker",
+        "Guantes para Motocicleta",
+        "Guantes Moto"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro PUNTO DE ENTREGA GRATIS 🚛\nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "00794a58-9e62-4b96-be75-d4e0d817c7e7",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 883531,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/guantesparamotocicletabiker/00794a58-9e6-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/guantesparamotocicletabiker/00794a58-9e6-image.png",
+          "cloudPath": "media/respuestas-rapidas/guantesparamotocicletabiker/00794a58-9e6-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "a52a06ea-8e5c-4664-8f97-4b943e0e11f9",
+      "title": "Sueter Chamarra Reflectiva Impermeable Promo",
+      "shortcut": "sueterchamarrareflectiva",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Sueter Chamarra Reflectiva",
+        "Chamarra Reflectiva"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nPUNTOS DE ENTREGAS GRATIS 🚛:\nResidencial Hacienda Real adelante de Mayan School \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "86a3c6ed-cbe5-4b0e-bbc6-e31bb62989ca",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 545658,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sueterchamarrareflectiva/86a3c6ed-cbe-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sueterchamarrareflectiva/86a3c6ed-cbe-image.png",
+          "cloudPath": "media/respuestas-rapidas/sueterchamarrareflectiva/86a3c6ed-cbe-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "7239f82c-0a99-4a43-951a-79f64fbe2c0e",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 512918,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sueterchamarrareflectiva/7239f82c-0a9-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sueterchamarrareflectiva/7239f82c-0a9-image.png",
+          "cloudPath": "media/respuestas-rapidas/sueterchamarrareflectiva/7239f82c-0a9-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "22cd047e-b9b8-40f1-94c7-3c3d40383966",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 549625,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sueterchamarrareflectiva/22cd047e-b9b-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sueterchamarrareflectiva/22cd047e-b9b-image.png",
+          "cloudPath": "media/respuestas-rapidas/sueterchamarrareflectiva/22cd047e-b9b-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "ecdfdd16-cc69-49c0-8288-e28ad9a883d3",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 535377,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sueterchamarrareflectiva/ecdfdd16-cc6-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/sueterchamarrareflectiva/ecdfdd16-cc6-image.png",
+          "cloudPath": "media/respuestas-rapidas/sueterchamarrareflectiva/ecdfdd16-cc6-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "d9d064b4-5356-469f-bb1c-5b8c4730c868",
+      "title": "Proyector Portátil Android Netflix Youtube Envios a Todo Honduras",
+      "shortcut": "proyectorportátilandroidnetflix",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Proyector Portátil Android Netflix",
+        "Proyector Portátil Android"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro Punto DE ENTREGAS GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "824b5381-01d0-4c95-9971-3643124b1f6e",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 953960,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatilandroidnetflix/824b5381-01d-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatilandroidnetflix/824b5381-01d-image.png",
+          "cloudPath": "media/respuestas-rapidas/proyectorportatilandroidnetflix/824b5381-01d-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "c0b3e6ff-4071-4724-8eca-3b0ec4b33de5",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 804322,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatilandroidnetflix/c0b3e6ff-407-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatilandroidnetflix/c0b3e6ff-407-image.png",
+          "cloudPath": "media/respuestas-rapidas/proyectorportatilandroidnetflix/c0b3e6ff-407-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "9dfb94f6-7b03-4fb2-9c9a-9b0e56814a24",
+      "title": "Soporte Metal para Celular Manubrio Moto",
+      "shortcut": "soportemetalparacelular",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Soporte Metal para Celular moto",
+        "moto partes",
+        "moto"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nPUNTOS DE ENTREGAS GRATIS 🚛:\nResidencial Hacienda Real adelante de Mayan School \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "d135af8d-76b9-41e8-a603-270fb3cea6d6",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 217049,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/soportemetalparacelular/d135af8d-76b-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/soportemetalparacelular/d135af8d-76b-image.png",
+          "cloudPath": "media/respuestas-rapidas/soportemetalparacelular/d135af8d-76b-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "03a75c67-cc03-4fe0-bfbd-c2cf75ec6199",
+      "title": "Handgrip Kit Completo Ejercitador de Antebrazo",
+      "shortcut": "handgripkit5",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Handgrip Kit 5",
+        "ejercicio",
+        "gimnasio"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nPUNTOS DE ENTREGAS GRATIS 🚛:\nResidencial Hacienda Real adelante de Mayan School \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "6ea9f2ca-0737-4c97-a631-faf522a0a5e2",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1073875,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/handgripkit5/6ea9f2ca-073-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/handgripkit5/6ea9f2ca-073-image.png",
+          "cloudPath": "media/respuestas-rapidas/handgripkit5/6ea9f2ca-073-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "2086962b-bdd5-4960-9b6b-1265f7160313",
+      "title": "Soporte para Casco Moto de Celular y Camara Vertical Horizontal 5 piezas",
+      "shortcut": "soportecelularparacascomoto",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Soporte Celular para Casco Moto"
+      ],
+      "message": "Envíos disponibles a TODO Honduras y Tegucigalpa el mismo día se entrega\nPuede recoger gratis sin envío también\n1️⃣ 🎥🏍️ Soporte para Celular / Cámara para Casco\nIncluye 5 piezas completas 🔥. Grabá tus rutas en moto con máxima estabilidad 📱📸. Uso horizontal y vertical 💯\n2️⃣ 📱🚀 Kit Soporte Casco 5 en 1\nCompatible con celular y cámaras tipo acción 🎬. Ajustable, firme y fácil de instalar 🛠️🔥 Ideal para motovlogs 🏍️\n3️⃣ 🔥🎥 Soporte Premium para Casco\nSistema seguro con correas ajustables 💪. Grabación estable en horizontal o vertical 📲🏍️. Perfecto para riders y creadores de contenido 😎\n9️⃣6️⃣3️⃣1️⃣-0️⃣1️⃣0️⃣2️⃣",
+      "images": [
+        {
+          "id": "34b3263a-bd4c-4045-867d-9f839c0ad2ff",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1111118,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/soportecelularparacascomoto/34b3263a-bd4-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/soportecelularparacascomoto/34b3263a-bd4-image.png",
+          "cloudPath": "media/respuestas-rapidas/soportecelularparacascomoto/34b3263a-bd4-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "dc136a3f-2bea-4f24-ab8e-b9e1a74a13b2",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 956362,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/soportecelularparacascomoto/dc136a3f-2be-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/soportecelularparacascomoto/dc136a3f-2be-image.png",
+          "cloudPath": "media/respuestas-rapidas/soportecelularparacascomoto/dc136a3f-2be-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "e3b4d54c-7b5d-44cc-9a62-8e411f35cca5",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 750104,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/soportecelularparacascomoto/e3b4d54c-7b5-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/soportecelularparacascomoto/e3b4d54c-7b5-image.png",
+          "cloudPath": "media/respuestas-rapidas/soportecelularparacascomoto/e3b4d54c-7b5-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "3b664c23-7143-4161-bb06-7fb6554fbe4e",
+      "title": "Intercomunicador Bluetooth Y20 Envios a Todo Honduras",
+      "shortcut": "intercomunicadory20",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Intercomunicador Y20"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "0331412e-5cf7-40c4-84a7-5e1c6724610b",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 519819,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/intercomunicadory20/0331412e-5cf-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/intercomunicadory20/0331412e-5cf-image.png",
+          "cloudPath": "media/respuestas-rapidas/intercomunicadory20/0331412e-5cf-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "5fec84e1-75f5-4c50-96d2-d5d6216cc5ed",
+      "title": "Auriculares Inalambricos Economicos PROMO",
+      "shortcut": "auricularesf9",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Auriculares F9"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 lps \nConsulta por nuestro PUNTO DE ENTREGA GRATIS ‼️\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "25820cb6-2796-47b6-b5ec-d73f939b0998",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1014652,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/auricularesf9/25820cb6-279-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/auricularesf9/25820cb6-279-image.png",
+          "cloudPath": "media/respuestas-rapidas/auricularesf9/25820cb6-279-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "a5c85de8-6491-4165-b0a7-b084a3e09283",
+      "title": "Repetidor Wifi Inalambrico Facil Configuración",
+      "shortcut": "repetidorwifi",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Repetidor Wifi"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "272f9996-edcd-4b01-adec-9d10af225cd8",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 900836,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/repetidorwifi/272f9996-edc-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/repetidorwifi/272f9996-edc-image.png",
+          "cloudPath": "media/respuestas-rapidas/repetidorwifi/272f9996-edc-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "7b9d725a-7039-46a3-aa75-f3faeff7762d",
+      "title": "Proyector Portatil HD Envios a Todo Honduras",
+      "shortcut": "proyectorportatil",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Proyector Portatil"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "5581075f-5b2b-441b-8807-53042d203c18",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 607966,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatil/5581075f-5b2-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatil/5581075f-5b2-image.png",
+          "cloudPath": "media/respuestas-rapidas/proyectorportatil/5581075f-5b2-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "659d40c9-fc11-49e2-be85-2ce21e7ce8ec",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 522821,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatil/659d40c9-fc1-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatil/659d40c9-fc1-image.png",
+          "cloudPath": "media/respuestas-rapidas/proyectorportatil/659d40c9-fc1-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "784fd0c8-4f1d-4c52-bd86-7973cbeeb046",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 257559,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatil/784fd0c8-4f1-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyectorportatil/784fd0c8-4f1-image.png",
+          "cloudPath": "media/respuestas-rapidas/proyectorportatil/784fd0c8-4f1-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "394df165-ac47-4914-bd35-c784b3994d72",
+      "title": "Escaner Automotriz OBDll",
+      "shortcut": "escanerobdll",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Escaner OBDll",
+        "ESCANER CARRO"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "c4ad4427-3322-408c-b146-58ac88fab1f1",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 809468,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerobdll/c4ad4427-332-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerobdll/c4ad4427-332-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerobdll/c4ad4427-332-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "bb034b5b-c686-4024-8255-d11dc30aa88b",
+      "title": "Funda de Silicona Go Pro 9/10/11/12 con Vidrios Templados",
+      "shortcut": "fundadesiliconagopro",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Funda de Silicona Go Pro",
+        "GO PRO"
+      ],
+      "message": "1️⃣ 🎥🛡️ Funda Silicona + Vidrios Templados GoPro 9/10/11/12\nProtección completa contra golpes y rayones 💪. Incluye protector de lente y pantalla 🔒🔥\n2️⃣ 📸🔥 Kit Protector GoPro 9–12\nFunda de silicona flexible + vidrios templados resistentes 💎. Mantén tu cámara como nueva 🎯\n3️⃣ 🛡️🎬 Protección Total para GoPro\nCompatible con modelos 9, 10, 11 y 12 📷. Incluye cuerda de seguridad y kit de limpieza 🧼✨",
+      "images": [
+        {
+          "id": "c9467c48-ae3d-4fae-b56d-9f63cc658a39",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 774949,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/fundadesiliconagopro/c9467c48-ae3-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/fundadesiliconagopro/c9467c48-ae3-image.png",
+          "cloudPath": "media/respuestas-rapidas/fundadesiliconagopro/c9467c48-ae3-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "7326709d-4f49-4906-805e-666f0ec8c59a",
+      "title": "Escaner Automotriz OBD II V100",
+      "shortcut": "escanerv100",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Escaner V100"
+      ],
+      "message": "Escáner Automotriz OBD II V100 🚗🔧\nPráctico escáner para detectar fallas del vehículo de forma rápida y sencilla. Permite leer y borrar códigos de error, revisar datos del motor en tiempo real y verificar problemas relacionados con el Check Engine.\n✅ Lee y borra códigos de falla\n✅ Muestra datos en vivo\n✅ Fácil de conectar y usar\n✅ Ideal para uso personal o taller\n✅ Ayuda a ahorrar en diagnósticos básicos\nUna herramienta útil para cuidar tu carro y detectar fallas a tiempo.",
+      "images": [
+        {
+          "id": "bc877246-a3ed-4e47-8518-4ade30615601",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 263228,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/bc877246-a3e-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/bc877246-a3e-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerv100/bc877246-a3e-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "b2c7aa54-b2b5-4b68-9019-30dd6756b514",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 263228,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/b2c7aa54-b2b-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/b2c7aa54-b2b-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerv100/b2c7aa54-b2b-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "94306290-597b-4590-a4a0-ea29365f9838",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 311491,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/94306290-597-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/94306290-597-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerv100/94306290-597-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "5d4bfe0b-74e3-4b8d-a527-5093101fd9f9",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 574016,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/5d4bfe0b-74e-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/5d4bfe0b-74e-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerv100/5d4bfe0b-74e-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "d12ecabd-88a2-41d9-bacc-1c5bc7a5d8e3",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 616179,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/d12ecabd-88a-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv100/d12ecabd-88a-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerv100/d12ecabd-88a-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "2c742f04-5061-4f15-ae46-cf5656fb89e2",
+      "title": "Escaner Automotriz Detecta Fallas V600 Actualizado",
+      "shortcut": "escanerv600",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Escaner V600",
+        "ESCANER CARRO"
+      ],
+      "message": "Escáner Automotriz OBD II V600 🚗🔧\nVersión más avanzada para diagnóstico automotriz, ideal para quienes buscan una herramienta más completa que los modelos básicos. Permite revisar fallas del vehículo, consultar códigos DTC, detectar problemas relacionados con el Check Engine y facilitar el diagnóstico antes de ir al mecánico.\n✅ Pantalla a color y menú más moderno\n✅ Lectura y revisión de códigos de falla\n✅ Función de búsqueda DTC para interpretar errores\n✅ Diseño más resistente y profesional\n✅ Fácil de conectar al puerto OBD II\n✅ Ideal para uso personal, taller o revisión de vehículos\nUna opción superior para quienes quieren un diagnóstico más claro, rápido y confiable\nWhatsApp: 9️⃣6️⃣3️⃣1️⃣-0️⃣1️⃣0️⃣2️⃣",
+      "images": [
+        {
+          "id": "a900617a-2739-4ec9-a059-8912be7a0413",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 418554,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv600/a900617a-273-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv600/a900617a-273-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerv600/a900617a-273-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "839186a3-7061-4fed-9127-55444bedeca3",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 189533,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv600/839186a3-706-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv600/839186a3-706-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerv600/839186a3-706-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "acd40b23-c179-4a97-b2b9-1f11b545689c",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 520933,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv600/acd40b23-c17-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerv600/acd40b23-c17-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerv600/acd40b23-c17-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "f489d8f9-0c36-4ff6-809f-51b26cca2269",
+      "title": "Inflador Compresor Portatil Recargable",
+      "shortcut": "inflador",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Inflador"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro PUNTO DE ENTREGA GRATIS\nEFECTIVO 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "bf95b281-11de-4752-910d-938224ec5f38",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 394390,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/inflador/bf95b281-11d-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/inflador/bf95b281-11d-image.png",
+          "cloudPath": "media/respuestas-rapidas/inflador/bf95b281-11d-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "a31a5d9e-9af2-4835-ab07-2789c6071f36",
+      "title": "Escaner OBD2 para Vehiculo V100",
+      "shortcut": "escanerobd2",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Escaner OBD2",
+        "scanner"
+      ],
+      "message": "Escáner Automotriz OBD II V100 🚗🔧\nPráctico escáner para detectar fallas del vehículo de forma rápida y sencilla. Permite leer y borrar códigos de error, revisar datos del motor en tiempo real y verificar problemas relacionados con el Check Engine.\n✅ Lee y borra códigos de falla\n✅ Muestra datos en vivo\n✅ Fácil de conectar y usar\n✅ Ideal para uso personal o taller\n✅ Ayuda a ahorrar en diagnósticos básicos\nUna herramienta útil para cuidar tu carro y detectar fallas a tiempo\nWhatsApp: 9️⃣6️⃣3️⃣1️⃣-0️⃣1️⃣0️⃣2️⃣",
+      "images": [
+        {
+          "id": "49bff428-fd5e-46d1-8b0d-a0decdb08971",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 323840,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerobd2/49bff428-fd5-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerobd2/49bff428-fd5-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerobd2/49bff428-fd5-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "c0afdf32-3f1c-43da-a9da-03c8f2040d59",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 297671,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerobd2/c0afdf32-3f1-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/escanerobd2/c0afdf32-3f1-image.png",
+          "cloudPath": "media/respuestas-rapidas/escanerobd2/c0afdf32-3f1-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "c38b74a1-d0d6-4798-aeb8-29088ec69a48",
+      "title": "Camara Foco Giratoria Wifi Con Adaptador de Enchufe",
+      "shortcut": "camarafoco",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Camara Foco",
+        "foco camara"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro PUNTO DE ENTREGA GRATIS\nEFECTIVO 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "dca5f527-4bd0-49ff-8ce8-cc3f247135fc",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1289075,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/camarafoco/dca5f527-4bd-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/camarafoco/dca5f527-4bd-image.png",
+          "cloudPath": "media/respuestas-rapidas/camarafoco/dca5f527-4bd-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "f81df272-704e-4d4c-bcd0-9e5d89cbc92a",
+      "title": "Arnes Reflectivo Color Negro y Rosado PROMO",
+      "shortcut": "arnes",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Arnes"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por Nuestro PUNTO DE ENTREGA GRATIS \nEFECTIVO 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "a5b0f157-d427-45b6-944e-9cea990a1076",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 1112667,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/arnes/a5b0f157-d42-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/arnes/a5b0f157-d42-image.png",
+          "cloudPath": "media/respuestas-rapidas/arnes/a5b0f157-d42-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
     {
       "id": "6d9d65e5-da1b-4faa-86cc-b208aa71feed",
       "title": "Saco de Boxeo Kit con Guantes Nuevo",
@@ -106,8 +683,8 @@
       "id": "d93ed832-764a-4b00-8f76-9d641e2a8fa6",
       "title": "Camara de Seguridad tipo Foco Giratoria Wifi",
       "shortcut": "fococamara",
-      "section": "Respuestas para clientes",
-      "category": "General",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
       "tags": [
         "foco camara",
         "camara foco"
@@ -130,8 +707,8 @@
       "id": "ff0b26f4-35a5-4a27-9f1a-397bf4d2a6a5",
       "title": "Camara para Moto 4K Full Accesorios Envios a Todo Honduras",
       "shortcut": "camaraparamoto4k",
-      "section": "Respuestas para clientes",
-      "category": "General",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
       "tags": [
         "Camara para Moto 4K",
         "CAMARA MOTO"
@@ -177,8 +754,8 @@
       "id": "49232dec-52bf-4e78-922d-1175448e97b2",
       "title": "Memoria USB 128GB Nueva Envios a Todo Honduras",
       "shortcut": "memoriausb128gb",
-      "section": "Respuestas para clientes",
-      "category": "General",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
       "tags": [
         "Memoria USB 128GB",
         "usb"
@@ -201,8 +778,8 @@
       "id": "c0d3ae84-2eb5-4797-a826-5749dd28b881",
       "title": "Dron K3 E99 Pro PREMIUM Gris Nuevos en Caja",
       "shortcut": "dronk3e99",
-      "section": "Respuestas para clientes",
-      "category": "General",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
       "tags": [
         "Dron K3 E99",
         "drone"
@@ -268,8 +845,8 @@
       "id": "c659bf8d-75a8-4428-8d89-af6cbf996f66",
       "title": "Chaleco Naranja Reflectivo para Moto peto",
       "shortcut": "peto",
-      "section": "Respuestas para clientes",
-      "category": "General",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
       "tags": [
         "peto",
         "chaleco"
