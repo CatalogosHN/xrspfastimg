@@ -1,7 +1,7 @@
 {
   "app": "Respuestas Rápidas",
   "version": 4,
-  "updatedAt": "2026-06-13T19:41:28.824Z",
+  "updatedAt": "2026-06-13T19:48:19.298Z",
   "owner": "CatalogosHN",
   "repo": "xrspfastimg",
   "path": "data/respuestas_rapidas.json",
@@ -10,6 +10,123 @@
     "Publicaciones de Facebook"
   ],
   "responses": [
+    {
+      "id": "d8a6c6d7-035b-4277-a4f1-edea99e29de1",
+      "title": "Arnes Reflectivo Naranja para Moto",
+      "shortcut": "arnes",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Arnes",
+        "chaleco"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": []
+    },
+    {
+      "id": "687b06cb-fdaf-41af-8c93-40722063ad08",
+      "title": "Arnes Chaleco Reflectivo para Moto",
+      "shortcut": "arnes",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Arnes",
+        "chaleco"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "da589a1a-6c9f-444a-9584-686d192fdc46",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 581625,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/arnes/da589a1a-6c9-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/arnes/da589a1a-6c9-image.png",
+          "cloudPath": "media/respuestas-rapidas/arnes/da589a1a-6c9-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "757681d9-d084-4210-8fe8-63a623a29d99",
+      "title": "Dron Doble Camara Recargable",
+      "shortcut": "dron",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Dron",
+        "drone"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "f36f082c-fe96-46ab-8533-5c67b2ef49d1",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 942493,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dron/f36f082c-fe9-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dron/f36f082c-fe9-image.png",
+          "cloudPath": "media/respuestas-rapidas/dron/f36f082c-fe9-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "a1613326-401a-4c10-9150-9017d2762c48",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 549631,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dron/a1613326-401-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/dron/a1613326-401-image.png",
+          "cloudPath": "media/respuestas-rapidas/dron/a1613326-401-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "ebef03cc-6c4a-431e-9d24-e36507e22a8a",
+      "title": "Proyector Portatil HD Data Show",
+      "shortcut": "proyector",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Proyector"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "93dd5e15-a0b4-4546-a931-436fffc0199c",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 574572,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyector/93dd5e15-a0b-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/proyector/93dd5e15-a0b-image.png",
+          "cloudPath": "media/respuestas-rapidas/proyector/93dd5e15-a0b-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "c84c4fab-46f8-46b5-8cce-288809a0ba95",
+      "title": "Pasamontañas Cubre Sol Oferta‼️",
+      "shortcut": "pasamontañas",
+      "section": "Publicaciones de Facebook",
+      "category": "Publicaciones de Facebook",
+      "tags": [
+        "Pasamontañas"
+      ],
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
+      "images": [
+        {
+          "id": "e33ddf59-59c4-46e1-9916-de6215b942b4",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 867837,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/pasamontanas/e33ddf59-59c-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/pasamontanas/e33ddf59-59c-image.png",
+          "cloudPath": "media/respuestas-rapidas/pasamontanas/e33ddf59-59c-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
     {
       "id": "34988cfa-cd7e-44ad-8080-c3c42d862429",
       "title": "Cuentas bancarias para pagossss",
@@ -31,7 +148,7 @@
       "tags": [
         "Inflador"
       ],
-      "message": "",
+      "message": "Paga al RECIBIR TODO HONDURAS 🇭🇳 \nEnvios a Domicilio con costo adicional 🚚 y TODO el pais 100 Disponibles\nConsulta por nuestro PUNTO DE ENTREGA GRATIS \nO directo a su domicilio con costo adicional \nOtros departamentos 100\nEFECTIVO O TRANSFERENCIAS 💵\nInfo o Entrega Inmediata: 9631-0102",
       "images": [
         {
           "id": "90220dcf-b8c8-47da-8a0a-e9695d1aad9e",
