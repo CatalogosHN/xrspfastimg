@@ -1052,7 +1052,7 @@
     #photoEditorGallery .editor-item{max-width:132px!important}
     #photoEditorGallery .editor-thumb{height:104px!important}
     #photoEditorGallery img,#photoEditorGallery video{max-width:100%!important;max-height:100%!important}
-    #editorPasteBox img,#editorPasteBox video{display:none!important}
+    #editorPasteBox img,#editorPasteBox video,#formPasteBox img,#formPasteBox video{display:none!important}
 
   
     .editor-color-grid{
@@ -1247,11 +1247,29 @@
                 <div class="field span-2">
                   <label for="imageInput">Fotos o videos adjuntos</label>
                   <div class="image-upload-box">
+                    <div class="editor-toolbar-3" style="margin-top:0">
+                      <button class="btn primary" type="button" id="formOpenGalleryBtn">🖼️ Galería</button>
+                      <button class="btn amber" type="button" id="formOpenCameraBtn">📷 Cámara</button>
+                      <button class="btn ghost" type="button" id="formPasteBtn">📋 Ctrl+V</button>
+                    </div>
+
+                    <label class="editor-file-label" for="imageInput">🖼️ Selector mixto de fotos o videos</label>
                     <input id="imageInput" type="file" accept="image/*,video/*,.jpg,.jpeg,.png,.webp,.gif,.heic,.heif,.mp4,.mov,.webm,.m4v,.3gp" multiple />
-                    <div class="mini-text" style="margin-top:8px">Selector mixto para fotos y videos. Si tu galería Android no muestra videos en este selector, usa el selector exclusivo de videos de abajo.</div>
+                    <div class="mini-text" style="margin-top:8px">Selector mixto para fotos y videos. También puedes usar el botón Galería de arriba.</div>
+
+                    <label class="editor-file-label" for="formCameraInput">📷 Cámara directa</label>
+                    <input id="formCameraInput" type="file" accept="image/*,video/*,.jpg,.jpeg,.png,.webp,.gif,.heic,.heif,.mp4,.mov,.webm,.m4v,.3gp" capture="environment" />
+                    <div class="mini-text" style="margin-top:8px">En celular abre cámara o permite elegir cámara/galería, según el navegador. Puedes tomar varias fotos repitiendo el botón.</div>
+
                     <label class="editor-file-label" for="videoInput">🎞️ Selector exclusivo de videos</label>
                     <input id="videoInput" type="file" accept="video/*,.mp4,.mov,.webm,.m4v,.3gp" multiple />
                     <div class="mini-text" style="margin-top:8px">Los videos se pueden mezclar con fotos. Ojo: si el video es muy pesado, el navegador puede tardar en leerlo y puede no caber en el guardado local/GitHub JSON.</div>
+
+                    <div class="editor-paste-box" id="formPasteBox" tabindex="0" contenteditable="true">
+                      📋 Haz clic aquí y pega con Ctrl+V. En móvil: tocar aquí, mantener presionado y Pegar.
+                    </div>
+                    <div class="mini-text" style="margin-top:8px">Esto agrega el archivo pegado directamente a esta respuesta, sin pasar por el editor.</div>
+
                     <div class="form-images-grid" id="formImagesGrid"></div>
                   </div>
                 </div>
@@ -1374,9 +1392,13 @@
               <span class="editor-helper">También puedes usar galería, cámara o cargar las fotos de una respuesta guardada.</span>
             </div>
 
+            <div class="editor-toolbar-3">
+              <button class="btn primary" type="button" id="editorQuickGalleryBtn">🖼️ Galería rápida</button>
+              <button class="btn amber" type="button" id="editorQuickCameraBtn">📷 Cámara rápida</button>
+              <button class="btn ghost" type="button" id="editorPasteBtn">📋 Ctrl+V / portapapeles</button>
+            </div>
             <div class="editor-toolbar">
               <button class="btn ghost" type="button" id="editorClearBtn">🧹 Limpiar editor</button>
-              <button class="btn ghost" type="button" id="editorPasteBtn">📋 Leer portapapeles</button>
             </div>
 
             <label class="editor-file-label" for="editorGalleryInput">🖼️ Galería / seleccionar fotos o videos</label>
@@ -1745,6 +1767,10 @@
       $('responseForm').addEventListener('submit', saveResponse);
       $('imageInput').addEventListener('change', handleImageInput);
       $('videoInput')?.addEventListener('change', handleImageInput);
+      $('formCameraInput')?.addEventListener('change', handleImageInput);
+      $('formOpenGalleryBtn')?.addEventListener('click', () => openFileInput('imageInput'));
+      $('formOpenCameraBtn')?.addEventListener('click', () => openFileInput('formCameraInput'));
+      $('formPasteBtn')?.addEventListener('click', readFormClipboard);
       $('deleteEditingBtn').addEventListener('click', deleteEditingResponse);
       $('clearFormBtn').addEventListener('click', clearForm);
       $('lockBtn').addEventListener('click', lockAdmin);
@@ -1764,6 +1790,8 @@
       // FIX: eventos de la sección Editar fotos
       $('editorOpenGalleryBtn').addEventListener('click', () => openFileInput('editorGalleryInput'));
       $('editorOpenCameraBtn').addEventListener('click', () => openFileInput('editorCameraInput'));
+      $('editorQuickGalleryBtn')?.addEventListener('click', () => openFileInput('editorGalleryInput'));
+      $('editorQuickCameraBtn')?.addEventListener('click', () => openFileInput('editorCameraInput'));
       $('editorOpenVideoBtn')?.addEventListener('click', () => openFileInput('editorVideoInput'));
       $('editorGalleryInput').addEventListener('change', handlePhotoEditorInput);
       $('editorCameraInput').addEventListener('change', handlePhotoEditorInput);
@@ -1791,6 +1819,7 @@
 
       setupPhotoEditorDropZone();
       setupPhotoEditorPaste();
+      setupFormPaste();
       updateEditorOpacityLabel();
       updateEditorNoBgState();
     }
@@ -2172,25 +2201,6 @@
       input.value = '';
       renderAll();
       toast('Categoría agregada ✅');
-    }
-
-    function rememberLabels(section, category){
-      const sectionLabel = cleanLabel(section);
-      const categoryLabel = cleanLabel(category);
-      const baseSections = DEFAULT_SECTIONS.map(item => item.toLowerCase());
-      const baseCategories = DEFAULT_CATEGORIES.map(item => item.toLowerCase());
-      let changed = false;
-      if(sectionLabel && !baseSections.includes(sectionLabel.toLowerCase()) && !customSections.some(item => item.toLowerCase() === sectionLabel.toLowerCase())){
-        customSections = uniqueLabels([...customSections, sectionLabel]);
-        saveCustomList(CUSTOM_SECTIONS_KEY, customSections);
-        changed = true;
-      }
-      if(categoryLabel && !baseCategories.includes(categoryLabel.toLowerCase()) && !customCategories.some(item => item.toLowerCase() === categoryLabel.toLowerCase())){
-        customCategories = uniqueLabels([...customCategories, categoryLabel]);
-        saveCustomList(CUSTOM_CATEGORIES_KEY, customCategories);
-        changed = true;
-      }
-      if(changed) updateDataLists();
     }
 
     function applyImportedCustomLists(data){
@@ -2717,12 +2727,13 @@
       }
     }
 
-    async function handleImageInput(event){
-      const selected = [...(event.target.files || [])];
+    async function addFilesToFormImages(filesLike, source = 'archivo'){
+      const selected = [...(filesLike || [])];
       const files = selected.filter(isAllowedMediaFile);
       if(!files.length){
-        if(selected.length) toast('El selector devolvió archivos sin formato de foto/video válido. Prueba el botón exclusivo de videos.');
-        return;
+        if(selected.length) toast('El selector devolvió archivos sin formato de foto/video válido. Prueba cámara, galería o el selector exclusivo de videos.');
+        else toast('No se detectaron fotos o videos para agregar.');
+        return false;
       }
       warnIfLargeMedia(files);
       let added = [];
@@ -2737,10 +2748,18 @@
           added.push(media);
           renderFormImages();
         }
-        if(added.length) toast(`${mediaCountText(added)} agregado${added.length === 1 ? '' : 's'} ✅`);
-        else toast('No pude reconocer esos archivos como fotos o videos. Prueba con MP4/MOV/WebM.');
+        if(added.length) toast(`${mediaCountText(added)} agregado${added.length === 1 ? '' : 's'} desde ${source} ✅`);
+        else toast('No pude reconocer esos archivos como fotos o videos. Prueba con JPG/PNG/MP4/MOV/WebM.');
+        return !!added.length;
       }catch(err){
         toast(err.message || 'No se pudieron cargar los archivos');
+        return false;
+      }
+    }
+
+    async function handleImageInput(event){
+      try{
+        await addFilesToFormImages(event.target.files || [], event.target.id === 'formCameraInput' ? 'cámara' : 'selector');
       }finally{
         event.target.value = '';
       }
@@ -2965,6 +2984,78 @@
       }catch(err){
         toast(err.message || 'No se pudieron cargar los archivos del editor');
         return false;
+      }
+    }
+
+    async function handleFormPasteEvent(e){
+      const view = $('adminView');
+      if(!view || !view.classList.contains('active')) return;
+
+      const files = extractImageFilesFromClipboard(e);
+      if(files.length){
+        e.preventDefault();
+        e.stopPropagation();
+        const ok = await addFilesToFormImages(files, 'Ctrl+V');
+        const box = $('formPasteBox');
+        if(box){
+          box.innerHTML = ok ? '📋 Archivo pegado correctamente en esta respuesta. Puedes seguir pegando con Ctrl+V aquí.' : '📋 No se pudo agregar el archivo pegado.';
+          setTimeout(() => {
+            if(box) box.innerHTML = '📋 Haz clic aquí y pega con Ctrl+V. En móvil: tocar aquí, mantener presionado y Pegar.';
+          }, 1700);
+        }
+        return ok;
+      }
+    }
+
+    function setupFormPaste(){
+      const box = $('formPasteBox');
+      if(box){
+        box.addEventListener('click', () => box.focus());
+        box.addEventListener('paste', handleFormPasteEvent, true);
+        box.addEventListener('drop', async (e) => {
+          e.preventDefault();
+          await addFilesToFormImages(e.dataTransfer?.files || [], 'soltar en cuadro de pegar');
+        });
+        box.addEventListener('input', () => {
+          const hasLargeContent = box.querySelector('img, video, canvas, picture, svg');
+          if(hasLargeContent || box.innerText.length > 120){
+            box.innerHTML = '📋 Usa Ctrl+V aquí; el archivo se agregará abajo como miniatura pequeña.';
+          }
+        });
+      }
+
+      document.addEventListener('paste', handleFormPasteEvent, true);
+    }
+
+    async function readFormClipboard(){
+      if(!navigator.clipboard || !navigator.clipboard.read){
+        toast('Tu navegador no permite leer fotos/videos con botón. Prueba Ctrl+V en el cuadro de pegar.');
+        const box = $('formPasteBox');
+        if(box) box.focus();
+        return;
+      }
+
+      try{
+        const items = await navigator.clipboard.read();
+        const files = [];
+        for(const item of items){
+          for(const type of item.types){
+            if(type.startsWith('image/') || type.startsWith('video/')){
+              const blob = await item.getType(type);
+              const ext = type.includes('png') ? 'png' : type.includes('webp') ? 'webp' : type.includes('mp4') ? 'mp4' : type.includes('webm') ? 'webm' : (type.startsWith('video/') ? 'mp4' : 'jpg');
+              files.push(new File([blob], `portapapeles-respuesta-${Date.now()}-${files.length + 1}.${ext}`, {type}));
+            }
+          }
+        }
+        if(!files.length){
+          toast('No encontré fotos o videos en el portapapeles.');
+          return;
+        }
+        await addFilesToFormImages(files, 'portapapeles');
+      }catch(err){
+        toast('No se pudo leer el portapapeles. Haz clic en el cuadro y prueba Ctrl+V.');
+        const box = $('formPasteBox');
+        if(box) box.focus();
       }
     }
 
@@ -3563,7 +3654,6 @@
       const duplicated = responses.find(r => normalizeShortcut(r.shortcut) === shortcut);
       if(duplicated) return toast('Ese atajo ya existe. Usa otro.');
       const item = { id: crypto.randomUUID(), title, shortcut, section, category, tags, message, images };
-      rememberLabels(section, category);
       responses.unshift(item);
       saveToStorage();
       renderAll();
@@ -4279,10 +4369,8 @@
         category: cleanLabel($('categoryInput').value, 'General'),
         tags: $('tagsInput').value.split(',').map(t => t.trim()).filter(Boolean),
         message: $('messageInput').value.trim(),
-        images: formImages.map(mediaStorageCopy).filter(img => img.dataUrl || img.blobKey || img.url || img.downloadUrl || img.cloudPath)
+        images: formImages.map(mediaStorageCopy).filter(img => img.dataUrl || img.blobKey)
       };
-
-      rememberLabels(item.section, item.category);
 
       if(!item.title || !item.shortcut || (!item.message && !item.images.length)){
         return toast('Completa título, atajo y agrega mensaje o al menos una foto/video');
@@ -4442,6 +4530,8 @@ Esta acción se guarda localmente y luego puedes subir cambios a GitHub.`);
       $('messageInput').value = '';
       $('imageInput').value = '';
       if($('videoInput')) $('videoInput').value = '';
+      if($('formCameraInput')) $('formCameraInput').value = '';
+      if($('formPasteBox')) $('formPasteBox').innerHTML = '📋 Haz clic aquí y pega con Ctrl+V. En móvil: tocar aquí, mantener presionado y Pegar.';
       formImages = [];
       renderFormImages();
       $('formTitle').textContent = 'Agregar respuesta rápida';
