@@ -1595,6 +1595,7 @@
                   <button class="btn primary" type="button" id="loadCloudBtn">☁️ Cargar nube</button>
                   <button class="btn green" type="button" id="uploadCloudBtn">⬆️ Subir cambios</button>
                   <button class="btn ghost" type="button" id="auditMediaBtn">🧪 Revisar fotos</button>
+                  <button class="btn amber" type="button" id="verifyMediaBtn">🔎 Verificar GitHub</button>
                   <button class="btn red" type="button" id="forgetGhTokenBtn">🚫 Borrar token GitHub</button>
                 </div>
               </div>
@@ -1826,6 +1827,7 @@
       $('loadCloudBtn').addEventListener('click', loadCloudResponses);
       $('uploadCloudBtn').addEventListener('click', () => uploadCloudResponses(false));
       $('auditMediaBtn')?.addEventListener('click', showMediaAudit);
+      $('verifyMediaBtn')?.addEventListener('click', verifyMediaInGithub);
       $('forgetGhTokenBtn').addEventListener('click', forgetGithubToken);
       $('addSectionBtn')?.addEventListener('click', addCustomSection);
       $('addCategoryBtn')?.addEventListener('click', addCustomCategory);
@@ -4138,6 +4140,54 @@
       return data.content || {};
     }
 
+
+    async function repairMissingMediaLinksBeforeUpload(token){
+      const missingWithoutLocal = [];
+      let resetForUpload = 0;
+      const checks = [];
+
+      responses.forEach((r) => {
+        getMedia(r).forEach((item, mediaIndex) => {
+          const path = String(item.cloudPath || '').trim();
+          if(!path.startsWith('media/')) return;
+          checks.push({r, item, mediaIndex, path});
+        });
+      });
+
+      for(const entry of checks){
+        const {r, item, mediaIndex, path} = entry;
+        const existing = await fetchCloudFileByPath(path, token, true);
+        if(existing) continue;
+
+        const hasLocalFile = !!(item.blobKey || item.dataUrl || item.sourceDataUrl || item.resultDataUrl);
+        if(hasLocalFile){
+          item.cloudPath = '';
+          item.url = '';
+          item.downloadUrl = '';
+          item.releaseAssetId = null;
+          item.releaseAssetName = '';
+          item.localOnly = true;
+          resetForUpload++;
+        }else{
+          missingWithoutLocal.push({
+            responseTitle: r.title || r.shortcut || 'Sin título',
+            name: imageName(item, mediaIndex),
+            path
+          });
+        }
+      }
+
+      if(resetForUpload){
+        saveToStorageNoAuto();
+        renderAll();
+      }
+      if(missingWithoutLocal.length){
+        const preview = missingWithoutLocal.slice(0, 3).map(m => `${m.name} (${m.responseTitle}) · ${m.path}`).join(' / ');
+        throw new Error(`Hay ${missingWithoutLocal.length} archivo(s) que el JSON marca como /media, pero GitHub no los tiene y este navegador no conserva la copia local para resubir. Vuelve a pegar/subir esas imágenes. Ejemplos: ${preview}`);
+      }
+      return resetForUpload;
+    }
+
     async function uploadLocalMediaToCloud(token){
       let uploaded = 0;
       const pending = [];
@@ -4290,6 +4340,8 @@
         try{ latest = await fetchCloudFile(true); }catch(err){ throw err; }
         cloudSha = latest?.sha || null;
 
+        const repairedMedia = await repairMissingMediaLinksBeforeUpload(token);
+        if(repairedMedia) setCloudWorking(`Detecté ${repairedMedia} enlace(s) /media que no existían en GitHub. Resubiendo archivos locales...`);
         const uploadedMedia = await uploadLocalMediaToCloud(token);
         const missingMedia = findUnuploadedMediaForCloud();
         if(missingMedia.length){
@@ -4402,7 +4454,7 @@
           stateText = `Todo tiene enlace remoto, pero quedan ${audit.base64Local} copia(s) local/base64 en este navegador. Eso es normal como caché local, pero la nube no debe depender de eso.`;
           stateClass = 'warn';
         }else{
-          stateText = 'Todo lo adjunto ya tiene enlace remoto. Puedes seguir trabajando con más seguridad.';
+          stateText = 'Todo lo adjunto tiene enlace remoto registrado. Para estar 100% seguro, usa “🔎 Verificar GitHub”.';
           stateClass = 'ok';
         }
       }
@@ -4414,7 +4466,7 @@
         <span>${escapeHtml(stateText)}</span>
         <div class="media-audit-grid">
           <div class="media-audit-pill ${stateClass}">Total: ${audit.total} archivo(s)</div>
-          <div class="media-audit-pill ok">En /media: ${audit.inMediaFolder}</div>
+          <div class="media-audit-pill ok">Registrado /media: ${audit.inMediaFolder}</div>
           <div class="media-audit-pill ${audit.pendingLocal ? 'bad' : 'ok'}">Pendientes/locales: ${audit.pendingLocal}</div>
           <div class="media-audit-pill ${audit.base64Local ? 'warn' : 'ok'}">Base64 local: ${audit.base64Local}</div>
           <div class="media-audit-pill">Fotos: ${audit.images}</div>
@@ -4424,6 +4476,118 @@
         </div>
         ${examples}
       `;
+    }
+
+
+    async function verifyMediaInGithub(){
+      const box = $('mediaAuditBox');
+      try{
+        githubConfig = readGithubConfigFromForm();
+        localStorage.setItem(GITHUB_CONFIG_KEY, JSON.stringify(githubConfig));
+        saveGithubTokenFromForm();
+        const token = getGithubToken();
+        if(!token) throw new Error('Pega tu GitHub token primero');
+
+        const items = [];
+        responses.forEach((response) => {
+          getMedia(response).forEach((item, mediaIndex) => {
+            const path = String(item.cloudPath || '').trim();
+            if(path.startsWith('media/')){
+              items.push({response, item, mediaIndex, path});
+            }
+          });
+        });
+
+        if(!items.length){
+          renderMediaAudit(true);
+          toast('No hay archivos registrados en /media para verificar.');
+          return;
+        }
+
+        if(box){
+          box.innerHTML = `<strong>Verificando en GitHub:</strong><br>Revisando ${items.length} archivo(s) registrado(s) en /media dentro de <span class="mono">${escapeHtml(githubConfig.owner)}/${escapeHtml(githubConfig.repo)} · ${escapeHtml(githubConfig.branch)}</span>...`;
+        }
+
+        let ok = 0;
+        let missing = 0;
+        let repaired = 0;
+        const missingList = [];
+        const okList = [];
+
+        for(let i = 0; i < items.length; i++){
+          const {response, item, mediaIndex, path} = items[i];
+          const data = await fetchCloudFileByPath(path, token, true);
+          if(data){
+            ok++;
+            if(data.download_url){
+              item.url = data.download_url;
+              item.downloadUrl = data.download_url;
+            }
+            okList.push({
+              title: response.title || response.shortcut || 'Sin título',
+              name: imageName(item, mediaIndex),
+              path
+            });
+          }else{
+            missing++;
+            const hasLocalFile = !!(item.blobKey || item.dataUrl || item.sourceDataUrl || item.resultDataUrl);
+            missingList.push({
+              title: response.title || response.shortcut || 'Sin título',
+              name: imageName(item, mediaIndex),
+              path,
+              hasLocalFile
+            });
+            if(hasLocalFile){
+              item.cloudPath = '';
+              item.url = '';
+              item.downloadUrl = '';
+              item.releaseAssetId = null;
+              item.releaseAssetName = '';
+              item.localOnly = true;
+              repaired++;
+            }
+          }
+
+          if(box && (i % 5 === 0 || i === items.length - 1)){
+            box.innerHTML = `<strong>Verificando en GitHub:</strong><br>${i + 1} de ${items.length} revisados... Confirmados: ${ok} · No encontrados: ${missing}`;
+          }
+        }
+
+        saveToStorageNoAuto();
+        renderAll();
+
+        const missingHtml = missingList.length
+          ? `<div class="media-audit-list"><strong>No encontrados en GitHub:</strong><br>${missingList.slice(0, 12).map(ex => `• ${escapeHtml(ex.hasLocalFile ? 'Se puede resubir' : 'Sin copia local')} · ${escapeHtml(ex.title)} · ${escapeHtml(ex.name)}<br><span class="mono">${escapeHtml(ex.path)}</span>`).join('<br>')}</div>`
+          : '';
+        const okHtml = okList.length
+          ? `<div class="media-audit-list"><strong>Ejemplos confirmados:</strong><br>${okList.slice(0, 5).map(ex => `• Confirmado · ${escapeHtml(ex.title)} · ${escapeHtml(ex.name)}<br><span class="mono">${escapeHtml(ex.path)}</span>`).join('<br>')}</div>`
+          : '';
+
+        if(box){
+          box.innerHTML = `
+            <strong>Verificación real en GitHub:</strong><br>
+            <span>${missing ? 'Hay archivos registrados en el JSON que todavía no aparecen como archivo real en GitHub.' : 'Todos los archivos registrados en /media existen realmente en GitHub.'}</span>
+            <div class="media-audit-grid">
+              <div class="media-audit-pill ${missing ? 'warn' : 'ok'}">Revisados: ${items.length}</div>
+              <div class="media-audit-pill ok">Confirmados en GitHub: ${ok}</div>
+              <div class="media-audit-pill ${missing ? 'bad' : 'ok'}">No encontrados: ${missing}</div>
+              <div class="media-audit-pill ${repaired ? 'warn' : 'ok'}">Listos para resubir: ${repaired}</div>
+            </div>
+            ${missingHtml}
+            ${okHtml}
+            ${repaired ? '<div class="notice warning" style="margin-top:10px">Presiona <strong>⬆️ Subir cambios</strong> otra vez. Detecté copias locales y las dejé listas para resubirse a /media.</div>' : ''}
+          `;
+        }
+
+        if(missing && repaired) toast(`Detecté ${missing} faltante(s). ${repaired} quedó/listo(s) para resubir. Dale Subir cambios.`);
+        else if(missing) toast(`Ojo: ${missing} archivo(s) no existen en GitHub y no tienen copia local.`);
+        else toast('Verificación real: todos los archivos existen en GitHub ✅');
+      }catch(err){
+        if(box){
+          box.innerHTML = `<strong>Verificación real en GitHub:</strong><br><span style="color:var(--red);font-weight:900">${escapeHtml(err.message || 'No se pudo verificar')}</span>`;
+        }
+        toast(`Error verificando GitHub: ${err.message}`);
+      }
     }
 
     function showMediaAudit(){
