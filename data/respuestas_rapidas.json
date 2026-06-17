@@ -1,7 +1,7 @@
 {
   "app": "Respuestas Rápidas",
   "version": 4,
-  "updatedAt": "2026-06-14T02:49:26.035Z",
+  "updatedAt": "2026-06-17T07:04:53.480Z",
   "owner": "CatalogosHN",
   "repo": "xrspfastimg",
   "path": "data/respuestas_rapidas.json",
@@ -10,6 +10,475 @@
     "Publicaciones de Facebook"
   ],
   "responses": [
+    {
+      "id": "2d81646a-923e-456e-bbad-2c8a44b650e0",
+      "title": "PROMO MOTO",
+      "shortcut": "promomoto",
+      "section": "PROMOS",
+      "category": "PROMOS",
+      "tags": [
+        "PROMO MOTO"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "da0497b7-ce4c-4b4c-b3b4-d401f2a7bec9",
+          "name": "forro asiento motoo_marcada.png",
+          "type": "image/png",
+          "size": 801644,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/da0497b7-ce4-forro-asiento-motoo_marcada.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/da0497b7-ce4-forro-asiento-motoo_marcada.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/da0497b7-ce4-forro-asiento-motoo_marcada.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "256631ed-59f7-4e3c-bb4c-eaf255baa6f9",
+          "name": "Guantes para Motocicleta Biker_marcada.png",
+          "type": "image/png",
+          "size": 1155641,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/256631ed-59f-Guantes-para-Motocicleta-Biker_marcada.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/256631ed-59f-Guantes-para-Motocicleta-Biker_marcada.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/256631ed-59f-Guantes-para-Motocicleta-Biker_marcada.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "26aae938-1187-4d77-9647-ee68873554c7",
+          "name": "pechera normal_marcada.png",
+          "type": "image/png",
+          "size": 608138,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/26aae938-118-pechera-normal_marcada.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/26aae938-118-pechera-normal_marcada.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/26aae938-118-pechera-normal_marcada.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "44e29ff1-141e-46fd-933b-043809d31f73",
+          "name": "Soporte Metal para Celular Manubrio Moto_marcada.png",
+          "type": "image/png",
+          "size": 366939,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/44e29ff1-141-Soporte-Metal-para-Celular-Manubrio-Moto_marcada.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/44e29ff1-141-Soporte-Metal-para-Celular-Manubrio-Moto_marcada.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/44e29ff1-141-Soporte-Metal-para-Celular-Manubrio-Moto_marcada.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "75906147-337e-48f1-8194-b72a14a05347",
+          "name": "Pasamontañas.png",
+          "type": "image/png",
+          "size": 867837,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/75906147-337-Pasamontanas.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/75906147-337-Pasamontanas.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/75906147-337-Pasamontanas.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "35f6ff10-5e69-4751-8aa9-c85b8797ce70",
+          "name": "Moto Escala 118 Kawasaki Ninja H2R.png",
+          "type": "image/png",
+          "size": 1120618,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/35f6ff10-5e6-Moto-Escala-118-Kawasaki-Ninja-H2R.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/35f6ff10-5e6-Moto-Escala-118-Kawasaki-Ninja-H2R.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/35f6ff10-5e6-Moto-Escala-118-Kawasaki-Ninja-H2R.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "362bd248-f3f1-49a1-bf00-1b8a8bb4135a",
+          "name": "Chaleco Naranja Reflectivo para Moto.png",
+          "type": "image/png",
+          "size": 1275496,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/362bd248-f3f-Chaleco-Naranja-Reflectivo-para-Moto.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/362bd248-f3f-Chaleco-Naranja-Reflectivo-para-Moto.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/362bd248-f3f-Chaleco-Naranja-Reflectivo-para-Moto.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "e28f82fc-7b4b-4bb1-9eb9-e23d29c62bb8",
+          "name": "Cargador USB de Moto para Celular Universal.png",
+          "type": "image/png",
+          "size": 597980,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/e28f82fc-7b4-Cargador-USB-de-Moto-para-Celular-Universal.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/e28f82fc-7b4-Cargador-USB-de-Moto-para-Celular-Universal.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/e28f82fc-7b4-Cargador-USB-de-Moto-para-Celular-Universal.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "d27ef177-3efb-4cf6-9e6a-aeb6728c2a03",
+          "name": "Manecillas para Moto Racing.png",
+          "type": "image/png",
+          "size": 975547,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/d27ef177-3ef-Manecillas-para-Moto-Racing.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/d27ef177-3ef-Manecillas-para-Moto-Racing.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/d27ef177-3ef-Manecillas-para-Moto-Racing.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "270656dc-d89e-4290-8db6-50622b451bc9",
+          "name": "lazo amarrar.png",
+          "type": "image/png",
+          "size": 483113,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/270656dc-d89-lazo-amarrar.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/270656dc-d89-lazo-amarrar.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/270656dc-d89-lazo-amarrar.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "72b0eb2a-7d4b-4f64-83c3-92a7b3f3a373",
+          "name": "Protector de Manecillas Moto.png",
+          "type": "image/png",
+          "size": 1091363,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/72b0eb2a-7d4-Protector-de-Manecillas-Moto.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/72b0eb2a-7d4-Protector-de-Manecillas-Moto.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/72b0eb2a-7d4-Protector-de-Manecillas-Moto.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "df4085a6-5e25-4eef-8927-eb3cd8b88001",
+          "name": "Soporte Metal para Pata Moto.png",
+          "type": "image/png",
+          "size": 921500,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/df4085a6-5e2-Soporte-Metal-para-Pata-Moto.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/df4085a6-5e2-Soporte-Metal-para-Pata-Moto.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/df4085a6-5e2-Soporte-Metal-para-Pata-Moto.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "cb31ed3e-141e-47af-960b-0a516a1e4d2c",
+          "name": "gafas moto.png",
+          "type": "image/png",
+          "size": 365983,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/cb31ed3e-141-gafas-moto.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/cb31ed3e-141-gafas-moto.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/cb31ed3e-141-gafas-moto.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "e0ad7c32-74f2-4695-b656-e829536b24db",
+          "name": "forro asiento moto.png",
+          "type": "image/png",
+          "size": 933507,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/e0ad7c32-74f-forro-asiento-moto.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/e0ad7c32-74f-forro-asiento-moto.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/e0ad7c32-74f-forro-asiento-moto.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "afb02fa5-318c-498c-9554-19eb292c844d",
+          "name": "forro.png",
+          "type": "image/png",
+          "size": 852869,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/afb02fa5-318-forro.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/afb02fa5-318-forro.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/afb02fa5-318-forro.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "ef56ff4d-289a-4409-ad9d-21d5e133a769",
+          "name": "forro casco.png",
+          "type": "image/png",
+          "size": 554840,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/ef56ff4d-289-forro-casco.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/ef56ff4d-289-forro-casco.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/ef56ff4d-289-forro-casco.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "05024304-ca52-46c7-87d5-b25d0033506d",
+          "name": "mascara2.png",
+          "type": "image/png",
+          "size": 1274838,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/05024304-ca5-mascara2.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/05024304-ca5-mascara2.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/05024304-ca5-mascara2.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "0dc20265-bc26-456f-a327-a3f063e4e73a",
+          "name": "mascara moto.png",
+          "type": "image/png",
+          "size": 681738,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/0dc20265-bc2-mascara-moto.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/0dc20265-bc2-mascara-moto.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/0dc20265-bc2-mascara-moto.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "bfb41368-ecd7-4fe6-8517-0f8042a94dff",
+          "name": "llave yamaha.png",
+          "type": "image/png",
+          "size": 656810,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/bfb41368-ecd-llave-yamaha.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/bfb41368-ecd-llave-yamaha.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/bfb41368-ecd-llave-yamaha.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "ea6e6a0a-4c93-427c-b620-bad6edc9f859",
+          "name": "anes naranja.png",
+          "type": "image/png",
+          "size": 1228780,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/ea6e6a0a-4c9-anes-naranja.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/ea6e6a0a-4c9-anes-naranja.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/ea6e6a0a-4c9-anes-naranja.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "8c8e1aaf-7ee1-4da6-8f80-f5ce7080b133",
+          "name": "PECHERA_marcada.jpg",
+          "type": "image/jpeg",
+          "size": 87262,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/8c8e1aaf-7ee-PECHERA_marcada.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/8c8e1aaf-7ee-PECHERA_marcada.jpg",
+          "cloudPath": "media/respuestas-rapidas/promomoto/8c8e1aaf-7ee-PECHERA_marcada.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "7638e3ae-cbbe-498b-95ca-0dd8125a343f",
+          "name": "PORTADAAA.png",
+          "type": "image/png",
+          "size": 2900914,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/7638e3ae-cbb-PORTADAAA.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/7638e3ae-cbb-PORTADAAA.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/7638e3ae-cbb-PORTADAAA.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "3f846a12-bb04-42cc-ac2a-9fe2e1955d22",
+          "name": "PORTADA.png",
+          "type": "image/png",
+          "size": 2884334,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/3f846a12-bb0-PORTADA.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/3f846a12-bb0-PORTADA.png",
+          "cloudPath": "media/respuestas-rapidas/promomoto/3f846a12-bb0-PORTADA.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "7cb6a6a7-97b9-4b0e-a3ad-dc8c24bdf09c",
+          "name": "HOLDER METAL.jpg",
+          "type": "image/jpeg",
+          "size": 65437,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/7cb6a6a7-97b-HOLDER-METAL.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/7cb6a6a7-97b-HOLDER-METAL.jpg",
+          "cloudPath": "media/respuestas-rapidas/promomoto/7cb6a6a7-97b-HOLDER-METAL.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "99053293-5787-40cb-a3da-0e802ac2146b",
+          "name": "ARNES.jpg",
+          "type": "image/jpeg",
+          "size": 138931,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/99053293-578-ARNES.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/99053293-578-ARNES.jpg",
+          "cloudPath": "media/respuestas-rapidas/promomoto/99053293-578-ARNES.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "040db483-d200-465d-b8a6-f2cab71a381a",
+          "name": "SOPORTE CASCO.jpg",
+          "type": "image/jpeg",
+          "size": 61699,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/040db483-d20-SOPORTE-CASCO.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promomoto/040db483-d20-SOPORTE-CASCO.jpg",
+          "cloudPath": "media/respuestas-rapidas/promomoto/040db483-d20-SOPORTE-CASCO.jpg",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "07db8998-a48a-40d5-8dac-15fe8f6e0205",
+      "title": "PROMO INTERCOMUNICADOR",
+      "shortcut": "promointercomunicador",
+      "section": "PROMOS",
+      "category": "PROMOS",
+      "tags": [
+        "PROMO INTERCOMUNICADOR"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "f1250251-1f2c-48c4-a8af-d5109705d1a4",
+          "name": "Y201.jpg",
+          "type": "image/jpeg",
+          "size": 265203,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/f1250251-1f2-Y201.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/f1250251-1f2-Y201.jpg",
+          "cloudPath": "media/respuestas-rapidas/promointercomunicador/f1250251-1f2-Y201.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "3a0387c2-f188-486a-b833-1629f23833fb",
+          "name": "Y20.jpg",
+          "type": "image/jpeg",
+          "size": 221565,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/3a0387c2-f18-Y20.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/3a0387c2-f18-Y20.jpg",
+          "cloudPath": "media/respuestas-rapidas/promointercomunicador/3a0387c2-f18-Y20.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "bfcff258-00bb-4332-b9d7-a120408cca97",
+          "name": "P10.jpg",
+          "type": "image/jpeg",
+          "size": 292961,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/bfcff258-00b-P10.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/bfcff258-00b-P10.jpg",
+          "cloudPath": "media/respuestas-rapidas/promointercomunicador/bfcff258-00b-P10.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "f4b15fa9-6858-45c1-856c-863a7116df4b",
+          "name": "Y10.png",
+          "type": "image/png",
+          "size": 1087365,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/f4b15fa9-685-Y10.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/f4b15fa9-685-Y10.png",
+          "cloudPath": "media/respuestas-rapidas/promointercomunicador/f4b15fa9-685-Y10.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "17ba06a3-0891-4d22-ad68-21b1d9180891",
+          "name": "K06.png",
+          "type": "image/png",
+          "size": 1018994,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/17ba06a3-089-K06.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promointercomunicador/17ba06a3-089-K06.png",
+          "cloudPath": "media/respuestas-rapidas/promointercomunicador/17ba06a3-089-K06.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "09c660cb-b95a-4dd7-9c8a-8763a1c4196f",
+      "title": "PROMO DRONE",
+      "shortcut": "promodrone",
+      "section": "PROMOS",
+      "category": "PROMOS",
+      "tags": [
+        "PROMO DRONE"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "c27b3659-e2c9-4dac-8172-a19340dd8448",
+          "name": "avion.jpg",
+          "type": "image/jpeg",
+          "size": 92327,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/c27b3659-e2c-avion.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/c27b3659-e2c-avion.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/c27b3659-e2c-avion.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "757e441d-9bc3-4c19-9e0f-9b5256d23dca",
+          "name": "ChatGPT Image 17 jun 2026, 00_22_20_marcada (1).png",
+          "type": "image/png",
+          "size": 2691986,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/757e441d-9bc-ChatGPT-Image-17-jun-2026-00_22_20_marcada-1-.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/757e441d-9bc-ChatGPT-Image-17-jun-2026-00_22_20_marcada-1-.png",
+          "cloudPath": "media/respuestas-rapidas/promodrone/757e441d-9bc-ChatGPT-Image-17-jun-2026-00_22_20_marcada-1-.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "8fdbb373-c58d-4d1a-b856-779771482c82",
+          "name": "IMG-20260617-WA0010_marcada.jpg",
+          "type": "image/jpeg",
+          "size": 279216,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/8fdbb373-c58-IMG-20260617-WA0010_marcada.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/8fdbb373-c58-IMG-20260617-WA0010_marcada.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/8fdbb373-c58-IMG-20260617-WA0010_marcada.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "d171f211-db4b-4d7e-8757-796f7b48b694",
+          "name": "IMG-20260617-WA0015_marcada.jpg",
+          "type": "image/jpeg",
+          "size": 430340,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/d171f211-db4-IMG-20260617-WA0015_marcada.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/d171f211-db4-IMG-20260617-WA0015_marcada.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/d171f211-db4-IMG-20260617-WA0015_marcada.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "93f96687-a6ae-4ca2-8830-b6658ebf9de2",
+          "name": "IMG-20260617-WA0013_marcada.jpg",
+          "type": "image/jpeg",
+          "size": 471992,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/93f96687-a6a-IMG-20260617-WA0013_marcada.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/93f96687-a6a-IMG-20260617-WA0013_marcada.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/93f96687-a6a-IMG-20260617-WA0013_marcada.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "54ddb92d-bee5-4daf-8adb-c39414e44727",
+          "name": "IMG-20260617-WA0016_marcada.jpg",
+          "type": "image/jpeg",
+          "size": 515239,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/54ddb92d-bee-IMG-20260617-WA0016_marcada.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/54ddb92d-bee-IMG-20260617-WA0016_marcada.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/54ddb92d-bee-IMG-20260617-WA0016_marcada.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "994e9665-598c-48a4-9179-3a90ae120d41",
+          "name": "IMG-20260617-WA0004_marcada.jpg",
+          "type": "image/jpeg",
+          "size": 117624,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/994e9665-598-IMG-20260617-WA0004_marcada.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/994e9665-598-IMG-20260617-WA0004_marcada.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/994e9665-598-IMG-20260617-WA0004_marcada.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "111e84c7-0680-4123-8b05-1a3ac2e2abef",
+          "name": "IMG-20260617-WA0017_marcada.jpg",
+          "type": "image/jpeg",
+          "size": 549297,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/111e84c7-068-IMG-20260617-WA0017_marcada.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/111e84c7-068-IMG-20260617-WA0017_marcada.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/111e84c7-068-IMG-20260617-WA0017_marcada.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "29a9be83-0b30-4017-83f4-905c5db1c1f5",
+          "name": "e992_marcada.jpg",
+          "type": "image/jpeg",
+          "size": 137820,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/29a9be83-0b3-e992_marcada.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/29a9be83-0b3-e992_marcada.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/29a9be83-0b3-e992_marcada.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "66788919-a64c-4a90-a505-45d53cd5fc24",
+          "name": "e99_marcada.jpg",
+          "type": "image/jpeg",
+          "size": 174047,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/66788919-a64-e99_marcada.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/66788919-a64-e99_marcada.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/66788919-a64-e99_marcada.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "70e33085-9a44-42cf-8833-7be66ab9b8e3",
+          "name": "bateria2.jpg",
+          "type": "image/jpeg",
+          "size": 156208,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/70e33085-9a4-bateria2.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/70e33085-9a4-bateria2.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/70e33085-9a4-bateria2.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "f0937231-b322-4500-b4bb-ceb4f1e26905",
+          "name": "bateria.jpg",
+          "type": "image/jpeg",
+          "size": 122704,
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/f0937231-b32-bateria.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promodrone/f0937231-b32-bateria.jpg",
+          "cloudPath": "media/respuestas-rapidas/promodrone/f0937231-b32-bateria.jpg",
+          "dataUrl": ""
+        }
+      ]
+    },
     {
       "id": "f22d9d3f-8cd5-4306-861f-4f739dd7157a",
       "title": "Set de 12 Pulseras Artesanales trenzadas",
