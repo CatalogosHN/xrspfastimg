@@ -1205,7 +1205,23 @@
       border-color:#1479ff;
       box-shadow:0 13px 25px rgba(20,121,255,.20);
     }
+    .hidden{display:none!important}
     .editor-panel.hidden{display:none!important}
+    .editor-combine-box{
+      margin:10px 0 12px;
+      padding:12px;
+      border-radius:17px;
+      background:#f8fbff;
+      border:1px solid #dbeafe;
+      display:grid;
+      gap:10px;
+    }
+    .editor-combine-box .inline-check{font-size:.86rem}
+    .editor-combine-order{
+      display:grid;
+      gap:7px;
+      padding-top:2px;
+    }
     .editor-tool-note{
       padding:11px 13px;
       border-radius:15px;
@@ -1541,6 +1557,7 @@
                   <input id="newSectionInput" placeholder="Ej: Publicaciones de Facebook" />
                   <button class="btn primary" type="button" id="addSectionBtn">➕ Agregar sección</button>
                 </div>
+                <input id="customSectionsSearch" class="editor-response-search" type="search" placeholder="Buscar sección en este listado..." autocomplete="off" />
                 <div class="option-list" id="customSectionsList"></div>
               </div>
               <div>
@@ -1549,6 +1566,7 @@
                   <input id="newCategoryInput" placeholder="Ej: Promos, Garantías, Marketplace" />
                   <button class="btn green" type="button" id="addCategoryBtn">➕ Agregar categoría</button>
                 </div>
+                <input id="customCategoriesSearch" class="editor-response-search" type="search" placeholder="Buscar categoría en este listado..." autocomplete="off" />
                 <div class="option-list" id="customCategoriesList"></div>
               </div>
             </div>
@@ -1562,6 +1580,7 @@
                 <p>Edita o elimina las respuestas existentes. Puedes cambiar título, atajo, categoría, etiquetas y mensaje completo.</p>
               </div>
             </div>
+            <input id="adminSearchInput" class="editor-response-search" type="search" placeholder="Buscar respuesta guardada en este listado..." autocomplete="off" />
             <div class="admin-list" id="adminList"></div>
           </div>
         </div>
@@ -1577,6 +1596,20 @@
             <div class="editor-mode-switch" id="editorModeSwitch">
               <button class="editor-mode-btn active" type="button" data-editor-mode="price">🏷️ Fotos con Precio/Marca</button>
               <button class="editor-mode-btn" type="button" data-editor-mode="watermark">💧 Fotos con Marca de agua</button>
+            </div>
+
+            <div class="editor-combine-box">
+              <label class="inline-check" style="margin:0">
+                <input id="editorCombineBothCheckbox" type="checkbox" />
+                <span><strong>Aplicar ambas ediciones</strong>: marca de agua + precio. Si no marcas esto, solo se aplica la sección activa.</span>
+              </label>
+              <div class="editor-combine-order hidden" id="editorCombineOrderBox">
+                <label for="editorCombineOrder">Orden cuando usas ambas</label>
+                <select id="editorCombineOrder">
+                  <option value="watermark-first" selected>Primero marca de agua, después precio encima</option>
+                  <option value="price-first">Primero precio, después marca de agua encima</option>
+                </select>
+              </div>
             </div>
 
             <div class="editor-panel" id="editorPricePanel">
@@ -2213,6 +2246,9 @@
       $('forgetGhTokenBtn').addEventListener('click', forgetGithubToken);
       $('addSectionBtn')?.addEventListener('click', addCustomSection);
       $('addCategoryBtn')?.addEventListener('click', addCustomCategory);
+      $('customSectionsSearch')?.addEventListener('input', renderCustomTools);
+      $('customCategoriesSearch')?.addEventListener('input', renderCustomTools);
+      $('adminSearchInput')?.addEventListener('input', renderAdminList);
       $('newSectionInput')?.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); addCustomSection(); } });
       $('newCategoryInput')?.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); addCustomCategory(); } });
 
@@ -2227,6 +2263,8 @@
       $('editorVideoInput')?.addEventListener('change', handlePhotoEditorInput);
       $('editorPasteBtn').addEventListener('click', readPhotoEditorClipboard);
       document.querySelectorAll('[data-editor-mode]').forEach(btn => btn.addEventListener('click', () => setEditorMode(btn.dataset.editorMode)));
+      $('editorCombineBothCheckbox')?.addEventListener('change', updateEditorCombinedUI);
+      $('editorCombineOrder')?.addEventListener('change', updateEditorCombinedUI);
       $('editorPriceOpacity').addEventListener('input', updateEditorOpacityLabel);
       $('editorWatermarkOpacity')?.addEventListener('input', updateEditorWatermarkOpacityLabel);
       $('editorNoBgCheckbox').addEventListener('change', updateEditorNoBgState);
@@ -2268,6 +2306,7 @@
       updateEditorWatermarkOpacityLabel();
       updateEditorNoBgState();
       setEditorMode(editorMode);
+      updateEditorCombinedUI();
     }
 
     function openMenu(){
@@ -2567,9 +2606,9 @@
 
     function fillAllMediaGroupSelects(){
       fillMediaGroupSelect('formMediaGroupSelect', $('formMediaGroupSelect')?.value || 'original');
-      fillMediaGroupSelect('editorAppendMediaGroupSelect', $('editorAppendMediaGroupSelect')?.value || (editorMode === 'watermark' ? 'watermark' : 'price'));
-      fillMediaGroupSelect('editorNewMediaGroupSelect', $('editorNewMediaGroupSelect')?.value || (editorMode === 'watermark' ? 'watermark' : 'price'));
-      fillMediaGroupSelect('photoModalMediaGroupSelect', $('photoModalMediaGroupSelect')?.value || (editorMode === 'watermark' ? 'watermark' : 'price'));
+      fillMediaGroupSelect('editorAppendMediaGroupSelect', $('editorAppendMediaGroupSelect')?.value || (editorBothEnabled() ? 'price' : (editorMode === 'watermark' ? 'watermark' : 'price')));
+      fillMediaGroupSelect('editorNewMediaGroupSelect', $('editorNewMediaGroupSelect')?.value || (editorBothEnabled() ? 'price' : (editorMode === 'watermark' ? 'watermark' : 'price')));
+      fillMediaGroupSelect('photoModalMediaGroupSelect', $('photoModalMediaGroupSelect')?.value || (editorBothEnabled() ? 'price' : (editorMode === 'watermark' ? 'watermark' : 'price')));
     }
 
     function currentFormMediaGroup(){
@@ -2577,7 +2616,7 @@
     }
 
     function currentEditorMediaGroup(selectId = 'editorAppendMediaGroupSelect'){
-      return normalizeMediaGroup($(selectId)?.value || (editorMode === 'watermark' ? 'watermark' : 'price'));
+      return normalizeMediaGroup($(selectId)?.value || (editorBothEnabled() ? 'price' : (editorMode === 'watermark' ? 'watermark' : 'price')));
     }
 
     function getMediaByGroup(r, group = selectedMediaGroup){
@@ -2722,9 +2761,16 @@
     function renderOptionPills(containerId, baseList, customList, type){
       const box = $(containerId);
       if(!box) return;
-      const base = uniqueLabels(baseList);
-      const customs = uniqueLabels(customList).filter(item => !base.some(b => b.toLowerCase() === item.toLowerCase()));
+      const query = normalizeSearch($(type === 'section' ? 'customSectionsSearch' : 'customCategoriesSearch')?.value || '');
+      const base = uniqueLabels(baseList).filter(label => !query || normalizeSearch(label).includes(query));
+      const customs = uniqueLabels(customList)
+        .filter(item => !uniqueLabels(baseList).some(b => b.toLowerCase() === item.toLowerCase()))
+        .filter(label => !query || normalizeSearch(label).includes(query));
       box.innerHTML = '';
+      if(!base.length && !customs.length){
+        box.innerHTML = '<span class="mini-text">No encontré coincidencias en este listado.</span>';
+        return;
+      }
       base.forEach(label => {
         const pill = document.createElement('span');
         pill.className = 'option-pill base';
@@ -3818,17 +3864,35 @@
     function setEditorMode(mode){
       editorMode = mode === 'watermark' ? 'watermark' : 'price';
       document.querySelectorAll('[data-editor-mode]').forEach(btn => btn.classList.toggle('active', btn.dataset.editorMode === editorMode));
-      $('editorPricePanel')?.classList.toggle('hidden', editorMode !== 'price');
-      $('editorWatermarkPanel')?.classList.toggle('hidden', editorMode !== 'watermark');
-      if($('editorApplyPriceBtn')) $('editorApplyPriceBtn').style.display = editorMode === 'price' ? 'inline-flex' : 'none';
-      if($('editorApplyWatermarkBtn')) $('editorApplyWatermarkBtn').style.display = editorMode === 'watermark' ? 'inline-flex' : 'none';
-      const targetGroup = editorMode === 'watermark' ? 'watermark' : 'price';
+      const both = editorBothEnabled();
+      $('editorPricePanel')?.classList.toggle('hidden', !(both || editorMode === 'price'));
+      $('editorWatermarkPanel')?.classList.toggle('hidden', !(both || editorMode === 'watermark'));
+      if($('editorApplyPriceBtn')){
+        $('editorApplyPriceBtn').style.display = (both || editorMode === 'price') ? 'inline-flex' : 'none';
+        $('editorApplyPriceBtn').textContent = both ? '✨ Aplicar marca + precio' : '🏷️ Aplicar precio a fotos';
+      }
+      if($('editorApplyWatermarkBtn')){
+        $('editorApplyWatermarkBtn').style.display = (!both && editorMode === 'watermark') ? 'inline-flex' : 'none';
+        $('editorApplyWatermarkBtn').textContent = '💧 Aplicar marca de agua';
+      }
+      $('editorCombineOrderBox')?.classList.toggle('hidden', !both);
+      const targetGroup = both ? 'price' : (editorMode === 'watermark' ? 'watermark' : 'price');
       fillMediaGroupSelect('editorAppendMediaGroupSelect', targetGroup);
       fillMediaGroupSelect('editorNewMediaGroupSelect', targetGroup);
       fillMediaGroupSelect('photoModalMediaGroupSelect', targetGroup);
-      setPhotoEditorStatus(editorMode === 'watermark'
-        ? 'Modo marca de agua activo. Sube fotos y presiona “Aplicar marca de agua”.'
-        : 'Modo precio activo. Sube fotos y presiona “Aplicar precio a fotos”.');
+      setPhotoEditorStatus(both
+        ? 'Modo combinado activo. Se aplicará solo si marcaste la casilla: marca de agua + precio según el orden elegido.'
+        : (editorMode === 'watermark'
+          ? 'Modo marca de agua activo. Sube fotos y presiona “Aplicar marca de agua”.'
+          : 'Modo precio activo. Sube fotos y presiona “Aplicar precio a fotos”.'));
+    }
+
+    function editorBothEnabled(){
+      return !!$('editorCombineBothCheckbox')?.checked;
+    }
+
+    function updateEditorCombinedUI(){
+      setEditorMode(editorMode);
     }
 
     function setEditorProgress(show, title = 'Preparando', percent = 0, text = ''){
@@ -3926,79 +3990,52 @@
 
     async function processEditorWatermarkItem(item, settings){
       if(isVideoMedia(item)) return {...item, resultDataUrl:null, processedName:null};
-      const img = await loadImageElement(item.sourceDataUrl);
-      const w = img.naturalWidth || img.width;
-      const h = img.naturalHeight || img.height;
-      let ratio = Math.min(settings.maxSide / w, settings.maxSide / h);
-      if(ratio > 1) ratio = 1;
-      const w2 = Math.max(1, Math.round(w * ratio));
-      const h2 = Math.max(1, Math.round(h * ratio));
-      const canvas = document.createElement('canvas');
-      canvas.width = w2;
-      canvas.height = h2;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, w2, h2);
-      drawEditorWatermarkPattern(ctx, w2, h2, settings);
-      let mime = item.type && item.type.startsWith('image/') ? item.type : 'image/jpeg';
-      if(mime === 'image/heic' || mime === 'image/heif' || mime === 'image/gif' || mime === 'image/bmp') mime = 'image/jpeg';
-      let blob;
-      try{ blob = await canvasToBlob(canvas, mime, settings.jpgQuality / 100); }
-      catch{ mime = 'image/jpeg'; blob = await canvasToBlob(canvas, mime, settings.jpgQuality / 100); }
-      const dataUrl = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error('No se pudo leer imagen con marca de agua'));
-        reader.readAsDataURL(blob);
-      });
-      const parts = String(item.name || 'foto').split('.');
-      const ext = parts.length > 1 ? parts.pop() : (mime.includes('png') ? 'png' : 'jpg');
-      const base = parts.join('.') || 'foto';
-      return {
-        ...item,
-        resultDataUrl: dataUrl,
-        processedName: `${base}_marca_agua.${ext}`,
-        size: blob.size || item.size || 0,
-        type: mime,
-        mediaGroup: 'watermark'
-      };
+      const loaded = await loadEditorImageForCanvas(item);
+      try{
+        const img = loaded.img;
+        const w = img.naturalWidth || img.width;
+        const h = img.naturalHeight || img.height;
+        let ratio = Math.min(settings.maxSide / w, settings.maxSide / h);
+        if(ratio > 1) ratio = 1;
+        const w2 = Math.max(1, Math.round(w * ratio));
+        const h2 = Math.max(1, Math.round(h * ratio));
+        const canvas = document.createElement('canvas');
+        canvas.width = w2;
+        canvas.height = h2;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w2, h2);
+        drawEditorWatermarkPattern(ctx, w2, h2, settings);
+        let mime = item.type && item.type.startsWith('image/') ? item.type : 'image/jpeg';
+        if(mime === 'image/heic' || mime === 'image/heif' || mime === 'image/gif' || mime === 'image/bmp') mime = 'image/jpeg';
+        let blob;
+        try{ blob = await canvasToBlob(canvas, mime, settings.jpgQuality / 100); }
+        catch{ mime = 'image/jpeg'; blob = await canvasToBlob(canvas, mime, settings.jpgQuality / 100); }
+        const dataUrl = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error('No se pudo leer imagen con marca de agua'));
+          reader.readAsDataURL(blob);
+        });
+        const parts = String(editorCurrentName(item) || item.name || 'foto').split('.');
+        const ext = parts.length > 1 ? parts.pop() : (mime.includes('png') ? 'png' : 'jpg');
+        const base = parts.join('.') || 'foto';
+        return {
+          ...item,
+          resultDataUrl: dataUrl,
+          processedName: `${base}_marca_agua.${ext}`,
+          size: blob.size || item.size || 0,
+          type: mime,
+          mediaGroup: 'watermark'
+        };
+      }finally{
+        try{ loaded.cleanup?.(); }catch{}
+      }
     }
 
     async function applyWatermarkToEditorImages(){
-      if(!photoEditorImages.length) return toast('Primero agrega fotos o videos al editor');
-      const photos = photoEditorImages.filter(isImageMedia);
-      if(!photos.length) return toast('No hay fotos para aplicar marca de agua. Los videos se conservan intactos.');
-      const settings = getEditorWatermarkSettings();
-      setPhotoEditorStatus('Procesando marca de agua. Los videos se mantendrán intactos.');
-      setEditorProgress(true, 'Aplicando marca de agua', 0, `0 de ${photos.length} fotos`);
-      const next = [];
-      let processed = 0;
-      for(let i = 0; i < photoEditorImages.length; i++){
-        const item = photoEditorImages[i];
-        if(isVideoMedia(item)){
-          next.push({...item});
-          continue;
-        }
-        try{
-          next.push(await processEditorWatermarkItem(item, settings));
-          processed++;
-          setPhotoEditorStatus(`Procesando marca ${processed} de ${photos.length}...`);
-          setEditorProgress(true, 'Aplicando marca de agua', (processed / photos.length) * 100, `${processed} de ${photos.length} fotos`);
-        }catch(err){
-          console.warn(err);
-          next.push({...item});
-        }
-      }
-      photoEditorImages = next;
-      renderPhotoEditorGallery();
-      fillMediaGroupSelect('editorAppendMediaGroupSelect', 'watermark');
-      fillMediaGroupSelect('editorNewMediaGroupSelect', 'watermark');
-      fillMediaGroupSelect('photoModalMediaGroupSelect', 'watermark');
-      setEditorProgress(true, 'Marca de agua lista', 100, `${processed} foto${processed === 1 ? '' : 's'} convertida${processed === 1 ? '' : 's'}.`);
-      setTimeout(() => setEditorProgress(false), 1200);
-      const videos = photoEditorImages.filter(isVideoMedia).length;
-      setPhotoEditorStatus(`Marca de agua aplicada a ${processed} foto${processed === 1 ? '' : 's'}${videos ? `. ${videos} video${videos === 1 ? '' : 's'} se mantuvieron intactos.` : '.'}`);
-      toast('Marca de agua aplicada ✅');
+      return applyActiveEditorOperationToAll();
     }
+
 
     function getEditorPriceSettings(){
       return {
@@ -4010,6 +4047,66 @@
         textColor: $('editorPriceTextColor')?.value || '#000000',
         noBg: !!$('editorNoBgCheckbox')?.checked
       };
+    }
+
+    function currentEditorOperation(){
+      if(editorBothEnabled()) return 'both';
+      return editorMode === 'watermark' ? 'watermark' : 'price';
+    }
+
+    function editorOperationLabel(operation = currentEditorOperation()){
+      if(operation === 'both') return 'marca de agua + precio';
+      if(operation === 'watermark') return 'marca de agua';
+      return 'precio';
+    }
+
+    function editorOperationMediaGroup(operation = currentEditorOperation()){
+      return operation === 'watermark' ? 'watermark' : 'price';
+    }
+
+    function getEditorOperationSettings(){
+      const operation = currentEditorOperation();
+      if(operation === 'both'){
+        return {
+          operation,
+          order: $('editorCombineOrder')?.value === 'price-first' ? 'price-first' : 'watermark-first',
+          price: getEditorPriceSettings(),
+          watermark: getEditorWatermarkSettings()
+        };
+      }
+      if(operation === 'watermark') return {operation, watermark:getEditorWatermarkSettings()};
+      return {operation, price:getEditorPriceSettings()};
+    }
+
+    function operationNeedsPrice(settings){
+      return settings?.operation === 'price' || settings?.operation === 'both';
+    }
+
+    function operationPriceText(settings){
+      if(settings?.operation === 'both') return String(settings.price?.text || '').trim();
+      if(settings?.operation === 'price') return String(settings.price?.text || '').trim();
+      return '';
+    }
+
+    async function processEditorOperationItem(item, settings){
+      const operation = settings?.operation || (settings?.num1 !== undefined ? 'watermark' : 'price');
+      if(operation === 'watermark') return processEditorWatermarkItem(item, settings.watermark || settings);
+      if(operation === 'price') return processEditorItem(item, settings.price || settings);
+      if(operation === 'both'){
+        const first = settings.order === 'price-first'
+          ? await processEditorItem(item, settings.price)
+          : await processEditorWatermarkItem(item, settings.watermark);
+        const second = settings.order === 'price-first'
+          ? await processEditorWatermarkItem(first, settings.watermark)
+          : await processEditorItem(first, settings.price);
+        return {
+          ...second,
+          mediaGroup:'price',
+          lastEditorMode:'both',
+          lastEditorSettings:{...settings}
+        };
+      }
+      return processEditorItem(item, settings.price || settings);
     }
 
     function getPlacementCoordinates(position, boxW, boxH, canvasW, canvasH, margin){
@@ -4085,6 +4182,8 @@
     function loadImageElement(src){
       return new Promise((resolve, reject) => {
         const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.decoding = 'async';
         img.onload = () => resolve(img);
         img.onerror = () => reject(new Error('No se pudo cargar la imagen'));
         img.src = src;
@@ -4097,55 +4196,109 @@
       });
     }
 
+    async function getEditorImageLoadSource(item){
+      const current = editorCurrentDataUrl(item);
+
+      // Si ya existe una foto editada en memoria, se debe usar ESA como base
+      // para que una segunda edición no borre la primera.
+      if(current && !/^https?:\/\//i.test(current)){
+        return {src:current, cleanup:() => {}};
+      }
+
+      if(item?.blobKey){
+        const blob = await getMediaBlob(item.blobKey);
+        if(blob){
+          const url = URL.createObjectURL(blob);
+          return {src:url, cleanup:() => URL.revokeObjectURL(url)};
+        }
+      }
+
+      if(!current) throw new Error('No encontré la imagen original para editar');
+      if(/^https?:\/\//i.test(current)){
+        try{
+          const res = await fetch(current, {mode:'cors'});
+          if(res.ok){
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            return {src:url, cleanup:() => URL.revokeObjectURL(url)};
+          }
+        }catch(err){
+          console.warn('No se pudo convertir URL remota a blob, se intentará directo', err);
+        }
+      }
+      return {src:current, cleanup:() => {}};
+    }
+
+    async function loadEditorImageForCanvas(item){
+      const source = await getEditorImageLoadSource(item);
+      try{
+        const img = await loadImageElement(source.src);
+        return {img, cleanup:source.cleanup};
+      }catch(err){
+        try{ source.cleanup?.(); }catch{}
+        throw err;
+      }
+    }
+
     async function processEditorItem(item, settings){
       if(isVideoMedia(item)){
         return {...item, resultDataUrl: null, processedName: null};
       }
-      const img = await loadImageElement(item.sourceDataUrl);
-      const canvas = document.createElement('canvas');
-      canvas.width = img.naturalWidth || img.width;
-      canvas.height = img.naturalHeight || img.height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      drawPriceOverlay(ctx, canvas.width, canvas.height, settings.text, settings.position, settings.scale, settings.opacity, settings.bgColor, settings.textColor, settings.noBg);
-      let mime = item.type && item.type.startsWith('image/') ? item.type : 'image/jpeg';
-      if(mime === 'image/heic' || mime === 'image/heif' || mime === 'image/gif' || mime === 'image/bmp') mime = 'image/jpeg';
-      let blob;
+      const loaded = await loadEditorImageForCanvas(item);
       try{
-        blob = await canvasToBlob(canvas, mime, 0.95);
-      }catch{
-        mime = 'image/jpeg';
-        blob = await canvasToBlob(canvas, mime, 0.95);
+        const img = loaded.img;
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        drawPriceOverlay(ctx, canvas.width, canvas.height, settings.text, settings.position, settings.scale, settings.opacity, settings.bgColor, settings.textColor, settings.noBg);
+        let mime = item.type && item.type.startsWith('image/') ? item.type : 'image/jpeg';
+        if(mime === 'image/heic' || mime === 'image/heif' || mime === 'image/gif' || mime === 'image/bmp') mime = 'image/jpeg';
+        let blob;
+        try{
+          blob = await canvasToBlob(canvas, mime, 0.95);
+        }catch{
+          mime = 'image/jpeg';
+          blob = await canvasToBlob(canvas, mime, 0.95);
+        }
+        const reader = new FileReader();
+        const dataUrl = await new Promise((resolve, reject) => {
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(new Error('No se pudo leer imagen procesada'));
+          reader.readAsDataURL(blob);
+        });
+        const parts = String(editorCurrentName(item) || item.name || 'foto').split('.');
+        const ext = parts.length > 1 ? parts.pop() : (mime.includes('png') ? 'png' : 'jpg');
+        const base = parts.join('.') || 'foto';
+        return {
+          ...item,
+          resultDataUrl: dataUrl,
+          processedName: `${base}_precio.${ext}`,
+          size: blob.size || item.size || 0,
+          type: mime,
+          mediaGroup: 'price'
+        };
+      }finally{
+        try{ loaded.cleanup?.(); }catch{}
       }
-      const reader = new FileReader();
-      const dataUrl = await new Promise((resolve, reject) => {
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = () => reject(new Error('No se pudo leer imagen procesada'));
-        reader.readAsDataURL(blob);
-      });
-      const parts = String(item.name || 'foto').split('.');
-      const ext = parts.length > 1 ? parts.pop() : (mime.includes('png') ? 'png' : 'jpg');
-      const base = parts.join('.') || 'foto';
-      return {
-        ...item,
-        resultDataUrl: dataUrl,
-        processedName: `${base}_precio.${ext}`,
-        size: blob.size || item.size || 0,
-        type: mime,
-        mediaGroup: 'price'
-      };
     }
 
     async function applyPriceToEditorImages(){
+      return applyActiveEditorOperationToAll();
+    }
+
+    async function applyActiveEditorOperationToAll(){
       if(!photoEditorImages.length) return toast('Primero agrega fotos o videos al editor');
       const photos = photoEditorImages.filter(isImageMedia);
-      if(!photos.length) return toast('No hay fotos para aplicar precio. Los videos se conservan intactos.');
-      const settings = getEditorPriceSettings();
-      if(!settings.text){
+      if(!photos.length) return toast('No hay fotos para editar. Los videos se conservan intactos.');
+      const settings = getEditorOperationSettings();
+      if(operationNeedsPrice(settings) && !operationPriceText(settings)){
         return toast('Escribe el texto del precio para aplicar a las fotos');
       }
-      setPhotoEditorStatus('Procesando fotos del editor. Los videos se mantendrán intactos.');
-      setEditorProgress(true, 'Aplicando precio', 0, `0 de ${photos.length} fotos`);
+      const label = editorOperationLabel(settings.operation);
+      setPhotoEditorStatus(`Procesando ${label}. Los videos se mantendrán intactos.`);
+      setEditorProgress(true, `Aplicando ${label}`, 0, `0 de ${photos.length} fotos`);
       const next = [];
       let processed = 0;
       for(let i = 0; i < photoEditorImages.length; i++){
@@ -4155,25 +4308,31 @@
           continue;
         }
         try{
-          next.push(await processEditorItem(item, settings));
+          const edited = await processEditorOperationItem(item, settings);
+          edited.lastEditorMode = settings.operation;
+          edited.lastEditorSettings = {...settings};
+          next.push(edited);
           processed++;
           setPhotoEditorStatus(`Procesando foto ${processed} de ${photos.length}...`);
-          setEditorProgress(true, 'Aplicando precio', (processed / photos.length) * 100, `${processed} de ${photos.length} fotos`);
+          setEditorProgress(true, `Aplicando ${label}`, (processed / photos.length) * 100, `${processed} de ${photos.length} fotos`);
         }catch(err){
+          console.warn('No se pudo editar foto', err);
           next.push({...item});
         }
       }
       photoEditorImages = next;
       renderPhotoEditorGallery();
-      fillMediaGroupSelect('editorAppendMediaGroupSelect', 'price');
-      fillMediaGroupSelect('editorNewMediaGroupSelect', 'price');
-      fillMediaGroupSelect('photoModalMediaGroupSelect', 'price');
-      setEditorProgress(true, 'Precio listo', 100, `${processed} foto${processed === 1 ? '' : 's'} convertida${processed === 1 ? '' : 's'}.`);
+      const group = editorOperationMediaGroup(settings.operation);
+      fillMediaGroupSelect('editorAppendMediaGroupSelect', group);
+      fillMediaGroupSelect('editorNewMediaGroupSelect', group);
+      fillMediaGroupSelect('photoModalMediaGroupSelect', group);
+      setEditorProgress(true, 'Edición lista', 100, `${processed} foto${processed === 1 ? '' : 's'} convertida${processed === 1 ? '' : 's'}.`);
       setTimeout(() => setEditorProgress(false), 1200);
       const videos = photoEditorImages.filter(isVideoMedia).length;
-      setPhotoEditorStatus(`Precio aplicado a ${processed} foto${processed === 1 ? '' : 's'}${videos ? `. ${videos} video${videos === 1 ? '' : 's'} se mantuvieron intactos.` : '.'}`);
-      toast('Precio aplicado a las fotos ✅');
+      setPhotoEditorStatus(`${label} aplicado a ${processed} foto${processed === 1 ? '' : 's'}${videos ? `. ${videos} video${videos === 1 ? '' : 's'} se mantuvieron intactos.` : '.'}`);
+      toast('Edición aplicada ✅');
     }
+
 
     function dataUrlToBlobFile(dataUrl, fileName = 'imagen.jpg', mimeHint = 'image/jpeg'){
       try{
@@ -4223,10 +4382,11 @@
         imgEl.src = editorCurrentDataUrl(item);
       }
       $('photoModalApplyBtn').disabled = isVideo;
-      const actionLabel = editorMode === 'watermark' ? '💧 Aplicar marca a esta foto' : '🏷️ Aplicar precio a esta foto';
+      const operation = currentEditorOperation();
+      const actionLabel = operation === 'both' ? '✨ Aplicar marca + precio a esta foto' : (operation === 'watermark' ? '💧 Aplicar marca a esta foto' : '🏷️ Aplicar precio a esta foto');
       $('photoModalApplyBtn').textContent = isVideo ? 'Edición no disponible en video' : actionLabel;
       $('photoModalTitle').textContent = isVideo ? 'Vista grande · Video' : (item.resultDataUrl ? 'Vista grande · Foto editada' : 'Vista grande · Foto original');
-      const editLabel = editorMode === 'watermark' ? 'marca de agua' : 'precio';
+      const editLabel = operation === 'both' ? 'precio + marca de agua' : (operation === 'watermark' ? 'marca de agua' : 'precio');
       $('photoModalMeta').textContent = editorCurrentName(item) + (isVideo ? ' · Video intacto' : (item.resultDataUrl ? ' · Ya tiene edición aplicada' : ` · Sin ${editLabel} aplicado`));
       populateResponseSelects();
       $('photoModal').classList.add('show');
@@ -4241,26 +4401,26 @@
     async function applyEditorModeToSingleImage(id, overrideSettings = null){
       const index = photoEditorImages.findIndex(img => img.id === id);
       if(index < 0) return;
-      if(isVideoMedia(photoEditorImages[index])) return toast('La edición de precio/marca no se aplica a videos. El video se mantiene intacto.');
-      const mode = editorMode === 'watermark' ? 'watermark' : 'price';
-      const settings = overrideSettings || (mode === 'watermark' ? getEditorWatermarkSettings() : getEditorPriceSettings());
-      if(mode === 'price' && !settings.text) return toast('Escribe el precio primero');
+      if(isVideoMedia(photoEditorImages[index])) return toast('La edición de fotos no se aplica a videos. El video se mantiene intacto.');
+      const settings = overrideSettings || getEditorOperationSettings();
+      if(operationNeedsPrice(settings) && !operationPriceText(settings)) return toast('Escribe el precio primero');
+      const label = editorOperationLabel(settings.operation);
       try{
-        setPhotoEditorStatus(mode === 'watermark' ? 'Aplicando marca de agua a esta foto...' : 'Aplicando precio a esta foto...');
-        photoEditorImages[index] = mode === 'watermark'
-          ? await processEditorWatermarkItem(photoEditorImages[index], settings)
-          : await processEditorItem(photoEditorImages[index], settings);
-        photoEditorImages[index].lastEditorMode = mode;
+        setPhotoEditorStatus(`Aplicando ${label} a esta foto...`);
+        photoEditorImages[index] = await processEditorOperationItem(photoEditorImages[index], settings);
+        photoEditorImages[index].lastEditorMode = settings.operation;
         photoEditorImages[index].lastEditorSettings = {...settings};
+        editorWizardLastSettings = {...settings};
         renderPhotoEditorGallery();
         openPhotoEditorModal(photoEditorImages[index].id);
-        setPhotoEditorStatus(mode === 'watermark' ? 'Marca de agua aplicada a esta foto.' : 'Precio aplicado a esta foto.');
-        toast(mode === 'watermark' ? 'Marca aplicada a esta foto ✅' : 'Precio aplicado a esta foto ✅');
+        setPhotoEditorStatus(`${label} aplicado a esta foto.`);
+        toast('Edición aplicada a esta foto ✅');
       }catch(err){
         console.warn(err);
-        toast(mode === 'watermark' ? 'No se pudo aplicar marca a esta foto' : 'No se pudo aplicar el precio a esta foto');
+        toast('No se pudo aplicar la edición a esta foto');
       }
     }
+
 
     async function applyPriceToSingleEditorImage(id){
       return applyEditorModeToSingleImage(id);
@@ -4289,31 +4449,22 @@
 
     function fillEditorWizardFromGlobal(item = null){
       const last = item?.lastEditorSettings || editorWizardLastSettings || null;
-      const price = last && last.text !== undefined ? last : getEditorPriceSettings();
-      const wm = last && last.num1 !== undefined ? last : getEditorWatermarkSettings();
+      const price = last?.operation === 'both' ? last.price : (last?.operation === 'price' ? last.price : (last && last.text !== undefined ? last : getEditorPriceSettings()));
+      const wm = last?.operation === 'both' ? last.watermark : (last?.operation === 'watermark' ? last.watermark : (last && last.num1 !== undefined ? last : getEditorWatermarkSettings()));
 
-      if($('editorWizardPriceText')) $('editorWizardPriceText').value = item?.lastEditorMode === 'price' && item?.lastEditorSettings?.text !== undefined ? item.lastEditorSettings.text : (price.text || $('editorPriceText')?.value || '');
-      if($('editorWizardPricePosition')) $('editorWizardPricePosition').value = price.position || $('editorPricePosition')?.value || 'bottom-center';
-      if($('editorWizardPriceScale')) $('editorWizardPriceScale').value = String(price.scale || $('editorPriceScale')?.value || '1');
-      if($('editorWizardNoBgCheckbox')) $('editorWizardNoBgCheckbox').checked = price.noBg !== undefined ? !!price.noBg : !!$('editorNoBgCheckbox')?.checked;
+      if($('editorWizardPriceText')) $('editorWizardPriceText').value = price?.text ?? $('editorPriceText')?.value ?? '';
+      if($('editorWizardPricePosition')) $('editorWizardPricePosition').value = price?.position || $('editorPricePosition')?.value || 'bottom-center';
+      if($('editorWizardPriceScale')) $('editorWizardPriceScale').value = String(price?.scale || $('editorPriceScale')?.value || '1');
+      if($('editorWizardNoBgCheckbox')) $('editorWizardNoBgCheckbox').checked = price?.noBg !== undefined ? !!price.noBg : !!$('editorNoBgCheckbox')?.checked;
 
-      if($('editorWizardWatermarkNum1')) $('editorWizardWatermarkNum1').value = item?.lastEditorMode === 'watermark' && item?.lastEditorSettings?.num1 !== undefined ? item.lastEditorSettings.num1 : (wm.num1 || $('editorWatermarkNum1')?.value || '9631-0102');
-      if($('editorWizardWatermarkNum2')) $('editorWizardWatermarkNum2').value = item?.lastEditorMode === 'watermark' && item?.lastEditorSettings?.num2 !== undefined ? item.lastEditorSettings.num2 : (wm.num2 || $('editorWatermarkNum2')?.value || '8790-2458');
-      if($('editorWizardWatermarkOpacity')) $('editorWizardWatermarkOpacity').value = String(wm.opacity || $('editorWatermarkOpacity')?.value || '0.40');
-      if($('editorWizardWatermarkMode')) $('editorWizardWatermarkMode').value = wm.mode || $('editorWatermarkMode')?.value || 'strong';
+      if($('editorWizardWatermarkNum1')) $('editorWizardWatermarkNum1').value = wm?.num1 || $('editorWatermarkNum1')?.value || '9631-0102';
+      if($('editorWizardWatermarkNum2')) $('editorWizardWatermarkNum2').value = wm?.num2 || $('editorWatermarkNum2')?.value || '8790-2458';
+      if($('editorWizardWatermarkOpacity')) $('editorWizardWatermarkOpacity').value = String(wm?.opacity || $('editorWatermarkOpacity')?.value || '0.40');
+      if($('editorWizardWatermarkMode')) $('editorWizardWatermarkMode').value = wm?.mode || $('editorWatermarkMode')?.value || 'strong';
     }
 
-    function getEditorWizardSettings(){
-      if(editorMode === 'watermark'){
-        const base = getEditorWatermarkSettings();
-        return {
-          ...base,
-          num1: String($('editorWizardWatermarkNum1')?.value || base.num1 || '').trim() || base.num1,
-          num2: String($('editorWizardWatermarkNum2')?.value || base.num2 || '').trim() || base.num2,
-          opacity: clamp(parseFloat($('editorWizardWatermarkOpacity')?.value || base.opacity || '0.40'), 0.05, 0.70),
-          mode: $('editorWizardWatermarkMode')?.value === 'clean' ? 'clean' : 'strong'
-        };
-      }
+
+    function getEditorWizardPriceSettings(){
       const base = getEditorPriceSettings();
       return {
         ...base,
@@ -4323,6 +4474,32 @@
         noBg: !!$('editorWizardNoBgCheckbox')?.checked
       };
     }
+
+    function getEditorWizardWatermarkSettings(){
+      const base = getEditorWatermarkSettings();
+      return {
+        ...base,
+        num1: String($('editorWizardWatermarkNum1')?.value || base.num1 || '').trim() || base.num1,
+        num2: String($('editorWizardWatermarkNum2')?.value || base.num2 || '').trim() || base.num2,
+        opacity: clamp(parseFloat($('editorWizardWatermarkOpacity')?.value || base.opacity || '0.40'), 0.05, 0.70),
+        mode: $('editorWizardWatermarkMode')?.value === 'clean' ? 'clean' : 'strong'
+      };
+    }
+
+    function getEditorWizardSettings(){
+      const operation = currentEditorOperation();
+      if(operation === 'both'){
+        return {
+          operation,
+          order: $('editorCombineOrder')?.value === 'price-first' ? 'price-first' : 'watermark-first',
+          price: getEditorWizardPriceSettings(),
+          watermark: getEditorWizardWatermarkSettings()
+        };
+      }
+      if(operation === 'watermark') return {operation, watermark:getEditorWizardWatermarkSettings()};
+      return {operation, price:getEditorWizardPriceSettings()};
+    }
+
 
     function openEditorIndividualWizard(startIndex = 0){
       const indexes = getEditorWizardPhotoIndexes();
@@ -4352,11 +4529,11 @@
       const realIndex = indexes[editorWizardIndex];
       const item = photoEditorImages[realIndex];
       if(!item) return;
-      const mode = editorMode === 'watermark' ? 'watermark' : 'price';
-      $('editorWizardTitle').textContent = mode === 'watermark' ? 'Marca de agua 1 por 1' : 'Precio 1 por 1';
+      const mode = currentEditorOperation();
+      $('editorWizardTitle').textContent = mode === 'both' ? 'Precio + marca 1 por 1' : (mode === 'watermark' ? 'Marca de agua 1 por 1' : 'Precio 1 por 1');
       $('editorWizardMeta').textContent = `Foto ${editorWizardIndex + 1} de ${indexes.length} · ${editorCurrentName(item, realIndex)}`;
-      $('editorWizardPricePanel')?.classList.toggle('hidden', mode !== 'price');
-      $('editorWizardWatermarkPanel')?.classList.toggle('hidden', mode !== 'watermark');
+      $('editorWizardPricePanel')?.classList.toggle('hidden', !(mode === 'price' || mode === 'both'));
+      $('editorWizardWatermarkPanel')?.classList.toggle('hidden', !(mode === 'watermark' || mode === 'both'));
       const preview = $('editorWizardPreview');
       if(preview){
         preview.innerHTML = `<img src="${escapeHtml(editorCurrentDataUrl(item))}" alt="Foto ${editorWizardIndex + 1}">`;
@@ -4382,15 +4559,13 @@
       if(realIndex < 0) return;
       const item = photoEditorImages[realIndex];
       if(!item || isVideoMedia(item)) return;
-      const mode = editorMode === 'watermark' ? 'watermark' : 'price';
       const settings = getEditorWizardSettings();
-      if(mode === 'price' && !settings.text) return toast('Escribe el precio de esta foto');
+      if(operationNeedsPrice(settings) && !operationPriceText(settings)) return toast('Escribe el precio de esta foto');
+      const label = editorOperationLabel(settings.operation);
       try{
-        setPhotoEditorStatus(mode === 'watermark' ? `Aplicando marca a foto ${editorWizardIndex + 1}...` : `Aplicando precio a foto ${editorWizardIndex + 1}...`);
-        photoEditorImages[realIndex] = mode === 'watermark'
-          ? await processEditorWatermarkItem(item, settings)
-          : await processEditorItem(item, settings);
-        photoEditorImages[realIndex].lastEditorMode = mode;
+        setPhotoEditorStatus(`Aplicando ${label} a foto ${editorWizardIndex + 1}...`);
+        photoEditorImages[realIndex] = await processEditorOperationItem(item, settings);
+        photoEditorImages[realIndex].lastEditorMode = settings.operation;
         photoEditorImages[realIndex].lastEditorSettings = {...settings};
         editorWizardLastSettings = {...settings};
         renderPhotoEditorGallery();
@@ -4407,7 +4582,7 @@
         }
       }catch(err){
         console.warn(err);
-        toast(mode === 'watermark' ? 'No se pudo aplicar esa marca' : 'No se pudo aplicar ese precio');
+        toast('No se pudo aplicar esa edición');
       }
     }
 
@@ -4418,7 +4593,7 @@
         name: editorCurrentName(item, index),
         type: item.type || (video ? 'video/mp4' : 'image/jpeg'),
         size: item.size || 0,
-        mediaGroup: normalizeMediaGroup(groupOverride || item.mediaGroup || (editorMode === 'watermark' ? 'watermark' : 'price'))
+        mediaGroup: normalizeMediaGroup(groupOverride || item.mediaGroup || (editorBothEnabled() ? 'price' : (editorMode === 'watermark' ? 'watermark' : 'price')))
       };
       if(item.url) out.url = item.url;
       if(item.downloadUrl) out.downloadUrl = item.downloadUrl;
@@ -4458,7 +4633,7 @@
       photoEditorImages = [{...item, id: crypto.randomUUID()}];
       renderPhotoEditorGallery();
       closePhotoEditorModal();
-      fillMediaGroupSelect('editorNewMediaGroupSelect', normalizeMediaGroup(item.mediaGroup || (editorMode === 'watermark' ? 'watermark' : 'price')));
+      fillMediaGroupSelect('editorNewMediaGroupSelect', normalizeMediaGroup(item.mediaGroup || (editorBothEnabled() ? 'price' : (editorMode === 'watermark' ? 'watermark' : 'price'))));
       $('editorNewTitle').focus();
       $('editorNewTitle').scrollIntoView({behavior:'smooth', block:'center'});
       setPhotoEditorStatus('Dejé solo este archivo en el editor. Ahora escribe título/atajo y crea la nueva respuesta.');
@@ -5908,7 +6083,14 @@
         return;
       }
 
-      responses.forEach(r => {
+      const query = normalizeSearch($('adminSearchInput')?.value || '');
+      const list = query ? responses.filter(r => getResponseSearchText(r).includes(query)) : responses;
+      if(!list.length){
+        adminList.innerHTML = '<div class="notice">No encontré respuestas con esa búsqueda.</div>';
+        return;
+      }
+
+      list.forEach(r => {
         const row = document.createElement('div');
         row.className = 'admin-row';
         row.innerHTML = `
@@ -5926,6 +6108,7 @@
         adminList.appendChild(row);
       });
     }
+
 
     function ensureAdminForAction(actionText){
       if(isAdminUnlocked) return true;
