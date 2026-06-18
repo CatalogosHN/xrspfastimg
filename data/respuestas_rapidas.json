@@ -1,7 +1,7 @@
 {
   "app": "Respuestas Rápidas",
   "version": 4,
-  "updatedAt": "2026-06-18T04:20:37.200Z",
+  "updatedAt": "2026-06-18T07:15:20.934Z",
   "owner": "CatalogosHN",
   "repo": "xrspfastimg",
   "path": "data/respuestas_rapidas.json",
@@ -10,6 +10,119 @@
     "Publicaciones de Facebook"
   ],
   "responses": [
+    {
+      "id": "d956f263-ec31-402a-9b95-0bc7a23fdb11",
+      "title": "PROMO FOCO CAMARAS",
+      "shortcut": "promofococamaras",
+      "section": "PROMOS",
+      "category": "PROMOS",
+      "tags": [
+        "PROMO FOCO CAMARAS",
+        "focam"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "22d23750-3e05-4e14-bd86-a202060a992b",
+          "name": "198904.jpg",
+          "type": "image/jpeg",
+          "size": 159786,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/22d23750-3e0-198904.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/22d23750-3e0-198904.jpg",
+          "cloudPath": "media/respuestas-rapidas/promofococamaras/22d23750-3e0-198904.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "f1c6de42-77c6-495b-aba4-f442983cd017",
+          "name": "198895.jpg",
+          "type": "image/jpeg",
+          "size": 771267,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/f1c6de42-77c-198895.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/f1c6de42-77c-198895.jpg",
+          "cloudPath": "media/respuestas-rapidas/promofococamaras/f1c6de42-77c-198895.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "fc66a09d-457a-4589-86df-2787557f5f6e",
+          "name": "198889.jpg",
+          "type": "image/jpeg",
+          "size": 865904,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/fc66a09d-457-198889.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/fc66a09d-457-198889.jpg",
+          "cloudPath": "media/respuestas-rapidas/promofococamaras/fc66a09d-457-198889.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "acf20708-ed45-49fe-a6fb-ba9b8e632fd0",
+          "name": "198901.jpg",
+          "type": "image/jpeg",
+          "size": 882694,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/acf20708-ed4-198901.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/acf20708-ed4-198901.jpg",
+          "cloudPath": "media/respuestas-rapidas/promofococamaras/acf20708-ed4-198901.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "66f42205-15a0-4749-bb62-3bdb6605dd7b",
+          "name": "198898.jpg",
+          "type": "image/jpeg",
+          "size": 705553,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/66f42205-15a-198898.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/66f42205-15a-198898.jpg",
+          "cloudPath": "media/respuestas-rapidas/promofococamaras/66f42205-15a-198898.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "f9953090-5bad-46e9-8452-09ce3ab6ec62",
+          "name": "198892.jpg",
+          "type": "image/jpeg",
+          "size": 617619,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/f9953090-5ba-198892.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/f9953090-5ba-198892.jpg",
+          "cloudPath": "media/respuestas-rapidas/promofococamaras/f9953090-5ba-198892.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "c4f730e5-eb9f-4d28-a971-6637e7ad547b",
+          "name": "181886.jpg",
+          "type": "image/jpeg",
+          "size": 271724,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/c4f730e5-eb9-181886.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/c4f730e5-eb9-181886.jpg",
+          "cloudPath": "media/respuestas-rapidas/promofococamaras/c4f730e5-eb9-181886.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "c9369939-498e-4783-b9a8-fd485c34fdc7",
+          "name": "158203.jpg",
+          "type": "image/jpeg",
+          "size": 298720,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/c9369939-498-158203.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/c9369939-498-158203.jpg",
+          "cloudPath": "media/respuestas-rapidas/promofococamaras/c9369939-498-158203.jpg",
+          "dataUrl": ""
+        },
+        {
+          "id": "243e5355-8b51-4eac-9c0d-39614e84dd29",
+          "name": "184761.jpg",
+          "type": "image/jpeg",
+          "size": 193105,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/243e5355-8b5-184761.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/243e5355-8b5-184761.jpg",
+          "cloudPath": "media/respuestas-rapidas/promofococamaras/243e5355-8b5-184761.jpg",
+          "dataUrl": ""
+        }
+      ]
+    },
     {
       "id": "2d81646a-923e-456e-bbad-2c8a44b650e0",
       "title": "PROMO MOTO",
