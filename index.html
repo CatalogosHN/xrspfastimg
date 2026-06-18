@@ -1221,6 +1221,124 @@
       .editor-mode-switch{grid-template-columns:1fr}
     }
 
+
+    /* Mejoras: buscador en respuestas + edición 1 por 1 */
+    .editor-response-search{
+      width:100%;
+      margin-bottom:8px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fbfdff;
+      padding:12px 13px;
+      outline:0;
+      color:var(--text);
+      font-weight:800;
+    }
+    .editor-response-search:focus{
+      border-color:#94c5ff;
+      box-shadow:0 0 0 4px rgba(20,121,255,.11);
+      background:white;
+    }
+    .editor-response-select{
+      min-height:132px;
+      overflow:auto;
+      line-height:1.25;
+    }
+    .editor-individual-box{
+      display:grid;
+      gap:8px;
+      margin:10px 0 0;
+      padding:12px;
+      border-radius:17px;
+      background:#f8fbff;
+      border:1px solid #dbeafe;
+    }
+    .editor-individual-box strong{color:#275489}
+    .editor-individual-box .mini-text{margin:0}
+    .editor-wizard-modal{
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:230;
+      background:rgba(15,23,42,.58);
+      padding:18px;
+      overflow:auto;
+    }
+    .editor-wizard-modal.show{display:grid;place-items:center}
+    .editor-wizard-card{
+      width:min(96vw,820px);
+      max-height:94vh;
+      overflow:auto;
+      background:white;
+      border-radius:24px;
+      border:1px solid var(--line);
+      box-shadow:0 28px 80px rgba(15,23,42,.36);
+      padding:16px;
+    }
+    .editor-wizard-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .editor-wizard-head h2{margin:0;font-size:1.08rem}
+    .editor-wizard-head p{margin:4px 0 0;color:var(--muted);font-size:.84rem;line-height:1.35}
+    .editor-wizard-preview{
+      min-height:260px;
+      border-radius:18px;
+      background:#f1f7ff;
+      border:1px solid #dbeafe;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      margin-bottom:12px;
+    }
+    .editor-wizard-preview img{display:block;max-width:100%;max-height:52vh;object-fit:contain;background:#0f172a}
+    .editor-wizard-controls{
+      padding:13px;
+      border-radius:18px;
+      background:#f8fbff;
+      border:1px solid var(--line);
+      margin-bottom:12px;
+    }
+    .editor-wizard-actions{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:10px;
+    }
+    .editor-wizard-actions.two{grid-template-columns:1fr 1fr}
+    .editor-wizard-progress{
+      display:flex;
+      gap:9px;
+      align-items:center;
+      color:#35527b;
+      font-size:.82rem;
+      font-weight:950;
+      margin-top:9px;
+    }
+    .editor-wizard-bar{
+      flex:1;
+      height:10px;
+      border-radius:999px;
+      background:#e7f1ff;
+      border:1px solid #cfe3ff;
+      overflow:hidden;
+    }
+    .editor-wizard-bar span{display:block;height:100%;width:0%;background:linear-gradient(135deg,var(--primary),#58a8ff);border-radius:999px;transition:width .16s ease}
+    .editor-item-quick{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:6px;
+      margin-top:7px;
+    }
+    .editor-item-quick .btn{min-height:32px;padding:7px 8px;font-size:.70rem;border-radius:10px}
+    @media(max-width:640px){
+      .editor-wizard-actions,.editor-wizard-actions.two{grid-template-columns:1fr}
+      .editor-response-select{min-height:118px}
+    }
+
   </style>
 </head>
 <body>
@@ -1595,6 +1713,11 @@
               <button class="btn primary" type="button" id="editorApplyWatermarkBtn" data-editor-mode-action="watermark" style="display:none">💧 Aplicar marca de agua</button>
               <button class="btn ghost" type="button" id="editorResetEditsBtn">↩️ Quitar edición</button>
             </div>
+            <div class="editor-individual-box">
+              <strong>Edición rápida 1 por 1</strong>
+              <div class="mini-text">Sirve cuando cada foto lleva precio distinto o marca de agua distinta. En modo precio pedirá precio por foto; en modo marca pedirá los números/marca por foto.</div>
+              <button class="btn amber full" type="button" id="editorStartIndividualBtn">🚀 Empezar edición 1 por 1</button>
+            </div>
 
             <div class="editor-summary">
               <span class="editor-chip">Archivos en editor: <b id="editorCount">0</b></span>
@@ -1612,8 +1735,10 @@
               <div class="form-card" style="margin:0">
                 <h2 style="margin-bottom:8px">Cargar fotos/videos de una respuesta guardada</h2>
                 <div class="field">
+                  <label for="editorLoadResponseSearch">Buscar respuesta por título, atajo o texto</label>
+                  <input id="editorLoadResponseSearch" class="editor-response-search" type="search" placeholder="Ej: roku, /productolista, envío..." autocomplete="off" />
                   <label for="editorLoadResponseSelect">Respuesta existente</label>
-                  <select id="editorLoadResponseSelect"></select>
+                  <select id="editorLoadResponseSelect" class="editor-response-select" size="7"></select>
                 </div>
                 <div class="editor-inline">
                   <button class="btn ghost" type="button" id="editorLoadResponseBtn">📥 Cargar archivos de esa respuesta</button>
@@ -1624,8 +1749,10 @@
               <div class="form-card" style="margin:0">
                 <h2 style="margin-bottom:8px">Agregar fotos/videos a una respuesta existente</h2>
                 <div class="field">
+                  <label for="editorAppendResponseSearch">Buscar respuesta destino</label>
+                  <input id="editorAppendResponseSearch" class="editor-response-search" type="search" placeholder="Escribe para filtrar la lista..." autocomplete="off" />
                   <label for="editorAppendResponseSelect">Respuesta destino</label>
-                  <select id="editorAppendResponseSelect"></select>
+                  <select id="editorAppendResponseSelect" class="editor-response-select" size="7"></select>
                 </div>
                 <div class="field">
                   <label for="editorAppendMediaGroupSelect">Agregar al botón</label>
@@ -1816,8 +1943,10 @@
       </div>
       <div class="photo-modal-tools">
         <div class="field" style="margin:0">
+          <label for="photoModalResponseSearch">Buscar respuesta destino</label>
+          <input id="photoModalResponseSearch" class="editor-response-search" type="search" placeholder="Filtrar respuesta..." autocomplete="off" />
           <label for="photoModalResponseSelect">Agregar este archivo a respuesta existente</label>
-          <select id="photoModalResponseSelect"></select>
+          <select id="photoModalResponseSelect" class="editor-response-select" size="6"></select>
         </div>
         <div class="field" style="margin:0">
           <label for="photoModalMediaGroupSelect">Agregar al botón</label>
@@ -1828,6 +1957,98 @@
       <div class="photo-modal-actions">
         <button class="btn amber" type="button" id="photoModalUseNewBtn">🆕 Usar solo este archivo para nueva respuesta</button>
         <button class="btn ghost" type="button" id="photoModalBackBtn">↩️ Volver a miniaturas</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="editor-wizard-modal" id="editorWizardModal">
+    <div class="editor-wizard-card">
+      <div class="editor-wizard-head">
+        <div>
+          <h2 id="editorWizardTitle">Editar 1 por 1</h2>
+          <p id="editorWizardMeta">Foto 1 de 1</p>
+        </div>
+        <button class="btn red small" type="button" id="editorWizardCloseBtn">✕ Cerrar</button>
+      </div>
+
+      <div class="editor-wizard-preview" id="editorWizardPreview"></div>
+
+      <div class="editor-wizard-controls" id="editorWizardPricePanel">
+        <div class="field">
+          <label for="editorWizardPriceText">Precio / texto para esta foto</label>
+          <input id="editorWizardPriceText" placeholder="Ej: L. 200" />
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label for="editorWizardPricePosition">Posición</label>
+            <select id="editorWizardPricePosition">
+              <option value="top-left">Superior izquierda</option>
+              <option value="top-center">Superior enmedio</option>
+              <option value="top-right">Superior derecha</option>
+              <option value="middle-left">En medio izquierda</option>
+              <option value="middle-center">En medio en medio</option>
+              <option value="middle-right">En medio derecha</option>
+              <option value="bottom-left">Inferior izquierda</option>
+              <option value="bottom-center" selected>Inferior enmedio</option>
+              <option value="bottom-right">Inferior derecha</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="editorWizardPriceScale">Tamaño</label>
+            <select id="editorWizardPriceScale">
+              <option value="0.85">Pequeño</option>
+              <option value="1" selected>Normal</option>
+              <option value="1.15">Mediano grande</option>
+              <option value="1.3">Grande</option>
+            </select>
+          </div>
+          <div class="field span-2">
+            <label class="inline-check" style="margin:0">
+              <input id="editorWizardNoBgCheckbox" type="checkbox" checked />
+              <span><strong>Sin fondo / sin cuadro</strong> para esta foto.</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-wizard-controls hidden" id="editorWizardWatermarkPanel">
+        <div class="form-grid">
+          <div class="field">
+            <label for="editorWizardWatermarkNum1">Número / texto 1</label>
+            <input id="editorWizardWatermarkNum1" placeholder="Ej: 9631-0102" />
+          </div>
+          <div class="field">
+            <label for="editorWizardWatermarkNum2">Número / texto 2</label>
+            <input id="editorWizardWatermarkNum2" placeholder="Ej: 8790-2458" />
+          </div>
+          <div class="field">
+            <label for="editorWizardWatermarkOpacity">Opacidad</label>
+            <input id="editorWizardWatermarkOpacity" type="range" min="0.05" max="0.70" step="0.01" value="0.40" />
+          </div>
+          <div class="field">
+            <label for="editorWizardWatermarkMode">Modo</label>
+            <select id="editorWizardWatermarkMode">
+              <option value="strong" selected>Anti-robo fuerte</option>
+              <option value="clean">Más limpio</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-wizard-progress">
+        <span id="editorWizardProgressText">0%</span>
+        <div class="editor-wizard-bar"><span id="editorWizardProgressFill"></span></div>
+      </div>
+
+      <div class="editor-wizard-actions">
+        <button class="btn ghost" type="button" id="editorWizardPrevBtn">⬅️ Anterior</button>
+        <button class="btn primary" type="button" id="editorWizardSaveNextBtn">💾 Guardar y continuar</button>
+        <button class="btn green" type="button" id="editorWizardFinishBtn">✅ Finalizar</button>
+      </div>
+      <div class="editor-wizard-actions two">
+        <button class="btn amber" type="button" id="editorWizardSkipBtn">⏭️ Saltar esta foto</button>
+        <button class="btn ghost" type="button" id="editorWizardCloseBottomBtn">↩️ Volver al editor</button>
       </div>
     </div>
   </div>
@@ -1912,6 +2133,8 @@
     let photoEditorImages = [];
     let selectedMediaGroup = MEDIA_GROUP_DEFAULT;
     let editorMode = 'price';
+    let editorWizardIndex = 0;
+    let editorWizardLastSettings = null;
     let activePhotoModalId = null;
     let mediaDbPromise = null;
     const mediaObjectUrlCache = new Map();
@@ -2010,10 +2233,14 @@
       $('editorApplyPriceBtn').addEventListener('click', applyPriceToEditorImages);
       $('editorApplyWatermarkBtn')?.addEventListener('click', applyWatermarkToEditorImages);
       $('editorResetEditsBtn').addEventListener('click', resetPhotoEditorEdits);
+      $('editorStartIndividualBtn')?.addEventListener('click', () => openEditorIndividualWizard(0));
       $('editorClearBtn').addEventListener('click', clearPhotoEditor);
       $('editorDownloadZipBtn').addEventListener('click', downloadPhotoEditorZip);
       $('editorDownloadIndividualBtn').addEventListener('click', downloadPhotoEditorAllIndividual);
       $('editorDownloadCurrentBtn').addEventListener('click', downloadPhotoEditorCurrent);
+      $('editorLoadResponseSearch')?.addEventListener('input', populateResponseSelects);
+      $('editorAppendResponseSearch')?.addEventListener('input', populateResponseSelects);
+      $('photoModalResponseSearch')?.addEventListener('input', populateResponseSelects);
       $('editorLoadResponseBtn').addEventListener('click', loadPhotosFromSelectedResponse);
       $('editorAppendToExistingBtn').addEventListener('click', appendEditedPhotosToExistingResponse);
       $('editorCreateResponseBtn').addEventListener('click', createNewResponseFromEditor);
@@ -2021,10 +2248,18 @@
       $('photoModalCloseBtn').addEventListener('click', closePhotoEditorModal);
       $('photoModalBackBtn').addEventListener('click', closePhotoEditorModal);
       $('photoModalDownloadBtn').addEventListener('click', () => activePhotoModalId && downloadPhotoEditorSingle(activePhotoModalId));
-      $('photoModalApplyBtn').addEventListener('click', () => activePhotoModalId && applyPriceToSingleEditorImage(activePhotoModalId));
+      $('photoModalApplyBtn').addEventListener('click', () => activePhotoModalId && applyEditorModeToSingleImage(activePhotoModalId));
       $('photoModalAppendBtn').addEventListener('click', () => activePhotoModalId && appendOneEditorImageToExistingResponse(activePhotoModalId, 'photoModalResponseSelect'));
       $('photoModalUseNewBtn').addEventListener('click', useModalImageForNewResponse);
       $('photoModal').addEventListener('click', (e) => { if(e.target.id === 'photoModal') closePhotoEditorModal(); });
+
+      $('editorWizardCloseBtn')?.addEventListener('click', closeEditorIndividualWizard);
+      $('editorWizardCloseBottomBtn')?.addEventListener('click', closeEditorIndividualWizard);
+      $('editorWizardPrevBtn')?.addEventListener('click', () => moveEditorWizard(-1));
+      $('editorWizardSkipBtn')?.addEventListener('click', () => moveEditorWizard(1));
+      $('editorWizardSaveNextBtn')?.addEventListener('click', () => saveEditorWizardCurrent(true));
+      $('editorWizardFinishBtn')?.addEventListener('click', () => saveEditorWizardCurrent(false));
+      $('editorWizardModal')?.addEventListener('click', (e) => { if(e.target.id === 'editorWizardModal') closeEditorIndividualWizard(); });
 
       setupPhotoEditorDropZone();
       setupPhotoEditorPaste();
@@ -3271,11 +3506,13 @@
               <button class="btn ghost" type="button" data-act="download">⬇️ Descargar</button>
               <button class="btn red" type="button" data-act="remove">🗑️ Quitar</button>
             </div>
+            ${video ? '' : `<div class="editor-item-quick"><button class="btn amber" type="button" data-act="single">🚀 Editar esta 1x1</button></div>`}
           </div>
         `;
         wrap.querySelectorAll('[data-act="open"]').forEach(el => el.addEventListener('click', () => openPhotoEditorModal(item.id)));
         wrap.querySelector('[data-act="download"]').addEventListener('click', () => downloadPhotoEditorSingle(item.id));
         wrap.querySelector('[data-act="remove"]').addEventListener('click', () => removePhotoEditorItem(item.id));
+        wrap.querySelector('[data-act="single"]')?.addEventListener('click', () => openEditorIndividualWizardById(item.id));
         gallery.appendChild(wrap);
       });
     }
@@ -3986,9 +4223,11 @@
         imgEl.src = editorCurrentDataUrl(item);
       }
       $('photoModalApplyBtn').disabled = isVideo;
-      $('photoModalApplyBtn').textContent = isVideo ? '🏷️ Precio no disponible en video' : '🏷️ Aplicar precio a esta foto';
+      const actionLabel = editorMode === 'watermark' ? '💧 Aplicar marca a esta foto' : '🏷️ Aplicar precio a esta foto';
+      $('photoModalApplyBtn').textContent = isVideo ? 'Edición no disponible en video' : actionLabel;
       $('photoModalTitle').textContent = isVideo ? 'Vista grande · Video' : (item.resultDataUrl ? 'Vista grande · Foto editada' : 'Vista grande · Foto original');
-      $('photoModalMeta').textContent = editorCurrentName(item) + (isVideo ? ' · Video intacto' : (item.resultDataUrl ? ' · Ya tiene precio aplicado' : ' · Sin edición aplicada'));
+      const editLabel = editorMode === 'watermark' ? 'marca de agua' : 'precio';
+      $('photoModalMeta').textContent = editorCurrentName(item) + (isVideo ? ' · Video intacto' : (item.resultDataUrl ? ' · Ya tiene edición aplicada' : ` · Sin ${editLabel} aplicado`));
       populateResponseSelects();
       $('photoModal').classList.add('show');
     }
@@ -3999,21 +4238,176 @@
       $('photoModal').classList.remove('show');
     }
 
-    async function applyPriceToSingleEditorImage(id){
+    async function applyEditorModeToSingleImage(id, overrideSettings = null){
       const index = photoEditorImages.findIndex(img => img.id === id);
       if(index < 0) return;
-      if(isVideoMedia(photoEditorImages[index])) return toast('No puedo aplicar precio a un video. El video se mantiene intacto.');
-      const settings = getEditorPriceSettings();
-      if(!settings.text) return toast('Escribe el precio primero');
+      if(isVideoMedia(photoEditorImages[index])) return toast('La edición de precio/marca no se aplica a videos. El video se mantiene intacto.');
+      const mode = editorMode === 'watermark' ? 'watermark' : 'price';
+      const settings = overrideSettings || (mode === 'watermark' ? getEditorWatermarkSettings() : getEditorPriceSettings());
+      if(mode === 'price' && !settings.text) return toast('Escribe el precio primero');
       try{
-        setPhotoEditorStatus('Aplicando precio a esta foto...');
-        photoEditorImages[index] = await processEditorItem(photoEditorImages[index], settings);
+        setPhotoEditorStatus(mode === 'watermark' ? 'Aplicando marca de agua a esta foto...' : 'Aplicando precio a esta foto...');
+        photoEditorImages[index] = mode === 'watermark'
+          ? await processEditorWatermarkItem(photoEditorImages[index], settings)
+          : await processEditorItem(photoEditorImages[index], settings);
+        photoEditorImages[index].lastEditorMode = mode;
+        photoEditorImages[index].lastEditorSettings = {...settings};
         renderPhotoEditorGallery();
         openPhotoEditorModal(photoEditorImages[index].id);
-        setPhotoEditorStatus('Precio aplicado a esta foto.');
-        toast('Precio aplicado a esta foto ✅');
+        setPhotoEditorStatus(mode === 'watermark' ? 'Marca de agua aplicada a esta foto.' : 'Precio aplicado a esta foto.');
+        toast(mode === 'watermark' ? 'Marca aplicada a esta foto ✅' : 'Precio aplicado a esta foto ✅');
       }catch(err){
-        toast('No se pudo aplicar el precio a esta foto');
+        console.warn(err);
+        toast(mode === 'watermark' ? 'No se pudo aplicar marca a esta foto' : 'No se pudo aplicar el precio a esta foto');
+      }
+    }
+
+    async function applyPriceToSingleEditorImage(id){
+      return applyEditorModeToSingleImage(id);
+    }
+
+
+
+    function getEditorWizardPhotoIndexes(){
+      return photoEditorImages
+        .map((item, index) => ({item, index}))
+        .filter(x => isImageMedia(x.item))
+        .map(x => x.index);
+    }
+
+    function getEditorWizardCurrentIndex(){
+      const indexes = getEditorWizardPhotoIndexes();
+      if(!indexes.length) return -1;
+      editorWizardIndex = Math.max(0, Math.min(editorWizardIndex, indexes.length - 1));
+      return indexes[editorWizardIndex];
+    }
+
+    function copySelectValue(fromId, toId){
+      const from = $(fromId), to = $(toId);
+      if(from && to) to.value = from.value;
+    }
+
+    function fillEditorWizardFromGlobal(item = null){
+      const last = item?.lastEditorSettings || editorWizardLastSettings || null;
+      const price = last && last.text !== undefined ? last : getEditorPriceSettings();
+      const wm = last && last.num1 !== undefined ? last : getEditorWatermarkSettings();
+
+      if($('editorWizardPriceText')) $('editorWizardPriceText').value = item?.lastEditorMode === 'price' && item?.lastEditorSettings?.text !== undefined ? item.lastEditorSettings.text : (price.text || $('editorPriceText')?.value || '');
+      if($('editorWizardPricePosition')) $('editorWizardPricePosition').value = price.position || $('editorPricePosition')?.value || 'bottom-center';
+      if($('editorWizardPriceScale')) $('editorWizardPriceScale').value = String(price.scale || $('editorPriceScale')?.value || '1');
+      if($('editorWizardNoBgCheckbox')) $('editorWizardNoBgCheckbox').checked = price.noBg !== undefined ? !!price.noBg : !!$('editorNoBgCheckbox')?.checked;
+
+      if($('editorWizardWatermarkNum1')) $('editorWizardWatermarkNum1').value = item?.lastEditorMode === 'watermark' && item?.lastEditorSettings?.num1 !== undefined ? item.lastEditorSettings.num1 : (wm.num1 || $('editorWatermarkNum1')?.value || '9631-0102');
+      if($('editorWizardWatermarkNum2')) $('editorWizardWatermarkNum2').value = item?.lastEditorMode === 'watermark' && item?.lastEditorSettings?.num2 !== undefined ? item.lastEditorSettings.num2 : (wm.num2 || $('editorWatermarkNum2')?.value || '8790-2458');
+      if($('editorWizardWatermarkOpacity')) $('editorWizardWatermarkOpacity').value = String(wm.opacity || $('editorWatermarkOpacity')?.value || '0.40');
+      if($('editorWizardWatermarkMode')) $('editorWizardWatermarkMode').value = wm.mode || $('editorWatermarkMode')?.value || 'strong';
+    }
+
+    function getEditorWizardSettings(){
+      if(editorMode === 'watermark'){
+        const base = getEditorWatermarkSettings();
+        return {
+          ...base,
+          num1: String($('editorWizardWatermarkNum1')?.value || base.num1 || '').trim() || base.num1,
+          num2: String($('editorWizardWatermarkNum2')?.value || base.num2 || '').trim() || base.num2,
+          opacity: clamp(parseFloat($('editorWizardWatermarkOpacity')?.value || base.opacity || '0.40'), 0.05, 0.70),
+          mode: $('editorWizardWatermarkMode')?.value === 'clean' ? 'clean' : 'strong'
+        };
+      }
+      const base = getEditorPriceSettings();
+      return {
+        ...base,
+        text: String($('editorWizardPriceText')?.value || '').trim(),
+        position: $('editorWizardPricePosition')?.value || base.position,
+        scale: Number($('editorWizardPriceScale')?.value || base.scale || 1) || 1,
+        noBg: !!$('editorWizardNoBgCheckbox')?.checked
+      };
+    }
+
+    function openEditorIndividualWizard(startIndex = 0){
+      const indexes = getEditorWizardPhotoIndexes();
+      if(!indexes.length) return toast('No hay fotos para editar 1 por 1. Los videos se mantienen intactos.');
+      editorWizardIndex = Math.max(0, Math.min(Number(startIndex || 0), indexes.length - 1));
+      const modal = $('editorWizardModal');
+      if(!modal) return;
+      modal.classList.add('show');
+      renderEditorIndividualWizard();
+    }
+
+    function openEditorIndividualWizardById(id){
+      const indexes = getEditorWizardPhotoIndexes();
+      const realIndex = photoEditorImages.findIndex(item => item.id === id);
+      const wizardPos = indexes.indexOf(realIndex);
+      openEditorIndividualWizard(wizardPos >= 0 ? wizardPos : 0);
+    }
+
+    function closeEditorIndividualWizard(){
+      $('editorWizardModal')?.classList.remove('show');
+    }
+
+    function renderEditorIndividualWizard(){
+      const indexes = getEditorWizardPhotoIndexes();
+      if(!indexes.length){ closeEditorIndividualWizard(); return; }
+      editorWizardIndex = Math.max(0, Math.min(editorWizardIndex, indexes.length - 1));
+      const realIndex = indexes[editorWizardIndex];
+      const item = photoEditorImages[realIndex];
+      if(!item) return;
+      const mode = editorMode === 'watermark' ? 'watermark' : 'price';
+      $('editorWizardTitle').textContent = mode === 'watermark' ? 'Marca de agua 1 por 1' : 'Precio 1 por 1';
+      $('editorWizardMeta').textContent = `Foto ${editorWizardIndex + 1} de ${indexes.length} · ${editorCurrentName(item, realIndex)}`;
+      $('editorWizardPricePanel')?.classList.toggle('hidden', mode !== 'price');
+      $('editorWizardWatermarkPanel')?.classList.toggle('hidden', mode !== 'watermark');
+      const preview = $('editorWizardPreview');
+      if(preview){
+        preview.innerHTML = `<img src="${escapeHtml(editorCurrentDataUrl(item))}" alt="Foto ${editorWizardIndex + 1}">`;
+      }
+      fillEditorWizardFromGlobal(item);
+      const pct = indexes.length ? ((editorWizardIndex + 1) / indexes.length) * 100 : 0;
+      if($('editorWizardProgressText')) $('editorWizardProgressText').textContent = `${editorWizardIndex + 1}/${indexes.length}`;
+      if($('editorWizardProgressFill')) $('editorWizardProgressFill').style.width = `${pct}%`;
+      if($('editorWizardPrevBtn')) $('editorWizardPrevBtn').disabled = editorWizardIndex <= 0;
+      if($('editorWizardSkipBtn')) $('editorWizardSkipBtn').disabled = editorWizardIndex >= indexes.length - 1;
+      if($('editorWizardSaveNextBtn')) $('editorWizardSaveNextBtn').textContent = editorWizardIndex >= indexes.length - 1 ? '💾 Guardar y finalizar' : '💾 Guardar y continuar';
+    }
+
+    function moveEditorWizard(delta){
+      const indexes = getEditorWizardPhotoIndexes();
+      if(!indexes.length) return;
+      editorWizardIndex = Math.max(0, Math.min(editorWizardIndex + Number(delta || 0), indexes.length - 1));
+      renderEditorIndividualWizard();
+    }
+
+    async function saveEditorWizardCurrent(goNext = true){
+      const realIndex = getEditorWizardCurrentIndex();
+      if(realIndex < 0) return;
+      const item = photoEditorImages[realIndex];
+      if(!item || isVideoMedia(item)) return;
+      const mode = editorMode === 'watermark' ? 'watermark' : 'price';
+      const settings = getEditorWizardSettings();
+      if(mode === 'price' && !settings.text) return toast('Escribe el precio de esta foto');
+      try{
+        setPhotoEditorStatus(mode === 'watermark' ? `Aplicando marca a foto ${editorWizardIndex + 1}...` : `Aplicando precio a foto ${editorWizardIndex + 1}...`);
+        photoEditorImages[realIndex] = mode === 'watermark'
+          ? await processEditorWatermarkItem(item, settings)
+          : await processEditorItem(item, settings);
+        photoEditorImages[realIndex].lastEditorMode = mode;
+        photoEditorImages[realIndex].lastEditorSettings = {...settings};
+        editorWizardLastSettings = {...settings};
+        renderPhotoEditorGallery();
+        const indexes = getEditorWizardPhotoIndexes();
+        if(goNext && editorWizardIndex < indexes.length - 1){
+          editorWizardIndex++;
+          renderEditorIndividualWizard();
+          toast('Guardado. Sigue con la siguiente foto ✅');
+        }else{
+          renderEditorIndividualWizard();
+          setPhotoEditorStatus('Edición 1 por 1 actualizada. Ya puedes descargar o agregar a una respuesta.');
+          toast('Edición 1 por 1 guardada ✅');
+          closeEditorIndividualWizard();
+        }
+      }catch(err){
+        console.warn(err);
+        toast(mode === 'watermark' ? 'No se pudo aplicar esa marca' : 'No se pudo aplicar ese precio');
       }
     }
 
@@ -4160,21 +4554,53 @@
       toast('Descarga individual iniciada ✅');
     }
 
-    function populateResponseSelects(){
-      ['editorLoadResponseSelect','editorAppendResponseSelect','photoModalResponseSelect'].forEach(id => {
-        const select = $(id);
-        if(!select) return;
-        const previous = select.value;
-        select.innerHTML = '';
-        responses.forEach(r => {
-          const option = document.createElement('option');
-          option.value = r.id;
-          option.textContent = `${getResponseSection(r)} · ${r.title || 'Sin título'} · /${normalizeShortcut(r.shortcut)}`;
-          select.appendChild(option);
-        });
-        if(previous && [...select.options].some(opt => opt.value === previous)) select.value = previous;
-      });
+    function getResponseSearchText(r){
+      return normalizeSearch([
+        getResponseSection(r),
+        getResponseCategory(r),
+        r.title || '',
+        r.shortcut || '',
+        r.message || '',
+        ...(Array.isArray(r.tags) ? r.tags : [])
+      ].join(' '));
     }
+
+    function responseOptionLabel(r){
+      const count = getMedia(r).length;
+      const mediaText = count ? ` · ${count} archivo${count === 1 ? '' : 's'}` : '';
+      return `${getResponseSection(r)} · ${r.title || 'Sin título'} · /${normalizeShortcut(r.shortcut)}${mediaText}`;
+    }
+
+    function populateOneResponseSelect(selectId, searchId){
+      const select = $(selectId);
+      if(!select) return;
+      const previous = select.value;
+      const query = normalizeSearch($(searchId)?.value || '');
+      const list = query ? responses.filter(r => getResponseSearchText(r).includes(query)) : responses;
+      select.innerHTML = '';
+      if(!list.length){
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No encontré respuestas con esa búsqueda';
+        select.appendChild(option);
+        return;
+      }
+      list.forEach(r => {
+        const option = document.createElement('option');
+        option.value = r.id;
+        option.textContent = responseOptionLabel(r);
+        select.appendChild(option);
+      });
+      if(previous && [...select.options].some(opt => opt.value === previous)) select.value = previous;
+      else select.value = list[0]?.id || '';
+    }
+
+    function populateResponseSelects(){
+      populateOneResponseSelect('editorLoadResponseSelect', 'editorLoadResponseSearch');
+      populateOneResponseSelect('editorAppendResponseSelect', 'editorAppendResponseSearch');
+      populateOneResponseSelect('photoModalResponseSelect', 'photoModalResponseSearch');
+    }
+
 
     function loadPhotosFromSelectedResponse(){
       const id = $('editorLoadResponseSelect').value;
