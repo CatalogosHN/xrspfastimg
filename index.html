@@ -1140,6 +1140,87 @@
       line-height:1.2;
     }
 
+
+
+    .media-group-buttons{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
+      margin:12px 0 8px;
+    }
+    .media-group-btn{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      padding:10px 11px;
+      border-radius:15px;
+      background:#f1f7ff;
+      color:#245184;
+      border:1px solid #cfe3ff;
+      font-weight:950;
+      text-align:left;
+    }
+    .media-group-btn.active{
+      background:linear-gradient(135deg,var(--primary),#58a8ff);
+      color:#fff;
+      border-color:#1479ff;
+      box-shadow:0 10px 22px rgba(20,121,255,.18);
+    }
+    .media-group-btn small{font-weight:900;opacity:.86;white-space:nowrap}
+    .media-group-mini{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 4px}
+    .media-group-badge{
+      display:inline-flex;align-items:center;gap:5px;
+      max-width:100%;
+      padding:4px 8px;
+      border-radius:999px;
+      background:#edf6ff;
+      color:#245184;
+      border:1px solid #cfe3ff;
+      font-size:.68rem;
+      font-weight:950;
+      line-height:1;
+      white-space:nowrap;
+    }
+    .media-group-badge.on-dark{background:rgba(15,23,42,.82);border-color:rgba(255,255,255,.25);color:white}
+    .media-group-select{margin-bottom:12px}
+    .editor-mode-switch{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin:12px 0 14px;
+    }
+    .editor-mode-btn{
+      min-height:50px;
+      padding:11px 13px;
+      border-radius:16px;
+      background:#f1f7ff;
+      color:#275489;
+      border:1px solid #cfe3ff;
+      font-weight:950;
+    }
+    .editor-mode-btn.active{
+      background:linear-gradient(135deg,var(--primary),#58a8ff);
+      color:white;
+      border-color:#1479ff;
+      box-shadow:0 13px 25px rgba(20,121,255,.20);
+    }
+    .editor-panel.hidden{display:none!important}
+    .editor-tool-note{
+      padding:11px 13px;
+      border-radius:15px;
+      background:#f8fbff;
+      border:1px solid #dbeafe;
+      color:#35527b;
+      font-size:.82rem;
+      font-weight:850;
+      line-height:1.35;
+      margin-bottom:12px;
+    }
+    @media(max-width:640px){
+      .editor-mode-switch{grid-template-columns:1fr}
+    }
+
   </style>
 </head>
 <body>
@@ -1158,7 +1239,7 @@
       <nav class="nav">
         <button class="active" data-view="responsesView"><span class="icon">💬</span> Respuestas</button>
         <button data-view="adminView"><span class="icon">➕</span> Agregar / Editar</button>
-        <button data-view="photoEditorView"><span class="icon">🖼️</span> Editar fotos / videos</button>
+        <button data-view="photoEditorView"><span class="icon">🖼️</span> Editar fotos / precio / marca</button>
         <button data-view="settingsView"><span class="icon">🛡️</span> Nube / Seguridad / Backup</button>
       </nav>
 
@@ -1207,6 +1288,8 @@
             <h2 id="selectedTitle">Respuesta seleccionada</h2>
             <p class="hint" id="selectedHint">Selecciona una respuesta: las fotos/videos se comparten completos y el mensaje se copia al portapapeles para que tú lo pegues cuando quieras.</p>
             <div class="message-preview" id="selectedMessage">Aquí aparecerá el mensaje completo.</div>
+            <div class="media-group-buttons" id="selectedMediaGroupButtons"></div>
+            <div class="mini-text" id="selectedMediaGroupHint"></div>
             <div class="selected-images" id="selectedImages"></div>
             <div class="progress-panel" id="mediaProgressPanel">
               <div class="progress-head"><strong id="mediaProgressTitle">Preparando archivo</strong><span id="mediaProgressPercent">0%</span></div>
@@ -1285,6 +1368,11 @@
                 <div class="field span-2">
                   <label for="imageInput">Fotos o videos adjuntos</label>
                   <div class="image-upload-box">
+                    <div class="field media-group-select">
+                      <label for="formMediaGroupSelect">¿A qué botón irán las fotos/videos que agregues?</label>
+                      <select id="formMediaGroupSelect"></select>
+                      <div class="mini-text">Así puedes guardar todo dentro de una sola respuesta, pero separado por uso: vendedores, marca de agua o clientes.</div>
+                    </div>
                     <div class="editor-toolbar-3" style="margin-top:0">
                       <button class="btn primary" type="button" id="formOpenGalleryBtn">🖼️ Galería</button>
                       <button class="btn amber" type="button" id="formOpenCameraBtn">📷 Cámara</button>
@@ -1365,63 +1453,107 @@
       <section id="photoEditorView" class="view">
         <div class="photo-editor-layout">
           <div class="form-card">
-            <h2>Editar fotos / organizar videos</h2>
-            <p>Sube fotos o videos de una respuesta guardada. A las fotos puedes agregarles un precio tipo <strong>“L. 200”</strong>; los videos se conservan intactos para compartirlos junto con las fotos.</p>
+            <h2>Editar fotos / videos precio y marca de agua</h2>
+            <p>Sube fotos o videos de una respuesta guardada. Puedes convertir fotos con precio/marca o con marca de agua anti-robo. Los videos se conservan intactos.</p>
 
-            <div class="field">
-              <label for="editorPriceText">Texto de precio</label>
-              <input id="editorPriceText" placeholder="Ej: L. 200" value="L. 200" />
+            <div class="editor-mode-switch" id="editorModeSwitch">
+              <button class="editor-mode-btn active" type="button" data-editor-mode="price">🏷️ Fotos con Precio/Marca</button>
+              <button class="editor-mode-btn" type="button" data-editor-mode="watermark">💧 Fotos con Marca de agua</button>
             </div>
 
-            <div class="form-grid">
+            <div class="editor-panel" id="editorPricePanel">
+              <div class="editor-tool-note">Modo precio: ideal para clientes. Al convertir, puedes agregar las fotos al botón <strong>Fotos con Precio/Marca</strong>.</div>
               <div class="field">
-                <label for="editorPricePosition">Posición del precio</label>
-                <select id="editorPricePosition">
-                  <option value="top-left">Superior izquierda</option>
-                  <option value="top-center">Superior enmedio</option>
-                  <option value="top-right">Superior derecha</option>
-                  <option value="middle-left">En medio izquierda</option>
-                  <option value="middle-center">En medio en medio</option>
-                  <option value="middle-right">En medio derecha</option>
-                  <option value="bottom-left">Inferior izquierda</option>
-                  <option value="bottom-center" selected>Inferior enmedio</option>
-                  <option value="bottom-right">Inferior derecha</option>
-                </select>
+                <label for="editorPriceText">Texto de precio</label>
+                <input id="editorPriceText" placeholder="Ej: L. 200" value="L. 200" />
               </div>
-              <div class="field">
-                <label for="editorPriceScale">Tamaño del precio</label>
-                <select id="editorPriceScale">
-                  <option value="0.85">Pequeño</option>
-                  <option value="1" selected>Normal</option>
-                  <option value="1.15">Mediano grande</option>
-                  <option value="1.3">Grande</option>
-                </select>
-              </div>
-              <div class="field span-2">
-                <label for="editorPriceOpacity">Transparencia del precio</label>
-                <div class="editor-range-row">
-                  <input id="editorPriceOpacity" type="range" min="0.25" max="1" step="0.05" value="0.95" />
-                  <span class="editor-range-value" id="editorPriceOpacityValue">95%</span>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="editorPricePosition">Posición del precio</label>
+                  <select id="editorPricePosition">
+                    <option value="top-left">Superior izquierda</option>
+                    <option value="top-center">Superior enmedio</option>
+                    <option value="top-right">Superior derecha</option>
+                    <option value="middle-left">En medio izquierda</option>
+                    <option value="middle-center">En medio en medio</option>
+                    <option value="middle-right">En medio derecha</option>
+                    <option value="bottom-left">Inferior izquierda</option>
+                    <option value="bottom-center" selected>Inferior enmedio</option>
+                    <option value="bottom-right">Inferior derecha</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="editorPriceScale">Tamaño del precio</label>
+                  <select id="editorPriceScale">
+                    <option value="0.85">Pequeño</option>
+                    <option value="1" selected>Normal</option>
+                    <option value="1.15">Mediano grande</option>
+                    <option value="1.3">Grande</option>
+                  </select>
+                </div>
+                <div class="field span-2">
+                  <label for="editorPriceOpacity">Transparencia del precio</label>
+                  <div class="editor-range-row">
+                    <input id="editorPriceOpacity" type="range" min="0.25" max="1" step="0.05" value="0.95" />
+                    <span class="editor-range-value" id="editorPriceOpacityValue">95%</span>
+                  </div>
+                </div>
+                <div class="field span-2">
+                  <label>Colores del precio</label>
+                  <div class="editor-color-grid">
+                    <label class="editor-color-field" for="editorPriceBgColor">
+                      <input id="editorPriceBgColor" type="color" value="#37c188" />
+                      <span>Fondo de la etiqueta</span>
+                    </label>
+                    <label class="editor-color-field" for="editorPriceTextColor">
+                      <input id="editorPriceTextColor" type="color" value="#000000" />
+                      <span>Color del texto</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="field span-2">
+                  <label class="inline-check" style="margin:0">
+                    <input id="editorNoBgCheckbox" type="checkbox" checked />
+                    <span><strong>Sin fondo / sin cuadro</strong> por defecto. Desmarca esta opción si quieres que salga con fondo de color.</span>
+                  </label>
                 </div>
               </div>
-              <div class="field span-2">
-                <label>Colores del precio</label>
-                <div class="editor-color-grid">
-                  <label class="editor-color-field" for="editorPriceBgColor">
-                    <input id="editorPriceBgColor" type="color" value="#37c188" />
-                    <span>Fondo de la etiqueta</span>
-                  </label>
-                  <label class="editor-color-field" for="editorPriceTextColor">
-                    <input id="editorPriceTextColor" type="color" value="#000000" />
-                    <span>Color del texto</span>
-                  </label>
+            </div>
+
+            <div class="editor-panel hidden" id="editorWatermarkPanel">
+              <div class="editor-tool-note">Modo marca de agua: usa la lógica del HTML de marca anti-robo, con números repetidos en patrón diagonal para proteger fotos.</div>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="editorWatermarkNum1">Número 1</label>
+                  <input id="editorWatermarkNum1" value="9631-0102" />
                 </div>
-              </div>
-              <div class="field span-2">
-                <label class="inline-check" style="margin:0">
-                  <input id="editorNoBgCheckbox" type="checkbox" checked />
-                  <span><strong>Sin fondo / sin cuadro</strong> por defecto. Desmarca esta opción si quieres que salga con fondo de color.</span>
-                </label>
+                <div class="field">
+                  <label for="editorWatermarkNum2">Número 2</label>
+                  <input id="editorWatermarkNum2" value="8790-2458" />
+                </div>
+                <div class="field">
+                  <label for="editorWatermarkMaxSide">Lado máximo px</label>
+                  <input id="editorWatermarkMaxSide" type="number" min="300" max="8000" step="50" value="2000" />
+                </div>
+                <div class="field">
+                  <label for="editorWatermarkQuality">Calidad JPG %</label>
+                  <input id="editorWatermarkQuality" type="number" min="40" max="100" step="1" value="92" />
+                </div>
+                <div class="field span-2">
+                  <label for="editorWatermarkOpacity">Opacidad marca (<span id="editorWatermarkOpacityValue">0.40</span>)</label>
+                  <div class="editor-range-row">
+                    <input id="editorWatermarkOpacity" type="range" min="0.05" max="0.70" step="0.01" value="0.40" />
+                    <span class="editor-range-value" id="editorWatermarkOpacityPercent">40%</span>
+                  </div>
+                </div>
+                <div class="field span-2">
+                  <label for="editorWatermarkMode">Modo</label>
+                  <select id="editorWatermarkMode">
+                    <option value="strong" selected>Anti-robo fuerte</option>
+                    <option value="clean">Más limpio</option>
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -1458,8 +1590,9 @@
               📋 Haz clic aquí y pega con Ctrl+V. En móvil: tocar aquí, mantener presionado y Pegar.
             </div>
 
-            <div class="editor-toolbar">
-              <button class="btn green" type="button" id="editorApplyPriceBtn">🏷️ Aplicar precio a fotos</button>
+            <div class="editor-toolbar-3">
+              <button class="btn green" type="button" id="editorApplyPriceBtn" data-editor-mode-action="price">🏷️ Aplicar precio a fotos</button>
+              <button class="btn primary" type="button" id="editorApplyWatermarkBtn" data-editor-mode-action="watermark" style="display:none">💧 Aplicar marca de agua</button>
               <button class="btn ghost" type="button" id="editorResetEditsBtn">↩️ Quitar edición</button>
             </div>
 
@@ -1469,6 +1602,11 @@
             </div>
 
             <div class="editor-status" id="editorStatus">Todavía no has agregado fotos o videos al editor.</div>
+            <div class="progress-panel" id="editorProgressPanel">
+              <div class="progress-head"><strong id="editorProgressTitle">Preparando</strong><span id="editorProgressPercent">0%</span></div>
+              <div class="progress-track"><div class="progress-fill" id="editorProgressFill"></div></div>
+              <div class="progress-text" id="editorProgressText">Esperando...</div>
+            </div>
 
             <div class="editor-response-tools">
               <div class="form-card" style="margin:0">
@@ -1488,6 +1626,10 @@
                 <div class="field">
                   <label for="editorAppendResponseSelect">Respuesta destino</label>
                   <select id="editorAppendResponseSelect"></select>
+                </div>
+                <div class="field">
+                  <label for="editorAppendMediaGroupSelect">Agregar al botón</label>
+                  <select id="editorAppendMediaGroupSelect"></select>
                 </div>
                 <div class="editor-inline">
                   <button class="btn primary" type="button" id="editorAppendToExistingBtn">➕ Agregar archivos</button>
@@ -1513,6 +1655,10 @@
                   <div class="field">
                     <label for="editorNewCategory">Categoría</label>
                     <input id="editorNewCategory" list="categoryDatalist" placeholder="Ej: Productos" />
+                  </div>
+                  <div class="field">
+                    <label for="editorNewMediaGroupSelect">Guardar archivos en botón</label>
+                    <select id="editorNewMediaGroupSelect"></select>
                   </div>
                   <div class="field">
                     <label for="editorNewTags">Etiquetas separadas por coma</label>
@@ -1673,6 +1819,10 @@
           <label for="photoModalResponseSelect">Agregar este archivo a respuesta existente</label>
           <select id="photoModalResponseSelect"></select>
         </div>
+        <div class="field" style="margin:0">
+          <label for="photoModalMediaGroupSelect">Agregar al botón</label>
+          <select id="photoModalMediaGroupSelect"></select>
+        </div>
         <button class="btn green" type="button" id="photoModalAppendBtn">➕ Agregar este archivo</button>
       </div>
       <div class="photo-modal-actions">
@@ -1710,6 +1860,12 @@
 
     const DEFAULT_SECTIONS = ['Respuestas para clientes', 'Publicaciones de Facebook', 'Otro / personalizado'];
     const DEFAULT_CATEGORIES = ['General', 'Productos', 'Envíos', 'Ventas', 'Garantía', 'Promociones', 'Marketplace'];
+    const MEDIA_GROUP_DEFAULT = 'original';
+    const MEDIA_GROUPS = [
+      { key:'original', label:'Fotos Originales', icon:'📷' },
+      { key:'watermark', label:'Fotos con Marca de agua', icon:'💧' },
+      { key:'price', label:'Fotos con Precio/Marca', icon:'🏷️' }
+    ];
 
     const defaultResponses = [
       {
@@ -1754,6 +1910,8 @@
     let pendingUploadTimer = null;
     let formImages = [];
     let photoEditorImages = [];
+    let selectedMediaGroup = MEDIA_GROUP_DEFAULT;
+    let editorMode = 'price';
     let activePhotoModalId = null;
     let mediaDbPromise = null;
     const mediaObjectUrlCache = new Map();
@@ -1845,9 +2003,12 @@
       $('editorCameraInput').addEventListener('change', handlePhotoEditorInput);
       $('editorVideoInput')?.addEventListener('change', handlePhotoEditorInput);
       $('editorPasteBtn').addEventListener('click', readPhotoEditorClipboard);
+      document.querySelectorAll('[data-editor-mode]').forEach(btn => btn.addEventListener('click', () => setEditorMode(btn.dataset.editorMode)));
       $('editorPriceOpacity').addEventListener('input', updateEditorOpacityLabel);
+      $('editorWatermarkOpacity')?.addEventListener('input', updateEditorWatermarkOpacityLabel);
       $('editorNoBgCheckbox').addEventListener('change', updateEditorNoBgState);
       $('editorApplyPriceBtn').addEventListener('click', applyPriceToEditorImages);
+      $('editorApplyWatermarkBtn')?.addEventListener('click', applyWatermarkToEditorImages);
       $('editorResetEditsBtn').addEventListener('click', resetPhotoEditorEdits);
       $('editorClearBtn').addEventListener('click', clearPhotoEditor);
       $('editorDownloadZipBtn').addEventListener('click', downloadPhotoEditorZip);
@@ -1869,7 +2030,9 @@
       setupPhotoEditorPaste();
       setupFormPaste();
       updateEditorOpacityLabel();
+      updateEditorWatermarkOpacityLabel();
       updateEditorNoBgState();
+      setEditorMode(editorMode);
     }
 
     function openMenu(){
@@ -1910,7 +2073,8 @@
         id: item.id || crypto.randomUUID(),
         name: item.name || (video ? `video-${index + 1}.mp4` : `foto-${index + 1}.jpg`),
         type: item.type || (video ? 'video/mp4' : 'image/jpeg'),
-        size: Number(item.size || 0)
+        size: Number(item.size || 0),
+        mediaGroup: normalizeMediaGroup(item.mediaGroup)
       };
       if(item.url) base.url = item.url;
       if(item.downloadUrl) base.downloadUrl = item.downloadUrl;
@@ -2134,6 +2298,77 @@
       return text || fallback;
     }
 
+    function normalizeMediaGroup(value){
+      const raw = String(value || '').trim();
+      const plain = raw.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+      if(plain === 'watermark' || plain.includes('marca de agua')) return 'watermark';
+      if(plain === 'price' || plain.includes('precio')) return 'price';
+      if(plain === 'original' || plain.includes('original')) return 'original';
+      if(MEDIA_GROUPS.some(g => g.key === raw)) return raw;
+      return MEDIA_GROUP_DEFAULT;
+    }
+
+    function mediaGroupMeta(value){
+      const key = normalizeMediaGroup(value);
+      return MEDIA_GROUPS.find(g => g.key === key) || MEDIA_GROUPS[0];
+    }
+
+    function mediaGroupLabel(value){
+      const meta = mediaGroupMeta(value);
+      return `${meta.icon} ${meta.label}`;
+    }
+
+    function applyMediaGroupToItem(item, group){
+      return {...item, mediaGroup: normalizeMediaGroup(group)};
+    }
+
+    function fillMediaGroupSelect(id, selected = MEDIA_GROUP_DEFAULT){
+      const select = $(id);
+      if(!select) return;
+      const current = normalizeMediaGroup(selected || select.value || MEDIA_GROUP_DEFAULT);
+      select.innerHTML = MEDIA_GROUPS.map(g => `<option value="${g.key}">${g.icon} ${g.label}</option>`).join('');
+      select.value = current;
+    }
+
+    function fillAllMediaGroupSelects(){
+      fillMediaGroupSelect('formMediaGroupSelect', $('formMediaGroupSelect')?.value || 'original');
+      fillMediaGroupSelect('editorAppendMediaGroupSelect', $('editorAppendMediaGroupSelect')?.value || (editorMode === 'watermark' ? 'watermark' : 'price'));
+      fillMediaGroupSelect('editorNewMediaGroupSelect', $('editorNewMediaGroupSelect')?.value || (editorMode === 'watermark' ? 'watermark' : 'price'));
+      fillMediaGroupSelect('photoModalMediaGroupSelect', $('photoModalMediaGroupSelect')?.value || (editorMode === 'watermark' ? 'watermark' : 'price'));
+    }
+
+    function currentFormMediaGroup(){
+      return normalizeMediaGroup($('formMediaGroupSelect')?.value || MEDIA_GROUP_DEFAULT);
+    }
+
+    function currentEditorMediaGroup(selectId = 'editorAppendMediaGroupSelect'){
+      return normalizeMediaGroup($(selectId)?.value || (editorMode === 'watermark' ? 'watermark' : 'price'));
+    }
+
+    function getMediaByGroup(r, group = selectedMediaGroup){
+      const key = normalizeMediaGroup(group);
+      return getMedia(r).filter(item => normalizeMediaGroup(item.mediaGroup) === key);
+    }
+
+    function getSelectedResponseMedia(r = selectedResponse){
+      if(!r) return [];
+      return getMediaByGroup(r, selectedMediaGroup);
+    }
+
+    function mediaCountsByGroup(r){
+      const counts = Object.fromEntries(MEDIA_GROUPS.map(g => [g.key, 0]));
+      getMedia(r).forEach(item => { counts[normalizeMediaGroup(item.mediaGroup)] = (counts[normalizeMediaGroup(item.mediaGroup)] || 0) + 1; });
+      return counts;
+    }
+
+    function chooseInitialMediaGroupForResponse(r){
+      const counts = mediaCountsByGroup(r);
+      if(counts[normalizeMediaGroup(selectedMediaGroup)] > 0) return normalizeMediaGroup(selectedMediaGroup);
+      const first = MEDIA_GROUPS.find(g => counts[g.key] > 0);
+      return first ? first.key : MEDIA_GROUP_DEFAULT;
+    }
+
+
     function uniqueLabels(list){
       const map = new Map();
       (Array.isArray(list) ? list : []).forEach(item => {
@@ -2190,6 +2425,7 @@
       renderResponses();
       renderAdminList();
       populateResponseSelects();
+      fillAllMediaGroupSelects();
       renderPhotoEditorGallery();
     }
 
@@ -2376,15 +2612,17 @@
 
     function selectResponse(r, notify = true){
       selectedResponse = r;
+      selectedMediaGroup = chooseInitialMediaGroupForResponse(r);
       selectedTitle.textContent = r.title || 'Respuesta seleccionada';
       selectedHint.innerHTML = `Atajo: <strong>/${escapeHtml(normalizeShortcut(r.shortcut))}</strong> · Sección: <strong>${escapeHtml(getResponseSection(r))}</strong> · Categoría: <strong>${escapeHtml(getResponseCategory(r))}</strong>`;
       selectedMessage.textContent = r.message || (getImages(r).length ? 'Esta respuesta no tiene texto. Solo contiene fotos/videos adjuntos.' : '');
+      renderSelectedMediaGroupButtons(r);
       renderSelectedImages(r);
       selectedTagsPanel.innerHTML = renderTagsHtml(r);
       selectedTagsPanel.classList.remove('show');
       selectedTagsBtn.textContent = '🏷️ Ver etiquetas';
       selectedTagsBtn.disabled = false;
-      $('downloadSelectedMediaBtn') && ($('downloadSelectedMediaBtn').disabled = !getMedia(r).length);
+      $('downloadSelectedMediaBtn') && ($('downloadSelectedMediaBtn').disabled = !getSelectedResponseMedia(r).length);
       $('editSelectedBtn').disabled = false;
       $('deleteSelectedBtn').disabled = false;
       if(notify) toast('Respuesta seleccionada');
@@ -2473,8 +2711,8 @@
 
     async function downloadSelectedMedia(){
       if(!selectedResponse) return toast('Selecciona una respuesta primero');
-      const media = getMedia(selectedResponse);
-      if(!media.length) return toast('Esta respuesta no tiene archivos adjuntos');
+      const media = getSelectedResponseMedia(selectedResponse);
+      if(!media.length) return toast('Este botón no tiene archivos adjuntos');
       let ok = 0;
       try{
         for(let i = 0; i < media.length; i++){
@@ -2508,8 +2746,8 @@
 
     async function shareResponse(r){
       const text = String(r.message || '').trim();
-      const media = getMedia(r);
-      if(!text && !media.length) return toast('Esta respuesta no tiene texto ni fotos/videos para enviar');
+      const media = selectedResponse && selectedResponse.id === r.id ? getSelectedResponseMedia(r) : getMedia(r);
+      if(!text && !media.length) return toast('Esta respuesta no tiene texto ni fotos/videos para enviar en el botón seleccionado');
 
       // WhatsApp/Android puede repetir el texto cuando se comparte texto + varias fotos juntas.
       // Flujo limpio: copiar mensaje y compartir SOLO fotos/videos.
@@ -2659,17 +2897,55 @@
     function renderCardImagesHtml(r){
       const media = getMedia(r);
       if(!media.length) return '';
+      const counts = mediaCountsByGroup(r);
+      const groupSummary = MEDIA_GROUPS
+        .filter(g => counts[g.key])
+        .map(g => `<span class="media-group-badge">${g.icon} ${escapeHtml(g.label)}: ${counts[g.key]}</span>`)
+        .join('');
       const thumbs = media.slice(0, 4).map((item, index) => `
         <div class="image-mini" title="${escapeHtml(imageName(item, index))}">
           ${renderMediaPreviewHtml(item, index, 'Adjunto')}
         </div>
       `).join('');
       const extra = media.length > 4 ? `<span class="image-count-pill">+${media.length - 4} más</span>` : '';
-      return `<div class="image-count-pill">📎 ${mediaCountText(media)}</div><div class="image-mini-strip">${thumbs}${extra}</div>`;
+      return `<div class="image-count-pill">📎 ${mediaCountText(media)}</div><div class="media-group-mini">${groupSummary}</div><div class="image-mini-strip">${thumbs}${extra}</div>`;
+    }
+
+    function renderSelectedMediaGroupButtons(r){
+      const box = $('selectedMediaGroupButtons');
+      const hint = $('selectedMediaGroupHint');
+      if(!box) return;
+      box.innerHTML = '';
+      const media = getMedia(r);
+      if(!media.length){
+        if(hint) hint.textContent = '';
+        return;
+      }
+      const counts = mediaCountsByGroup(r);
+      MEDIA_GROUPS.forEach(g => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'media-group-btn' + (normalizeMediaGroup(selectedMediaGroup) === g.key ? ' active' : '');
+        btn.innerHTML = `<span>${g.icon} ${escapeHtml(g.label)}</span><small>${counts[g.key] || 0}</small>`;
+        btn.addEventListener('click', () => {
+          selectedMediaGroup = g.key;
+          renderSelectedMediaGroupButtons(r);
+          renderSelectedImages(r);
+          if($('downloadSelectedMediaBtn')) $('downloadSelectedMediaBtn').disabled = !getSelectedResponseMedia(r).length;
+        });
+        box.appendChild(btn);
+      });
+      if(hint){
+        const meta = mediaGroupMeta(selectedMediaGroup);
+        const count = counts[meta.key] || 0;
+        hint.textContent = count
+          ? `Mostrando ${count} archivo(s) de: ${meta.label}. Al enviar o descargar, se usará solo este botón.`
+          : `Este botón no tiene archivos todavía: ${meta.label}.`;
+      }
     }
 
     function renderSelectedImages(r){
-      const media = getMedia(r);
+      const media = getSelectedResponseMedia(r);
       selectedImages.innerHTML = '';
       if(!media.length) return;
       media.forEach((item, index) => {
@@ -2699,6 +2975,7 @@
         box.title = imageName(item, index);
         box.innerHTML = `
           ${renderMediaPreviewHtml(item, index, 'Adjunto')}
+          <span class="media-group-badge on-dark" style="position:absolute;left:6px;bottom:6px;z-index:2">${escapeHtml(mediaGroupLabel(item.mediaGroup))}</span>
           <button class="remove-image-btn" type="button" title="Quitar archivo">×</button>
         `;
         box.querySelector('button').addEventListener('click', () => {
@@ -2818,6 +3095,7 @@
             console.warn('Archivo no reconocido como foto/video', file);
             continue;
           }
+          media.mediaGroup = currentFormMediaGroup();
           formImages.push(media);
           added.push(media);
           renderFormImages();
@@ -2981,6 +3259,7 @@
             ${renderEditorMediaPreviewHtml(item, index)}
             <div class="editor-badges">
               <span class="editor-badge">${video ? 'Video intacto' : (item.resultDataUrl ? 'Editada' : 'Original')}</span>
+              <span class="editor-badge">${escapeHtml(mediaGroupLabel(item.mediaGroup))}</span>
               <span class="editor-badge">#${index + 1}</span>
             </div>
           </div>
@@ -3041,7 +3320,8 @@
             blobKey: item.blobKey || null,
             localOnly: !!item.blobKey,
             resultDataUrl: null,
-            processedName: null
+            processedName: null,
+            mediaGroup: editorMode === 'watermark' ? 'watermark' : MEDIA_GROUP_DEFAULT
           };
           photoEditorImages.push(editorItem);
           media.push(item);
@@ -3289,6 +3569,200 @@
       if(input && out) out.textContent = `${Math.round(Number(input.value || 0.95) * 100)}%`;
     }
 
+
+    function updateEditorWatermarkOpacityLabel(){
+      const input = $('editorWatermarkOpacity');
+      const out = $('editorWatermarkOpacityValue');
+      const pct = $('editorWatermarkOpacityPercent');
+      if(input && out) out.textContent = Number(input.value || 0.40).toFixed(2);
+      if(input && pct) pct.textContent = `${Math.round(Number(input.value || 0.40) * 100)}%`;
+    }
+
+    function setEditorMode(mode){
+      editorMode = mode === 'watermark' ? 'watermark' : 'price';
+      document.querySelectorAll('[data-editor-mode]').forEach(btn => btn.classList.toggle('active', btn.dataset.editorMode === editorMode));
+      $('editorPricePanel')?.classList.toggle('hidden', editorMode !== 'price');
+      $('editorWatermarkPanel')?.classList.toggle('hidden', editorMode !== 'watermark');
+      if($('editorApplyPriceBtn')) $('editorApplyPriceBtn').style.display = editorMode === 'price' ? 'inline-flex' : 'none';
+      if($('editorApplyWatermarkBtn')) $('editorApplyWatermarkBtn').style.display = editorMode === 'watermark' ? 'inline-flex' : 'none';
+      const targetGroup = editorMode === 'watermark' ? 'watermark' : 'price';
+      fillMediaGroupSelect('editorAppendMediaGroupSelect', targetGroup);
+      fillMediaGroupSelect('editorNewMediaGroupSelect', targetGroup);
+      fillMediaGroupSelect('photoModalMediaGroupSelect', targetGroup);
+      setPhotoEditorStatus(editorMode === 'watermark'
+        ? 'Modo marca de agua activo. Sube fotos y presiona “Aplicar marca de agua”.'
+        : 'Modo precio activo. Sube fotos y presiona “Aplicar precio a fotos”.');
+    }
+
+    function setEditorProgress(show, title = 'Preparando', percent = 0, text = ''){
+      const panel = $('editorProgressPanel');
+      if(!panel) return;
+      panel.classList.toggle('show', !!show);
+      const p = Math.max(0, Math.min(100, Math.round(Number(percent || 0))));
+      $('editorProgressTitle').textContent = title;
+      $('editorProgressPercent').textContent = p + '%';
+      $('editorProgressFill').style.width = p + '%';
+      $('editorProgressText').textContent = text || '';
+    }
+
+    function getEditorWatermarkSettings(){
+      return {
+        num1: String($('editorWatermarkNum1')?.value || '9631-0102').trim() || '9631-0102',
+        num2: String($('editorWatermarkNum2')?.value || '8790-2458').trim() || '8790-2458',
+        maxSide: clamp(parseInt($('editorWatermarkMaxSide')?.value || '2000', 10), 300, 8000),
+        jpgQuality: clamp(parseInt($('editorWatermarkQuality')?.value || '92', 10), 40, 100),
+        opacity: clamp(parseFloat($('editorWatermarkOpacity')?.value || '0.40'), 0.05, 0.70),
+        mode: $('editorWatermarkMode')?.value === 'clean' ? 'clean' : 'strong'
+      };
+    }
+
+    function drawEditorWatermarkPattern(ctx, w2, h2, settings){
+      const numeros = [settings.num1, settings.num2].filter(Boolean);
+      if(!numeros.length) return;
+      if(numeros.length === 1) numeros.push(numeros[0]);
+      const maxLineLen = Math.max(...numeros.map(n => n.length));
+      const shortSide = Math.min(w2, h2);
+      const aspect = w2 / h2;
+      let psByShort, psByWidth;
+      if(settings.mode === 'strong'){
+        psByShort = Math.floor(shortSide * 0.075);
+        psByWidth = Math.floor((w2 * 0.34) / (0.60 * maxLineLen));
+      }else{
+        psByShort = Math.floor(shortSide * 0.085);
+        psByWidth = Math.floor((w2 * 0.40) / (0.60 * maxLineLen));
+      }
+      let ps = Math.min(psByShort, psByWidth);
+      ps = clamp(ps, 18, 160);
+      ctx.save();
+      ctx.font = `${ps}px Arial, sans-serif`;
+      ctx.fillStyle = `rgba(40,150,255,${settings.opacity})`;
+      ctx.textBaseline = 'top';
+      const measureTextW = (txt) => Math.ceil(ctx.measureText(txt).width);
+      const approxTextW = Math.max(measureTextW(numeros[0]), measureTextW(numeros[1]), Math.ceil(0.60 * ps * maxLineLen));
+      let colStep, rowStep;
+      if(settings.mode === 'strong'){
+        colStep = Math.round(Math.max(approxTextW * 1.45, w2 / 3.0));
+        rowStep = Math.round(Math.max(ps * 1.85, h2 / 5.2));
+      }else{
+        colStep = Math.round(Math.max(approxTextW * 1.60, w2 / 2.5));
+        rowStep = Math.round(Math.max(ps * 2.15, h2 / 4.4));
+      }
+      if(colStep < approxTextW + 20) colStep = approxTextW + 20;
+      if(rowStep < ps + 18) rowStep = ps + 18;
+      let desiredCols = 3, desiredRows = 4;
+      if(aspect >= 1.45){ desiredCols = 4; desiredRows = 4; }
+      else if(aspect <= 0.75){ desiredCols = 3; desiredRows = 5; }
+      if(w2 >= 1500) desiredCols += 1;
+      if(h2 >= 1500) desiredRows += 1;
+      if(settings.mode === 'strong'){
+        if(w2 >= 1100) desiredCols += 1;
+        if(h2 >= 1100) desiredRows += 1;
+      }
+      const maxColStepByCount = Math.floor(w2 / Math.max(1, (desiredCols - 0.15)));
+      const maxRowStepByCount = Math.floor(h2 / Math.max(1, (desiredRows - 0.10)));
+      if(maxColStepByCount > 0) colStep = Math.min(colStep, maxColStepByCount);
+      if(maxRowStepByCount > 0) rowStep = Math.min(rowStep, maxRowStepByCount);
+      if(colStep < approxTextW + 16) colStep = approxTextW + 16;
+      if(rowStep < ps + 14) rowStep = ps + 14;
+      const angleDeg = settings.mode === 'strong' ? -18 : -14;
+      const angle = angleDeg * Math.PI / 180;
+      ctx.translate(w2 / 2, h2 / 2);
+      ctx.rotate(angle);
+      const diag = Math.ceil(Math.sqrt(w2*w2 + h2*h2));
+      const drawW = diag + approxTextW * 2;
+      const drawH = diag + ps * 3;
+      const xMin = -Math.floor(drawW/2), xMax = Math.floor(drawW/2);
+      const yMin = -Math.floor(drawH/2), yMax = Math.floor(drawH/2);
+      let row = 0;
+      for(let y = yMin - Math.round(ps * 0.15); y <= yMax + Math.round(ps * 1.10); y += rowStep){
+        const offset = (row % 2 === 1) ? Math.round(colStep / 2) : 0;
+        let col = 0;
+        for(let x = xMin - approxTextW + offset; x <= xMax + approxTextW; x += colStep){
+          const txt = numeros[(row + col) % numeros.length];
+          ctx.fillText(txt, x, y);
+          col++;
+        }
+        row++;
+      }
+      ctx.restore();
+    }
+
+    async function processEditorWatermarkItem(item, settings){
+      if(isVideoMedia(item)) return {...item, resultDataUrl:null, processedName:null};
+      const img = await loadImageElement(item.sourceDataUrl);
+      const w = img.naturalWidth || img.width;
+      const h = img.naturalHeight || img.height;
+      let ratio = Math.min(settings.maxSide / w, settings.maxSide / h);
+      if(ratio > 1) ratio = 1;
+      const w2 = Math.max(1, Math.round(w * ratio));
+      const h2 = Math.max(1, Math.round(h * ratio));
+      const canvas = document.createElement('canvas');
+      canvas.width = w2;
+      canvas.height = h2;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w2, h2);
+      drawEditorWatermarkPattern(ctx, w2, h2, settings);
+      let mime = item.type && item.type.startsWith('image/') ? item.type : 'image/jpeg';
+      if(mime === 'image/heic' || mime === 'image/heif' || mime === 'image/gif' || mime === 'image/bmp') mime = 'image/jpeg';
+      let blob;
+      try{ blob = await canvasToBlob(canvas, mime, settings.jpgQuality / 100); }
+      catch{ mime = 'image/jpeg'; blob = await canvasToBlob(canvas, mime, settings.jpgQuality / 100); }
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('No se pudo leer imagen con marca de agua'));
+        reader.readAsDataURL(blob);
+      });
+      const parts = String(item.name || 'foto').split('.');
+      const ext = parts.length > 1 ? parts.pop() : (mime.includes('png') ? 'png' : 'jpg');
+      const base = parts.join('.') || 'foto';
+      return {
+        ...item,
+        resultDataUrl: dataUrl,
+        processedName: `${base}_marca_agua.${ext}`,
+        size: blob.size || item.size || 0,
+        type: mime,
+        mediaGroup: 'watermark'
+      };
+    }
+
+    async function applyWatermarkToEditorImages(){
+      if(!photoEditorImages.length) return toast('Primero agrega fotos o videos al editor');
+      const photos = photoEditorImages.filter(isImageMedia);
+      if(!photos.length) return toast('No hay fotos para aplicar marca de agua. Los videos se conservan intactos.');
+      const settings = getEditorWatermarkSettings();
+      setPhotoEditorStatus('Procesando marca de agua. Los videos se mantendrán intactos.');
+      setEditorProgress(true, 'Aplicando marca de agua', 0, `0 de ${photos.length} fotos`);
+      const next = [];
+      let processed = 0;
+      for(let i = 0; i < photoEditorImages.length; i++){
+        const item = photoEditorImages[i];
+        if(isVideoMedia(item)){
+          next.push({...item});
+          continue;
+        }
+        try{
+          next.push(await processEditorWatermarkItem(item, settings));
+          processed++;
+          setPhotoEditorStatus(`Procesando marca ${processed} de ${photos.length}...`);
+          setEditorProgress(true, 'Aplicando marca de agua', (processed / photos.length) * 100, `${processed} de ${photos.length} fotos`);
+        }catch(err){
+          console.warn(err);
+          next.push({...item});
+        }
+      }
+      photoEditorImages = next;
+      renderPhotoEditorGallery();
+      fillMediaGroupSelect('editorAppendMediaGroupSelect', 'watermark');
+      fillMediaGroupSelect('editorNewMediaGroupSelect', 'watermark');
+      fillMediaGroupSelect('photoModalMediaGroupSelect', 'watermark');
+      setEditorProgress(true, 'Marca de agua lista', 100, `${processed} foto${processed === 1 ? '' : 's'} convertida${processed === 1 ? '' : 's'}.`);
+      setTimeout(() => setEditorProgress(false), 1200);
+      const videos = photoEditorImages.filter(isVideoMedia).length;
+      setPhotoEditorStatus(`Marca de agua aplicada a ${processed} foto${processed === 1 ? '' : 's'}${videos ? `. ${videos} video${videos === 1 ? '' : 's'} se mantuvieron intactos.` : '.'}`);
+      toast('Marca de agua aplicada ✅');
+    }
+
     function getEditorPriceSettings(){
       return {
         text: String($('editorPriceText').value || '').trim(),
@@ -3419,7 +3893,9 @@
         ...item,
         resultDataUrl: dataUrl,
         processedName: `${base}_precio.${ext}`,
-        size: blob.size || item.size || 0
+        size: blob.size || item.size || 0,
+        type: mime,
+        mediaGroup: 'price'
       };
     }
 
@@ -3432,6 +3908,7 @@
         return toast('Escribe el texto del precio para aplicar a las fotos');
       }
       setPhotoEditorStatus('Procesando fotos del editor. Los videos se mantendrán intactos.');
+      setEditorProgress(true, 'Aplicando precio', 0, `0 de ${photos.length} fotos`);
       const next = [];
       let processed = 0;
       for(let i = 0; i < photoEditorImages.length; i++){
@@ -3444,12 +3921,18 @@
           next.push(await processEditorItem(item, settings));
           processed++;
           setPhotoEditorStatus(`Procesando foto ${processed} de ${photos.length}...`);
+          setEditorProgress(true, 'Aplicando precio', (processed / photos.length) * 100, `${processed} de ${photos.length} fotos`);
         }catch(err){
           next.push({...item});
         }
       }
       photoEditorImages = next;
       renderPhotoEditorGallery();
+      fillMediaGroupSelect('editorAppendMediaGroupSelect', 'price');
+      fillMediaGroupSelect('editorNewMediaGroupSelect', 'price');
+      fillMediaGroupSelect('photoModalMediaGroupSelect', 'price');
+      setEditorProgress(true, 'Precio listo', 100, `${processed} foto${processed === 1 ? '' : 's'} convertida${processed === 1 ? '' : 's'}.`);
+      setTimeout(() => setEditorProgress(false), 1200);
       const videos = photoEditorImages.filter(isVideoMedia).length;
       setPhotoEditorStatus(`Precio aplicado a ${processed} foto${processed === 1 ? '' : 's'}${videos ? `. ${videos} video${videos === 1 ? '' : 's'} se mantuvieron intactos.` : '.'}`);
       toast('Precio aplicado a las fotos ✅');
@@ -3534,13 +4017,14 @@
       }
     }
 
-    function editorImageToResponseImage(item, index = 0){
+    function editorImageToResponseImage(item, index = 0, groupOverride = null){
       const video = isVideoMedia(item);
       const out = {
         id: crypto.randomUUID(),
         name: editorCurrentName(item, index),
         type: item.type || (video ? 'video/mp4' : 'image/jpeg'),
-        size: item.size || 0
+        size: item.size || 0,
+        mediaGroup: normalizeMediaGroup(groupOverride || item.mediaGroup || (editorMode === 'watermark' ? 'watermark' : 'price'))
       };
       if(item.url) out.url = item.url;
       if(item.downloadUrl) out.downloadUrl = item.downloadUrl;
@@ -3566,7 +4050,7 @@
       const index = responses.findIndex(r => r.id === responseId);
       if(index < 0) return toast('Selecciona una respuesta destino válida');
       const current = getImages(responses[index]);
-      responses[index].images = [...current, editorImageToResponseImage(item)];
+      responses[index].images = [...current, editorImageToResponseImage(item, 0, currentEditorMediaGroup(selectId === 'photoModalResponseSelect' ? 'photoModalMediaGroupSelect' : 'editorAppendMediaGroupSelect'))];
       saveToStorage();
       renderAll();
       if(selectedResponse && selectedResponse.id === responseId) selectResponse(responses[index], false);
@@ -3580,6 +4064,7 @@
       photoEditorImages = [{...item, id: crypto.randomUUID()}];
       renderPhotoEditorGallery();
       closePhotoEditorModal();
+      fillMediaGroupSelect('editorNewMediaGroupSelect', normalizeMediaGroup(item.mediaGroup || (editorMode === 'watermark' ? 'watermark' : 'price')));
       $('editorNewTitle').focus();
       $('editorNewTitle').scrollIntoView({behavior:'smooth', block:'center'});
       setPhotoEditorStatus('Dejé solo este archivo en el editor. Ahora escribe título/atajo y crea la nueva respuesta.');
@@ -3589,11 +4074,23 @@
 
     async function editorItemToFile(item, index = 0){
       if(!item) return null;
+      const current = editorCurrentDataUrl(item);
+
+      // Si la foto ya fue convertida con precio o marca de agua, se descarga ESA versión,
+      // aunque el original siga guardado con blobKey en IndexedDB.
+      if(item.resultDataUrl){
+        if(String(current || '').startsWith('blob:')){
+          const res = await fetch(current);
+          const blob = await res.blob();
+          return new File([blob], editorCurrentName(item, index), {type:item.type || blob.type || 'application/octet-stream'});
+        }
+        return dataUrlToBlobFile(current, editorCurrentName(item, index), item.type || 'image/jpeg');
+      }
+
       if(item.blobKey){
         const blob = await getMediaBlob(item.blobKey);
         if(blob) return new File([blob], editorCurrentName(item, index), {type:item.type || blob.type || 'video/mp4'});
       }
-      const current = editorCurrentDataUrl(item);
       if(current.startsWith('blob:')){
         const res = await fetch(current);
         const blob = await res.blob();
@@ -3621,11 +4118,19 @@
         toast('JSZip no cargó; haré la descarga individual');
         return downloadPhotoEditorAllIndividual();
       }
+      setEditorProgress(true, 'Preparando ZIP', 2, `${files.length} archivo${files.length === 1 ? '' : 's'} listo${files.length === 1 ? '' : 's'} para comprimir.`);
       const zip = new JSZip();
-      files.forEach(file => zip.file(file.name, file));
-      const blob = await zip.generateAsync({type:'blob', compression:'DEFLATE', compressionOptions:{level:6}});
+      files.forEach((file, i) => {
+        zip.file(file.name, file);
+        setEditorProgress(true, 'Preparando ZIP', Math.min(20, ((i + 1) / files.length) * 20), `${i + 1} de ${files.length}: ${file.name}`);
+      });
+      const blob = await zip.generateAsync({type:'blob', compression:'DEFLATE', compressionOptions:{level:6}}, meta => {
+        setEditorProgress(true, 'Generando ZIP', 20 + (Number(meta.percent || 0) * .8), `${Math.round(meta.percent || 0)}% comprimido`);
+      });
       const stamp = new Date().toISOString().slice(0,19).replace(/[T:]/g,'-');
       triggerBlobDownload(blob, `archivos_respuestas_${stamp}.zip`);
+      setEditorProgress(true, 'ZIP descargado', 100, `ZIP generado con ${files.length} archivo${files.length === 1 ? '' : 's'}.`);
+      setTimeout(() => setEditorProgress(false), 1500);
       setPhotoEditorStatus(`ZIP generado con ${files.length} archivo${files.length === 1 ? '' : 's'}.`);
     }
 
@@ -3642,9 +4147,15 @@
     async function downloadPhotoEditorAllIndividual(){
       const files = await getPhotoEditorFiles();
       if(!files.length) return toast('No hay archivos para descargar');
-      files.forEach((file, index) => {
-        setTimeout(() => triggerBlobDownload(file, file.name), index * 350);
-      });
+      setEditorProgress(true, 'Descarga 1 por 1', 0, `Preparando ${files.length} archivo${files.length === 1 ? '' : 's'}...`);
+      for(let index = 0; index < files.length; index++){
+        const file = files[index];
+        setEditorProgress(true, 'Descarga 1 por 1', ((index + 1) / files.length) * 100, `${index + 1} de ${files.length}: ${file.name}`);
+        triggerBlobDownload(file, file.name);
+        await new Promise(r => setTimeout(r, 380));
+      }
+      setEditorProgress(true, 'Descarga enviada', 100, `Se lanzaron ${files.length} descarga${files.length === 1 ? '' : 's'}.`);
+      setTimeout(() => setEditorProgress(false), 1500);
       setPhotoEditorStatus(`Se lanzó la descarga individual 1 por 1 para ${files.length} archivo${files.length === 1 ? '' : 's'}.`);
       toast('Descarga individual iniciada ✅');
     }
@@ -3680,7 +4191,8 @@
         blobKey: item.blobKey || null,
         localOnly: !!item.blobKey,
         resultDataUrl: null,
-        processedName: null
+        processedName: null,
+        mediaGroup: normalizeMediaGroup(item.mediaGroup)
       }));
       renderPhotoEditorGallery();
       setPhotoEditorStatus(`Se cargaron ${mediaCountText(media)} desde la respuesta "${r.title}".`);
@@ -3694,8 +4206,8 @@
       return false;
     }
 
-    function buildEditorImagesForResponse(){
-      return photoEditorImages.map((img, index) => editorImageToResponseImage(img, index));
+    function buildEditorImagesForResponse(groupOverride = null){
+      return photoEditorImages.map((img, index) => editorImageToResponseImage(img, index, groupOverride));
     }
 
     function appendEditedPhotosToExistingResponse(){
@@ -3704,7 +4216,8 @@
       const index = responses.findIndex(item => item.id === responseId);
       if(index < 0) return toast('Selecciona una respuesta destino válida');
       if(!photoEditorImages.length) return toast('No hay archivos en el editor');
-      const imgs = buildEditorImagesForResponse();
+      const group = currentEditorMediaGroup('editorAppendMediaGroupSelect');
+      const imgs = buildEditorImagesForResponse(group);
       const current = getImages(responses[index]);
       responses[index].images = [...current, ...imgs];
       saveToStorage();
@@ -3722,7 +4235,7 @@
       const category = cleanLabel($('editorNewCategory').value, 'General');
       const tags = $('editorNewTags').value.split(',').map(t => t.trim()).filter(Boolean);
       const message = $('editorNewMessage').value.trim();
-      const images = buildEditorImagesForResponse();
+      const images = buildEditorImagesForResponse(currentEditorMediaGroup('editorNewMediaGroupSelect'));
       if(!title || !shortcut) return toast('Escribe al menos título y atajo para la nueva respuesta');
       if(!message && !images.length) return toast('La nueva respuesta necesita texto o fotos/videos');
       const item = { id: crypto.randomUUID(), title, shortcut, section, category, tags, message, images };
@@ -5027,6 +5540,8 @@
       selectedHint.textContent = 'Selecciona una respuesta: las fotos/videos se comparten completos y el mensaje se copia al portapapeles para que tú lo pegues cuando quieras.';
       selectedMessage.textContent = 'Aquí aparecerá el mensaje completo.';
       if(selectedImages) selectedImages.innerHTML = '';
+      if($('selectedMediaGroupButtons')) $('selectedMediaGroupButtons').innerHTML = '';
+      if($('selectedMediaGroupHint')) $('selectedMediaGroupHint').textContent = '';
       if(selectedTagsPanel){
         selectedTagsPanel.innerHTML = '';
         selectedTagsPanel.classList.remove('show');
@@ -5049,7 +5564,7 @@
       $('categoryInput').value = getResponseCategory(r);
       $('tagsInput').value = Array.isArray(r.tags) ? r.tags.join(', ') : '';
       $('messageInput').value = r.message || '';
-      formImages = getImages(r).map(img => ({...img}));
+      formImages = getImages(r).map(img => applyMediaGroupToItem({...img}, img.mediaGroup));
       renderFormImages();
       $('formTitle').textContent = 'Editar respuesta rápida';
       $('deleteEditingBtn').style.display = 'inline-flex';
@@ -5095,6 +5610,7 @@ Esta acción se guarda localmente y luego puedes subir cambios a GitHub.`);
       if($('videoInput')) $('videoInput').value = '';
       if($('formCameraInput')) $('formCameraInput').value = '';
       if($('formPasteBox')) $('formPasteBox').innerHTML = '📋 Haz clic aquí y pega con Ctrl+V. En móvil: tocar aquí, mantener presionado y Pegar.';
+      fillMediaGroupSelect('formMediaGroupSelect', MEDIA_GROUP_DEFAULT);
       formImages = [];
       renderFormImages();
       $('formTitle').textContent = 'Agregar respuesta rápida';
