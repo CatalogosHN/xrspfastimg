@@ -2350,17 +2350,29 @@
         size: Number(item.size || 0),
         mediaGroup: normalizeMediaGroup(item.mediaGroup)
       };
+
+      // Si hay una edición nueva en dataURL, esa versión manda sobre cualquier enlace viejo de GitHub.
+      // Esto evita que una foto editada se vea localmente, pero al subir quede apuntando a la foto antigua.
+      const freshDataUrl = String(item.resultDataUrl || item.dataUrl || item.sourceDataUrl || '');
+      if(freshDataUrl.startsWith('data:')){
+        base.dataUrl = freshDataUrl;
+        base.localOnly = true;
+        base.needsUpload = true;
+        return base;
+      }
+
       if(item.url) base.url = item.url;
       if(item.downloadUrl) base.downloadUrl = item.downloadUrl;
       if(item.cloudPath) base.cloudPath = item.cloudPath;
       if(item.releaseAssetId) base.releaseAssetId = item.releaseAssetId;
       if(item.releaseAssetName) base.releaseAssetName = item.releaseAssetName;
+      if(item.needsUpload) base.needsUpload = true;
 
       // IMPORTANTE: fotos y videos con blobKey viven en IndexedDB.
       // localStorage solo guarda la llave, nunca el base64, así Chrome no se llena con 5-10 fotos.
       if(item.blobKey){
         base.blobKey = item.blobKey;
-        base.localOnly = !base.url && !base.downloadUrl && !base.cloudPath && !base.releaseAssetId;
+        base.localOnly = !!item.needsUpload || (!base.url && !base.downloadUrl && !base.cloudPath && !base.releaseAssetId);
         base.dataUrl = '';
         return base;
       }
@@ -2374,6 +2386,7 @@
       const base = mediaStorageCopy(item, index);
       delete base.blobKey;
       delete base.localOnly;
+      delete base.needsUpload;
 
       // En la nube NO guardamos base64.
       // Si una foto/video todavía no tiene url/cloudPath, uploadCloudResponses() debe subirlo primero
@@ -3402,6 +3415,23 @@
       try{
         const name = imageName(img, index);
         const mime = img.type || (isVideoMedia(img) ? 'video/mp4' : 'image/jpeg');
+        const dataUrl = String(img.resultDataUrl || img.dataUrl || img.sourceDataUrl || '');
+
+        // La edición nueva en dataURL tiene prioridad sobre blobKey/enlaces antiguos.
+        if(dataUrl.startsWith('data:')){
+          const parts = dataUrl.split(',');
+          if(parts.length >= 2){
+            const header = parts[0];
+            const mimeMatch = header.match(/data:([^;]+);base64/i);
+            const finalMime = mimeMatch ? mimeMatch[1] : mime;
+            const binary = atob(parts[1]);
+            const bytes = new Uint8Array(binary.length);
+            for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            if(onProgress) onProgress(100, 'Archivo preparado desde la edición local.');
+            return new File([bytes], name, { type: finalMime });
+          }
+        }
+
         if(img.blobKey){
           const blob = await getMediaBlob(img.blobKey);
           if(blob){
@@ -3409,14 +3439,13 @@
             return new File([blob], name, { type: mime || blob.type || 'application/octet-stream' });
           }
         }
-        const dataUrl = img.dataUrl || img.sourceDataUrl || img.resultDataUrl || '';
         if(dataUrl.startsWith('blob:')){
           const res = await fetch(dataUrl);
           const blob = await res.blob();
           if(onProgress) onProgress(100, 'Archivo preparado desde memoria local.');
           return new File([blob], name, { type: mime || blob.type || 'application/octet-stream' });
         }
-        const remoteUrl = img.url || img.downloadUrl || (img.cloudPath ? getCloudPublicUrl(img.cloudPath) : '');
+        const remoteUrl = img.url || img.downloadUrl || (img.cloudPath ? getCloudPublicUrl(img.cloudPath) : '') || (/^https?:\/\//i.test(dataUrl) ? dataUrl : '');
         if(remoteUrl){
           if(onProgress) onProgress(2, `Descargando y guardando en caché: ${name}`);
           const blob = await downloadBlobWithProgress(remoteUrl, (pct, msg) => {
@@ -3439,16 +3468,7 @@
           }
           return new File([blob], name, { type: mime || blob.type || 'application/octet-stream' });
         }
-        const parts = dataUrl.split(',');
-        if(parts.length < 2) return null;
-        const header = parts[0];
-        const mimeMatch = header.match(/data:([^;]+);base64/i);
-        const finalMime = mimeMatch ? mimeMatch[1] : mime;
-        const binary = atob(parts[1]);
-        const bytes = new Uint8Array(binary.length);
-        for(let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-        if(onProgress) onProgress(100, 'Archivo preparado desde JSON.');
-        return new File([bytes], name, { type: finalMime });
+        return null;
       }catch(err){
         console.warn('No se pudo preparar archivo para compartir', err);
         return null;
@@ -4588,6 +4608,7 @@
 
     function editorImageToResponseImage(item, index = 0, groupOverride = null){
       const video = isVideoMedia(item);
+      const current = editorCurrentDataUrl(item);
       const out = {
         id: crypto.randomUUID(),
         name: editorCurrentName(item, index),
@@ -4595,18 +4616,51 @@
         size: item.size || 0,
         mediaGroup: normalizeMediaGroup(groupOverride || item.mediaGroup || (editorBothEnabled() ? 'price' : (editorMode === 'watermark' ? 'watermark' : 'price')))
       };
+
+      // Si la foto fue editada, NO conservamos el cloudPath viejo.
+      // Se marca para subir de nuevo y así GitHub recibe la versión con precio/marca.
+      const editedData = String(item.resultDataUrl || '');
+      if(!video && editedData.startsWith('data:')){
+        out.dataUrl = editedData;
+        out.localOnly = true;
+        out.needsUpload = true;
+        return out;
+      }
+
+      // Si es un archivo local sin subir todavía, conserva su blobKey para que Subir cambios lo suba.
+      if(item.blobKey){
+        out.blobKey = item.blobKey;
+        out.dataUrl = '';
+        if(video && (item.url || item.downloadUrl || item.cloudPath || item.releaseAssetId)){
+          if(item.url) out.url = item.url;
+          if(item.downloadUrl) out.downloadUrl = item.downloadUrl;
+          if(item.cloudPath) out.cloudPath = item.cloudPath;
+          if(item.releaseAssetId) out.releaseAssetId = item.releaseAssetId;
+          if(item.releaseAssetName) out.releaseAssetName = item.releaseAssetName;
+          out.localOnly = false;
+        }else{
+          out.localOnly = true;
+          out.needsUpload = true;
+        }
+        return out;
+      }
+
+      if(!video && current && String(current).startsWith('data:')){
+        out.dataUrl = current;
+        out.localOnly = true;
+        out.needsUpload = true;
+        return out;
+      }
+
       if(item.url) out.url = item.url;
       if(item.downloadUrl) out.downloadUrl = item.downloadUrl;
       if(item.cloudPath) out.cloudPath = item.cloudPath;
       if(item.releaseAssetId) out.releaseAssetId = item.releaseAssetId;
       if(item.releaseAssetName) out.releaseAssetName = item.releaseAssetName;
-      if(video && item.blobKey){
-        out.blobKey = item.blobKey;
-        out.localOnly = !(out.url || out.downloadUrl || out.cloudPath);
-        out.dataUrl = '';
-      }else{
-        const current = editorCurrentDataUrl(item);
-        out.dataUrl = String(current || '').startsWith('blob:') ? '' : current;
+      if(!out.url && !out.downloadUrl && !out.cloudPath && !out.releaseAssetId && current && !String(current).startsWith('blob:')){
+        out.dataUrl = current;
+        out.localOnly = true;
+        out.needsUpload = true;
       }
       return out;
     }
@@ -5015,7 +5069,8 @@
           downloadUrl: img.downloadUrl || '',
           cloudPath: img.cloudPath || '',
           releaseAssetId: img.releaseAssetId || null,
-          releaseAssetName: img.releaseAssetName || ''
+          releaseAssetName: img.releaseAssetName || '',
+          mediaGroup: normalizeMediaGroup(img.mediaGroup)
         })) : []
       })).filter(r => r.shortcut && (r.message || (Array.isArray(r.images) && r.images.length)));
     }
@@ -5075,6 +5130,72 @@
       if(n < 1024) return `${n} B`;
       if(n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
       return `${(n / 1024 / 1024).toFixed(1)} MB`;
+    }
+
+    function canOptimizeImageForCloud(file){
+      const type = String(file?.type || '').toLowerCase();
+      const name = String(file?.name || '').toLowerCase();
+      if(!type.startsWith('image/')) return false;
+      if(type.includes('gif') || name.endsWith('.gif') || name.endsWith('.svg')) return false;
+      return true;
+    }
+
+    function loadImageFromBlobForCloud(file){
+      return new Promise((resolve, reject) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.decoding = 'async';
+        img.onload = () => resolve({img, url});
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          reject(new Error('No se pudo optimizar esa imagen'));
+        };
+        img.src = url;
+      });
+    }
+
+    async function optimizeImageFileForCloud(file, item = null, onProgress = null){
+      if(!canOptimizeImageForCloud(file)) return file;
+      const maxSide = 2200;
+      const quality = 0.88;
+      let loaded = null;
+      try{
+        if(onProgress) onProgress(3, 'Optimizando foto para subir más rápido...');
+        loaded = await loadImageFromBlobForCloud(file);
+        const img = loaded.img;
+        const w = img.naturalWidth || img.width;
+        const h = img.naturalHeight || img.height;
+        if(!w || !h) return file;
+        const mustResize = Math.max(w, h) > maxSide;
+        const mustCompress = file.size > 900 * 1024;
+        if(!mustResize && !mustCompress) return file;
+        const ratio = mustResize ? Math.min(maxSide / w, maxSide / h) : 1;
+        const w2 = Math.max(1, Math.round(w * ratio));
+        const h2 = Math.max(1, Math.round(h * ratio));
+        const canvas = document.createElement('canvas');
+        canvas.width = w2;
+        canvas.height = h2;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, w2, h2);
+        ctx.drawImage(img, 0, 0, w2, h2);
+        const blob = await canvasToBlob(canvas, 'image/jpeg', quality);
+        if(!blob || blob.size >= file.size * .98) return file;
+        const cleanName = safeFileName(String(file.name || imageName(item || {}, 0)).replace(/\.[^.]+$/, ''), 'foto');
+        const optimized = new File([blob], `${cleanName}.jpg`, {type:'image/jpeg'});
+        if(item){
+          item.name = optimized.name;
+          item.type = optimized.type;
+          item.size = optimized.size;
+        }
+        if(onProgress) onProgress(100, `Foto optimizada: ${formatBytes(file.size)} → ${formatBytes(optimized.size)}.`);
+        return optimized;
+      }catch(err){
+        console.warn('No se pudo optimizar imagen para nube', err);
+        return file;
+      }finally{
+        if(loaded?.url) URL.revokeObjectURL(loaded.url);
+      }
     }
 
 
@@ -5286,49 +5407,40 @@
     }
 
 
-    async function repairMissingMediaLinksBeforeUpload(token){
-      const missingWithoutLocal = [];
-      let resetForUpload = 0;
-      const checks = [];
+    function hasLocalUploadSource(item){
+      const localData = String(item?.resultDataUrl || item?.dataUrl || item?.sourceDataUrl || '');
+      return !!(item?.blobKey || localData.startsWith('data:') || localData.startsWith('blob:'));
+    }
 
+    function mediaNeedsCloudUpload(item){
+      const hasLocalFile = hasLocalUploadSource(item);
+      const hasRemote = !!(item?.url || item?.downloadUrl || item?.cloudPath || item?.releaseAssetId);
+      return hasLocalFile && (!hasRemote || !!item?.localOnly || !!item?.needsUpload);
+    }
+
+    async function repairMissingMediaLinksBeforeUpload(token){
+      let resetForUpload = 0;
+
+      // Antes esto revisaba uno por uno todos los /media del repo, lo que hacía lenta la subida.
+      // Ahora solo resetea archivos que realmente tienen una copia local nueva/editada.
       responses.forEach((r) => {
-        getMedia(r).forEach((item, mediaIndex) => {
-          const path = String(item.cloudPath || '').trim();
-          if(!path.startsWith('media/')) return;
-          checks.push({r, item, mediaIndex, path});
+        getMedia(r).forEach((item) => {
+          if(!mediaNeedsCloudUpload(item)) return;
+          if(item.needsUpload || item.localOnly){
+            item.url = '';
+            item.downloadUrl = '';
+            item.cloudPath = '';
+            item.releaseAssetId = null;
+            item.releaseAssetName = '';
+            item.localOnly = true;
+            resetForUpload++;
+          }
         });
       });
-
-      for(const entry of checks){
-        const {r, item, mediaIndex, path} = entry;
-        const existing = await fetchCloudFileByPath(path, token, true);
-        if(existing) continue;
-
-        const hasLocalFile = !!(item.blobKey || item.dataUrl || item.sourceDataUrl || item.resultDataUrl);
-        if(hasLocalFile){
-          item.cloudPath = '';
-          item.url = '';
-          item.downloadUrl = '';
-          item.releaseAssetId = null;
-          item.releaseAssetName = '';
-          item.localOnly = true;
-          resetForUpload++;
-        }else{
-          missingWithoutLocal.push({
-            responseTitle: r.title || r.shortcut || 'Sin título',
-            name: imageName(item, mediaIndex),
-            path
-          });
-        }
-      }
 
       if(resetForUpload){
         saveToStorageNoAuto();
         renderAll();
-      }
-      if(missingWithoutLocal.length){
-        const preview = missingWithoutLocal.slice(0, 3).map(m => `${m.name} (${m.responseTitle}) · ${m.path}`).join(' / ');
-        throw new Error(`Hay ${missingWithoutLocal.length} archivo(s) que el JSON marca como /media, pero GitHub no los tiene y este navegador no conserva la copia local para resubir. Vuelve a pegar/subir esas imágenes. Ejemplos: ${preview}`);
       }
       return resetForUpload;
     }
@@ -5409,7 +5521,7 @@
       const missing = [];
       responses.forEach((r) => {
         getMedia(r).forEach((item, mediaIndex) => {
-          const hasLocalFile = !!(item.blobKey || item.dataUrl || item.sourceDataUrl || item.resultDataUrl);
+          const hasLocalFile = hasLocalUploadSource(item);
           const hasRemote = !!(item.url || item.downloadUrl || item.cloudPath || item.releaseAssetId);
           if(hasLocalFile && !hasRemote){
             missing.push({
@@ -5536,9 +5648,7 @@
       const pending = [];
       responses.forEach((r, responseIndex) => {
         getMedia(r).forEach((item, mediaIndex) => {
-          const hasLocalFile = !!(item.blobKey || item.dataUrl || item.sourceDataUrl || item.resultDataUrl);
-          const alreadyUploaded = !!(item.url || item.downloadUrl || item.cloudPath || item.releaseAssetId);
-          if(hasLocalFile && !alreadyUploaded){
+          if(mediaNeedsCloudUpload(item)){
             pending.push({r, responseIndex, item, mediaIndex});
           }
         });
@@ -5556,8 +5666,11 @@
         const kind = isVideoMedia(item) ? 'video' : 'foto';
         setCloudWorking(`Preparando ${kind} ${i + 1} de ${pending.length}: ${name}...`);
         setCloudProgress('Preparando archivos locales', `${i + 1} de ${pending.length}: ${name}`, Math.min(10, (i / pending.length) * 10));
-        const file = await mediaToFile(item, mediaIndex, (pct, msg) => setCloudProgress(`Preparando ${kind} local`, msg || name, Math.min(12, Number(pct || 0) * .12)));
+        let file = await mediaToFile(item, mediaIndex, (pct, msg) => setCloudProgress(`Preparando ${kind} local`, msg || name, Math.min(12, Number(pct || 0) * .12)));
         if(!file) throw new Error(`No pude preparar el archivo "${name}" para subirlo`);
+        if(!isVideoMedia(item)){
+          file = await optimizeImageFileForCloud(file, item, (pct, msg) => setCloudProgress('Optimizando fotos para nube', msg || name, 12 + (Number(pct || 0) * .08)));
+        }
 
         const prev = {
           url: item.url || '',
@@ -5568,7 +5681,8 @@
           localOnly: !!item.localOnly,
           dataUrl: item.dataUrl || '',
           sourceDataUrl: item.sourceDataUrl || '',
-          resultDataUrl: item.resultDataUrl || ''
+          resultDataUrl: item.resultDataUrl || '',
+          needsUpload: !!item.needsUpload
         };
         rollbacks.push(() => Object.assign(item, prev));
 
@@ -5582,6 +5696,10 @@
           item.releaseAssetName = asset.name || '';
           item.cloudPath = '';
           item.localOnly = false;
+          item.needsUpload = false;
+          item.dataUrl = '';
+          item.sourceDataUrl = '';
+          item.resultDataUrl = '';
           releaseUploaded++;
           continue;
         }
@@ -5594,6 +5712,9 @@
         item.releaseAssetId = null;
         item.releaseAssetName = '';
         item.localOnly = false;
+        item.needsUpload = false;
+        item.size = file.size || item.size || 0;
+        item.type = file.type || item.type || (isVideoMedia(item) ? 'video/mp4' : 'image/jpeg');
         files.push({
           path,
           blob: file,
@@ -5712,6 +5833,7 @@
           item.sourceDataUrl = '';
           item.resultDataUrl = '';
           item.localOnly = false;
+          item.needsUpload = false;
         }
 
         saveToStorageNoAuto();
