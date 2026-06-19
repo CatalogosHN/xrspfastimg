@@ -1,7 +1,7 @@
 {
   "app": "Respuestas Rápidas",
   "version": 4,
-  "updatedAt": "2026-06-18T07:15:20.934Z",
+  "updatedAt": "2026-06-19T22:54:58.868Z",
   "owner": "CatalogosHN",
   "repo": "xrspfastimg",
   "path": "data/respuestas_rapidas.json",
@@ -11,114 +11,517 @@
   ],
   "responses": [
     {
-      "id": "d956f263-ec31-402a-9b95-0bc7a23fdb11",
-      "title": "PROMO FOCO CAMARAS",
-      "shortcut": "promofococamaras",
-      "section": "PROMOS",
-      "category": "PROMOS",
+      "id": "aca48db7-3762-4ff3-aa05-69b8b6ed775a",
+      "title": "Caex El paraiso",
+      "shortcut": "caexelparaiso",
+      "section": "CAEX",
+      "category": "CAEX",
       "tags": [
-        "PROMO FOCO CAMARAS",
-        "focam"
+        "Caex El paraiso"
       ],
       "message": "",
       "images": [
         {
-          "id": "22d23750-3e05-4e14-bd86-a202060a992b",
-          "name": "198904.jpg",
-          "type": "image/jpeg",
-          "size": 159786,
+          "id": "2498256b-64c0-4d2e-ac50-ccfa42854d57",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 41550,
           "mediaGroup": "original",
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/22d23750-3e0-198904.jpg",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/22d23750-3e0-198904.jpg",
-          "cloudPath": "media/respuestas-rapidas/promofococamaras/22d23750-3e0-198904.jpg",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexelparaiso/2498256b-64c-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexelparaiso/2498256b-64c-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexelparaiso/2498256b-64c-image.png",
           "dataUrl": ""
         },
         {
-          "id": "f1c6de42-77c6-495b-aba4-f442983cd017",
-          "name": "198895.jpg",
-          "type": "image/jpeg",
-          "size": 771267,
+          "id": "70d29c80-4c1b-45b5-a681-6f13f8d7d2b0",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 7351,
           "mediaGroup": "original",
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/f1c6de42-77c-198895.jpg",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/f1c6de42-77c-198895.jpg",
-          "cloudPath": "media/respuestas-rapidas/promofococamaras/f1c6de42-77c-198895.jpg",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexelparaiso/70d29c80-4c1-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexelparaiso/70d29c80-4c1-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexelparaiso/70d29c80-4c1-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "e077aea7-e2c6-4893-890d-695e41dd582f",
+      "title": "Caex Agencia El paraiso",
+      "shortcut": "caexagenciaelparaiso",
+      "section": "Respuestas para clientes",
+      "category": "General",
+      "tags": [
+        "Caex Agencia El paraiso"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "b843cffb-7aaf-44fd-97e5-71461436d704",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 26254,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciaelparaiso/b843cffb-7aa-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciaelparaiso/b843cffb-7aa-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexagenciaelparaiso/b843cffb-7aa-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "8406d77b-1d76-4761-b5c0-0d0559060271",
+      "title": "Caex Cortes",
+      "shortcut": "caexcortes",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Cortes"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "109f692e-83a0-43ac-95a5-8130454d6c50",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 44566,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcortes/109f692e-83a-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcortes/109f692e-83a-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcortes/109f692e-83a-image.png",
           "dataUrl": ""
         },
         {
-          "id": "fc66a09d-457a-4589-86df-2787557f5f6e",
-          "name": "198889.jpg",
-          "type": "image/jpeg",
-          "size": 865904,
+          "id": "1bca5d85-41cb-4c88-aabc-2329b9b6e0df",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 38606,
           "mediaGroup": "original",
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/fc66a09d-457-198889.jpg",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/fc66a09d-457-198889.jpg",
-          "cloudPath": "media/respuestas-rapidas/promofococamaras/fc66a09d-457-198889.jpg",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcortes/1bca5d85-41c-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcortes/1bca5d85-41c-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcortes/1bca5d85-41c-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "9d9696db-b186-4d44-9ac5-bb4fa529bc7a",
+      "title": "Caex Agencia Cortes",
+      "shortcut": "caexagenciacortes",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Agencia Cortes"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "67c82d36-19b9-4dac-a406-b1088545b521",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 74229,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacortes/67c82d36-19b-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacortes/67c82d36-19b-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexagenciacortes/67c82d36-19b-image.png",
           "dataUrl": ""
         },
         {
-          "id": "acf20708-ed45-49fe-a6fb-ba9b8e632fd0",
-          "name": "198901.jpg",
-          "type": "image/jpeg",
-          "size": 882694,
+          "id": "b3d8e733-77fa-44f1-8033-50215a967894",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 18924,
           "mediaGroup": "original",
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/acf20708-ed4-198901.jpg",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/acf20708-ed4-198901.jpg",
-          "cloudPath": "media/respuestas-rapidas/promofococamaras/acf20708-ed4-198901.jpg",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacortes/b3d8e733-77f-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacortes/b3d8e733-77f-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexagenciacortes/b3d8e733-77f-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "9121bbd8-ba5c-4a67-8247-8802c7662207",
+      "title": "Caex Copan",
+      "shortcut": "caexcopan",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Copan"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "6919cb44-c8a8-4e2c-81ca-f074d439cae4",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 37556,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcopan/6919cb44-c8a-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcopan/6919cb44-c8a-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcopan/6919cb44-c8a-image.png",
           "dataUrl": ""
         },
         {
-          "id": "66f42205-15a0-4749-bb62-3bdb6605dd7b",
-          "name": "198898.jpg",
-          "type": "image/jpeg",
-          "size": 705553,
+          "id": "a38eb623-3f7b-4a43-9ee8-96836ff518f5",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 37054,
           "mediaGroup": "original",
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/66f42205-15a-198898.jpg",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/66f42205-15a-198898.jpg",
-          "cloudPath": "media/respuestas-rapidas/promofococamaras/66f42205-15a-198898.jpg",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcopan/a38eb623-3f7-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcopan/a38eb623-3f7-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcopan/a38eb623-3f7-image.png",
           "dataUrl": ""
         },
         {
-          "id": "f9953090-5bad-46e9-8452-09ce3ab6ec62",
-          "name": "198892.jpg",
-          "type": "image/jpeg",
-          "size": 617619,
+          "id": "c0090eaa-0c6e-4ea1-8280-bef8d04d76ef",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 13601,
           "mediaGroup": "original",
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/f9953090-5ba-198892.jpg",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/f9953090-5ba-198892.jpg",
-          "cloudPath": "media/respuestas-rapidas/promofococamaras/f9953090-5ba-198892.jpg",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcopan/c0090eaa-0c6-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcopan/c0090eaa-0c6-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcopan/c0090eaa-0c6-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "a6011584-6aa2-4740-9ff1-12c69ae9d17b",
+      "title": "Caex Agencia Copan",
+      "shortcut": "caexagenciacopan",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Agencia Copan"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "3a445d69-6423-431d-92c1-f5b266417605",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 38095,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacopan/3a445d69-642-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacopan/3a445d69-642-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexagenciacopan/3a445d69-642-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "0064ee90-a027-4395-829f-6d438034fc83",
+      "title": "Caex Comayagua",
+      "shortcut": "caexcomayagua",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Comayagua"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "65b61fbb-8dc5-4455-b517-afccd3211f75",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 47526,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcomayagua/65b61fbb-8dc-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcomayagua/65b61fbb-8dc-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcomayagua/65b61fbb-8dc-image.png",
           "dataUrl": ""
         },
         {
-          "id": "c4f730e5-eb9f-4d28-a971-6637e7ad547b",
-          "name": "181886.jpg",
-          "type": "image/jpeg",
-          "size": 271724,
+          "id": "c7aa7738-400a-4d33-b8af-3e14ab2fbb4d",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 9109,
           "mediaGroup": "original",
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/c4f730e5-eb9-181886.jpg",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/c4f730e5-eb9-181886.jpg",
-          "cloudPath": "media/respuestas-rapidas/promofococamaras/c4f730e5-eb9-181886.jpg",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcomayagua/c7aa7738-400-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcomayagua/c7aa7738-400-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcomayagua/c7aa7738-400-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "9eb66f85-082c-437d-9973-8e92761f6183",
+      "title": "Caex Agencia Comayagua",
+      "shortcut": "caexagenciacomayagua",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Agencia Comayagua"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "e2470d47-5c24-4d5f-aff1-610065d076d3",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 28961,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacomayagua/e2470d47-5c2-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacomayagua/e2470d47-5c2-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexagenciacomayagua/e2470d47-5c2-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "a48dcc26-0531-446b-a357-438054b65078",
+      "title": "Caex Colon",
+      "shortcut": "caexcolon",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Colon"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "bbf9dd97-798f-4c6c-aac5-9b4de65c8edf",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 46327,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcolon/bbf9dd97-798-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcolon/bbf9dd97-798-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcolon/bbf9dd97-798-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "fce48d38-e6da-4fd9-a627-a2c60a3f9a0a",
+      "title": "Caex Agencia Colon",
+      "shortcut": "caexagenciacolon",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Agencia Colon"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "67ab87b4-c4bf-41f7-9dd3-81af1b726016",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 29218,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacolon/67ab87b4-c4b-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacolon/67ab87b4-c4b-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexagenciacolon/67ab87b4-c4b-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "6df10f97-64b1-49a4-b916-6908dd5f551a",
+      "title": "Caex Choluteca",
+      "shortcut": "caexcholuteca",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Choluteca"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "b6668bbb-f6ab-4092-acf0-62750db4fc5d",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 48854,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcholuteca/b6668bbb-f6a-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcholuteca/b6668bbb-f6a-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcholuteca/b6668bbb-f6a-image.png",
           "dataUrl": ""
         },
         {
-          "id": "c9369939-498e-4783-b9a8-fd485c34fdc7",
-          "name": "158203.jpg",
-          "type": "image/jpeg",
-          "size": 298720,
+          "id": "24740e05-bbee-4835-9a83-25aa31705c86",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 47801,
           "mediaGroup": "original",
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/c9369939-498-158203.jpg",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/c9369939-498-158203.jpg",
-          "cloudPath": "media/respuestas-rapidas/promofococamaras/c9369939-498-158203.jpg",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcholuteca/24740e05-bbe-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcholuteca/24740e05-bbe-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcholuteca/24740e05-bbe-image.png",
           "dataUrl": ""
         },
         {
-          "id": "243e5355-8b51-4eac-9c0d-39614e84dd29",
-          "name": "184761.jpg",
-          "type": "image/jpeg",
-          "size": 193105,
+          "id": "693a894b-e3a4-474e-a2a0-0eed963ae21c",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 57722,
           "mediaGroup": "original",
-          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/243e5355-8b5-184761.jpg",
-          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/promofococamaras/243e5355-8b5-184761.jpg",
-          "cloudPath": "media/respuestas-rapidas/promofococamaras/243e5355-8b5-184761.jpg",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcholuteca/693a894b-e3a-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcholuteca/693a894b-e3a-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcholuteca/693a894b-e3a-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "c645d76e-5a62-4c79-a7d6-f5c74f9664a8",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 26741,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcholuteca/c645d76e-5a6-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexcholuteca/c645d76e-5a6-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexcholuteca/c645d76e-5a6-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "81008d83-ae6c-4678-b22e-0672c288d040",
+      "title": "Caex Agencia Choluteca",
+      "shortcut": "caexagenciacholuteca",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Agencia Choluteca"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "f402bfb2-5a5e-42f6-8dc7-21fcbcc7d846",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 37006,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacholuteca/f402bfb2-5a5-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciacholuteca/f402bfb2-5a5-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexagenciacholuteca/f402bfb2-5a5-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "57c3527d-3a1a-4216-9100-dfdb37b8ccbc",
+      "title": "Caex Atlantida",
+      "shortcut": "caexatlantida",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Atlantida"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "cb859fc4-5184-4d0f-95fc-aceaa047b69b",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 42252,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexatlantida/cb859fc4-518-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexatlantida/cb859fc4-518-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexatlantida/cb859fc4-518-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "860758da-49a2-4ba5-a6c9-30ca2f16275b",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 36913,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexatlantida/860758da-49a-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexatlantida/860758da-49a-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexatlantida/860758da-49a-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "cf214c62-3177-4cd2-845e-6a80154da42c",
+      "title": "Caex Agencia Atlantida",
+      "shortcut": "caexagenciaatlantida",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Agencia Atlantida"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "31080cc3-9b09-475a-87ee-25ddb4feed1a",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 22071,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciaatlantida/31080cc3-9b0-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciaatlantida/31080cc3-9b0-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexagenciaatlantida/31080cc3-9b0-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "0993740a-c4c3-4fe1-929a-c4c3768efeb8",
+      "title": "Caex Santa barbara",
+      "shortcut": "caexsantabarbara",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex Santa barbara"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "708c6177-f9ad-418c-b99c-c2e8c8b07f82",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 49315,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexsantabarbara/708c6177-f9a-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexsantabarbara/708c6177-f9a-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexsantabarbara/708c6177-f9a-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "a6ae9d44-a9c9-416d-9070-31790d892ecd",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 45004,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexsantabarbara/a6ae9d44-a9c-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexsantabarbara/a6ae9d44-a9c-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexsantabarbara/a6ae9d44-a9c-image.png",
+          "dataUrl": ""
+        },
+        {
+          "id": "bf375be2-baf1-4ac8-af02-b00821e60646",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 13169,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexsantabarbara/bf375be2-baf-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexsantabarbara/bf375be2-baf-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexsantabarbara/bf375be2-baf-image.png",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "69e52e42-27c0-4fad-bfca-022d77175be6",
+      "title": "Caex agencia Santa barbara",
+      "shortcut": "caexagenciasantabarbara",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex agencia Santa barbara"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "a414e582-865e-470a-9183-e3589781f423",
+          "name": "image.png",
+          "type": "image/png",
+          "size": 23820,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciasantabarbara/a414e582-865-image.png",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciasantabarbara/a414e582-865-image.png",
+          "cloudPath": "media/respuestas-rapidas/caexagenciasantabarbara/a414e582-865-image.png",
           "dataUrl": ""
         }
       ]
