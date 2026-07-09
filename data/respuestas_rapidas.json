@@ -1,7 +1,7 @@
 {
   "app": "Respuestas Rápidas",
   "version": 4,
-  "updatedAt": "2026-06-19T22:54:58.868Z",
+  "updatedAt": "2026-07-09T19:23:52.569Z",
   "owner": "CatalogosHN",
   "repo": "xrspfastimg",
   "path": "data/respuestas_rapidas.json",
@@ -10,6 +10,54 @@
     "Publicaciones de Facebook"
   ],
   "responses": [
+    {
+      "id": "466b058a-0c3b-4cb4-a540-b584955a4d36",
+      "title": "Caex agencia intibuca",
+      "shortcut": "caexagenciaintibuca",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex agencia intibuca"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "ed1ff4e6-dde7-40bf-9c32-ae66e33a68dd",
+          "name": "1002782101.jpg",
+          "type": "image/jpeg",
+          "size": 75338,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciaintibuca/ed1ff4e6-dde-1002782101.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexagenciaintibuca/ed1ff4e6-dde-1002782101.jpg",
+          "cloudPath": "media/respuestas-rapidas/caexagenciaintibuca/ed1ff4e6-dde-1002782101.jpg",
+          "dataUrl": ""
+        }
+      ]
+    },
+    {
+      "id": "386ac004-3eee-44f5-97e1-0a2633f51d14",
+      "title": "Caex Intibuca",
+      "shortcut": "caexintibuca",
+      "section": "CAEX",
+      "category": "CAEX",
+      "tags": [
+        "Caex intibuca"
+      ],
+      "message": "",
+      "images": [
+        {
+          "id": "dfd14cf8-19e3-4111-85c2-a46eea020dc3",
+          "name": "1002782099.jpg",
+          "type": "image/jpeg",
+          "size": 126453,
+          "mediaGroup": "original",
+          "url": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexintibuca/dfd14cf8-19e-1002782099.jpg",
+          "downloadUrl": "https://raw.githubusercontent.com/CatalogosHN/xrspfastimg/main/media/respuestas-rapidas/caexintibuca/dfd14cf8-19e-1002782099.jpg",
+          "cloudPath": "media/respuestas-rapidas/caexintibuca/dfd14cf8-19e-1002782099.jpg",
+          "dataUrl": ""
+        }
+      ]
+    },
     {
       "id": "aca48db7-3762-4ff3-aa05-69b8b6ed775a",
       "title": "Caex El paraiso",
